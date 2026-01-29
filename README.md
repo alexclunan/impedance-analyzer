@@ -1,15 +1,14 @@
-# impedance-analyzer
-Impedance Analyzer Capstone Project for the Swami Lab @ UVA
+# FPGA-Based Multi-Frequency Impedance Analyzer 
 
-FPGA-BASED MULTI-FREQUENCY DIGITAL LOCK-IN AMPLIFIER 
+Impedance Analyzer Capstone Project in collaboration with the Swami Lab @ the University of Virginia
 
-# ABSTRACT
+# Abstract
 
 This repository will contain the PCB design, HDL source code, and embedded software for a high-speed Digital Lock-In Amplifier (DLIA) and triggering system implemented on a Xilinx Zynq-7000 SoC.
 
 Designed for impedance cytometry applications, this system synthesizes multi-frequency (< 10 MHz) excitation signals and performs parallel demodulation of sensor responses in the digital domain. This measurement device will be used to trigger a sorting mechanism at low latency to sort cells and other biological materials in a microfluidic channel. 
 
-# SYSTEM SPECIFICATIONS
+# System Specifications
 
 Platform: Xilinx Zynq XC7Z020 SoC on the Trenz TE0720 SoM, custom carrier board PCB
 
@@ -20,7 +19,7 @@ DAC: 16-bit+, 250 MSPS+
 Analog: High Frequency, Low Noise Transimpedance amplifier
 
 
-# ARCHITECTURE OVERVIEW
+# Architecture Overview
 
 The system utilizes a mixed-signal architecture where the FPGA handles both signal generation and analysis.
 
