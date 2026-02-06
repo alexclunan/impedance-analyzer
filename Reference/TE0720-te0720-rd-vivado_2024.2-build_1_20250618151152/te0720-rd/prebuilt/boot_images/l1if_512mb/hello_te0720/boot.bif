@@ -1,0 +1,9 @@
+/* bare-metal */
+/*auto-generated on 2025/06/18 15:10:17 */
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+  [bootloader]../../../software/l1if_512mb/fsbl.elf
+  ../../../hardware/l1if_512mb/te0720-rd_l1if_512mb.bit
+  ../../../software/l1if_512mb/hello_te0720.elf
+}

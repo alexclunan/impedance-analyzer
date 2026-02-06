@@ -1,0 +1,10 @@
+/* linux */
+/*auto-generated on 2025/06/18 15:10:17 */
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+  [bootloader]../../../software/l1if_512mb/fsbl.elf
+  ../../../hardware/l1if_512mb/te0720-rd_l1if_512mb.bit
+  ../../../os/petalinux/512MB/u-boot.elf
+  [load =  0x00100000]../../../os/petalinux/512MB/system.dtb
+}

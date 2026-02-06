@@ -1,0 +1,42 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (lin64) Build 5239630 Fri Nov 08 22:34:34 MST 2024
+| Date         : Wed Jun 18 11:00:41 2025
+| Host         : runner-t182syjb-project-203-concurrent-0 running 64-bit Ubuntu 22.04.5 LTS
+| Command      : report_ip_status
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+IP Status Summary
+
+1. Project IP Status
+--------------------
+Your project uses 4 IP. Some of these IP may have undergone changes in this release of the software. Please review the recommended actions.
+
+More information on the Xilinx versioning policy is available at www.xilinx.com.
+
+Project IP Instances
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| Instance Name               | Status     | Recommendation      | Change    | IP Name            | IP      | New Version   | New        | Original Part        |
+|                             |            |                     | Log       |                    | Version |               | License    |                      |
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zsys_SC0720_0_0             | Up-to-date | No changes required | Change    | TE0720 System      | 1.0     | 1.0 (Rev. 9)  | Included   | xa7z020clg484-1Q     |
+|                             |            |                     | Log not   | Controller 1.0     | (Rev.   |               |            |                      |
+|                             |            |                     | available |                    | 9)      |               |            |                      |
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zsys_processing_system7_0_0 | Up-to-date | No changes required |  *(1)     | ZYNQ7 Processing   | 5.5     | 5.5 (Rev. 6)  | Included   | xa7z020clg484-1Q     |
+|                             |            |                     |           | System             | (Rev.   |               |            |                      |
+|                             |            |                     |           |                    | 6)      |               |            |                      |
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zsys_vio_0_0                | Up-to-date | No changes required |  *(2)     | VIO (Virtual       | 3.0     | 3.0 (Rev. 26) | Included   | xa7z020clg484-1Q     |
+|                             |            |                     |           | Input/Output)      | (Rev.   |               |            |                      |
+|                             |            |                     |           |                    | 26)     |               |            |                      |
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+| zsys_xlconcat_0_0           | Up-to-date | No changes required |  *(3)     | Concat             | 2.1     | 2.1 (Rev. 6)  | Included   | xa7z020clg484-1Q     |
+|                             |            |                     |           |                    | (Rev.   |               |            |                      |
+|                             |            |                     |           |                    | 6)      |               |            |                      |
++-----------------------------+------------+---------------------+-----------+--------------------+---------+---------------+------------+----------------------+
+*(1) /home/vivado/Xilinx/Vivado/2024.2/data/ip/xilinx/processing_system7_v5_5/doc/processing_system7_v5_5_changelog.txt
+*(2) /home/vivado/Xilinx/Vivado/2024.2/data/ip/xilinx/vio_v3_0/doc/vio_v3_0_changelog.txt
+*(3) /home/vivado/Xilinx/Vivado/2024.2/data/ip/xilinx/xlconcat_v2_1/doc/xlconcat_v2_1_changelog.txt
+
+

@@ -1,0 +1,200 @@
+/*
+
+AMD Vivado v2025.2 (64-bit) [Major: 2025, Minor: 2]
+SW Build: 6299465 on Fri Nov 14 19:35:11 GMT 2025
+IP Build: 6300035 on Fri Nov 14 10:48:45 MST 2025
+IP Build: 6300035 on Fri Nov 14 10:48:45 MST 2025
+
+Process ID (PID): 25024
+License: Customer
+Mode: GUI Mode
+
+Current time: 	Thu Feb 05 02:01:21 EST 2026
+Time zone: 	Eastern Standard Time (America/New_York)
+
+OS: Windows 11
+OS Version: 10.0
+OS Architecture: amd64
+Available processors (cores): 32
+
+Screen size: 2560x1440
+Local screen bounds: x = 0, y = 0, width = 2560, height = 1392
+Screen resolution (DPI): 100
+Available screens: 3
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+Scale size: 12
+OS font scaling: 100%
+Anti-Alias Enabled: false
+
+Java version: 	21.0.5 64-bit
+
+Java home: 	C:/AMDDesignTools/2025.2/Vivado/tps/win64/jre21.0.5_11
+Java executable: 	C:/AMDDesignTools/2025.2/Vivado/tps/win64/jre21.0.5_11/bin/java.exe
+Java arguments: 	[-Dsun.java2d.pmoffscreen=false, -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2, -Dsun.java2d.xrender=false, -Dsun.java2d.d3d=false, -Dsun.awt.nopixfmt=true, -Dsun.java2d.dpiaware=true, -Dsun.java2d.uiScale.enabled=false, -Dswing.aatext=true, -XX:-UsePerfData, -Djdk.map.althashing.threshold=512, -XX:StringTableSize=4072, -XX:+UseStringDeduplication, -XX:MaxGCPauseMillis=200, -XX:ParallelGCThreads=4, -XX:+ParallelRefProcEnabled, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.desktop/sun.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-opens=java.desktop/javax.swing=ALL-UNNAMED, --add-opens=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-opens=java.desktop/java.awt.event=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.base/java.nio=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.tree=ALL-UNNAMED, --add-exports=java.desktop/javax.swing.plaf.basic=ALL-UNNAMED, --add-exports=java.desktop/sun.swing=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.table=ALL-UNNAMED, --add-exports=java.desktop/sun.swing.plaf.synth=ALL-UNNAMED, --add-exports=java.desktop/sun.awt.shell=ALL-UNNAMED, --add-exports=java.base/sun.security.action=ALL-UNNAMED, --add-exports=java.desktop/sun.font=ALL-UNNAMED, -XX:NewSize=80m, -XX:MaxNewSize=80m, -Xms812m, -Xmx6144m, -Xss10m]
+Java initial memory (-Xms): 	812 MB
+Java maximum memory (-Xmx):	 6 GB
+
+User name: 	Alex
+User home directory: C:/Users/Alex
+User working directory: c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: C:/AMDDesignTools/2025.2
+HDI_APPROOT: C:/AMDDesignTools/2025.2/Vivado
+RDI_DATADIR: C:/AMDDesignTools/2025.2/Vivado/data
+RDI_BINDIR: C:/AMDDesignTools/2025.2/Vivado/bin
+
+Vivado preferences file: C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/vivado.xml
+Vivado preferences directory: C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/
+Vivado layouts directory: C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/data/layouts
+PlanAhead jar file: 	C:/AMDDesignTools/2025.2/Vivado/lib/classes/planAhead.jar
+Vivado log file: 	C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log/vivado.log
+Vivado journal file: 	C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log/vivado.jou
+Engine tmp dir: 	C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/.Xil/Vivado-25024-DESKTOP-F1EP304
+Non-Default Parameters:	[]
+
+Xilinx & AMD Environment Variables
+--------------------------------------------------------------------------------------------
+DEF_VIVADO_VERSION: 2024.2
+DO_NOT_CLOSE_SHELL: 0
+RDI_APPROOT: C:/AMDDesignTools/2025.2/Vivado
+RDI_ARGS:  -source ../scripts/script_main.tcl -mode batch -notrace -tclargs --run_board_selection
+RDI_ARGS_FUNCTION: RDI_EXEC_DEFAULT
+RDI_BASEROOT: C:/AMDDesignTools/2025.2
+RDI_BATCH_MODE: True
+RDI_BINDIR: C:/AMDDesignTools/2025.2/Vivado/bin
+RDI_BINROOT: C:/AMDDesignTools/2025.2/Vivado/bin
+RDI_BUILD: yes
+RDI_CHECK_PROG: True
+RDI_DATADIR: C:/AMDDesignTools/2025.2/Vivado/data
+RDI_INSTALLROOT: C:/AMDDesignTools
+RDI_INSTALLVER: Vivado
+RDI_INSTALLVERSION: 2025.2
+RDI_ISE_PLATFORM: nt64
+RDI_JAVACEFROOT: C:/AMDDesignTools/2025.2/Vivado/tps/win64/java-cef-95.0.4638.69
+RDI_JAVAFXROOT: C:/AMDDesignTools/2025.2/Vivado/tps/win64/javafx-sdk-21.0.5
+RDI_JAVAROOT: C:/AMDDesignTools/2025.2/Vivado/tps/win64/jre21.0.5_11
+RDI_JAVA_VERSION: 21.0.5_11
+RDI_LIBDIR: C:/AMDDesignTools/2025.2/Vivado/lib/win64.o
+RDI_MINGW_LIB: C:/AMDDesignTools/2025.2/Vivado\tps\mingw\6.2.0\win64.o\nt\bin;C:/AMDDesignTools/2025.2/Vivado\tps\mingw\6.2.0\win64.o\nt\libexec\gcc\x86_64-w64-mingw32\6.2.0
+RDI_OPT_EXT: .o
+RDI_PLATFORM: win64
+RDI_PREPEND_PATH: C:/AMDDesignTools/2025.2/Vitis/bin;C:/AMDDesignTools/2025.2/Vivado/ids_lite/ISE/bin/nt64;C:/AMDDesignTools/2025.2/Vivado/ids_lite/ISE/lib/nt64
+RDI_PROG: C:/AMDDesignTools/2025.2/Vivado/bin/unwrapped/win64.o/vivado.exe
+RDI_PROGNAME: vivado.exe
+RDI_PYTHON3: C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0
+RDI_PYTHON3_VERSION: 3.13.0
+RDI_PYTHONHOME: C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0
+RDI_PYTHONPATH: C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0;C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0\bin;C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0\lib;C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0\lib\site-packages
+RDI_PYTHON_LD_LIBPATH: C:/AMDDesignTools/2025.2/Vivado\tps\win64\python-3.13.0\lib
+RDI_SESSION_INFO: C:\Users\Alex\Documents\GitHub\impedance-analyzer\Reference\TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152\te0720-rd\v_log:DESKTOP-F1EP304-Thu02-05-2026_1-58-21.38
+RDI_SHARED_DATA: C:/AMDDesignTools/SharedData/2025.2/data
+RDI_TPS_ROOT: C:/AMDDesignTools/2025.2/Vivado/tps/win64
+RDI_USE_JDK21: True
+RDI_VERBOSE: False
+SDK_AVAILABLE: 0
+USE_XILINX_BOARD_STORE: 1
+VITIS_AVAILABLE: 1
+VITIS_XSETTINGS: c:/AMDDesignTools\2025.2\Vitis\settings64.bat
+VITIS_XSETTINGS_ISDONE: 1
+VIVADO_AVAILABLE: 1
+VIVADO_VERSION: 2025.2
+VIVADO_XSETTINGS: c:/AMDDesignTools\2025.2\Vivado\settings64.bat
+VIVADO_XSETTINGS_ISDONE: 1
+XILINX: C:/AMDDesignTools/2025.2/Vivado/ids_lite/ISE
+XILINXGIT_DEVICETREE: B:/xilinx_git/device-tree-xlnx
+XILINX_DSP: C:/AMDDesignTools/2025.2/Vivado/ids_lite/ISE
+XILINX_HLS: C:\AMDDesignTools\2025.2\Vitis
+XILINX_PLANAHEAD: C:/AMDDesignTools/2025.2/Vivado
+XILINX_SDK: C:/AMDDesignTools/2025.2/Vitis
+XILINX_VITIS: C:\AMDDesignTools\2025.2\Vitis
+XILINX_VIVADO: C:/AMDDesignTools/2025.2/Vivado
+_RDI_BINROOT: C:\AMDDesignTools\2025.2\Vivado\bin
+_RDI_CWD: C:\Users\Alex\Documents\GitHub\impedance-analyzer\Reference\TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152\te0720-rd\v_log
+
+
+GUI allocated memory:	812 MB
+GUI max memory:		6,144 MB
+Engine allocated memory: 1,220 MB
+
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// [GUI Memory]: 66 MB (+66223kb) [00:00:04]
+// [Engine Memory]: 1,162 MB (+1066850kb) [00:00:04]
+// [GUI Memory]: 94 MB (+26287kb) [00:00:04]
+// [GUI Memory]: 124 MB (+27064kb) [00:00:05]
+// TclEventType: START_PROGRESS_DIALOG
+// TclEventType: STOP_PROGRESS_DIALOG
+// Tcl Message: INFO: [TE_INIT-139] Run project finished without Error.    ------ 
+// Tcl Message: ----------------------------------------------------------------------- 
+dismissDialog("Sourcing Tcl script '../scripts/script_main.tcl'"); // bk (Sourcing Tcl script '../scripts/script_main.tcl' Progress)
+// [GUI Memory]: 138 MB (+7635kb) [00:00:06]
+// [Engine Memory]: 1,220 MB (+14kb) [00:00:07]
+// TclEventType: DG_GRAPH_GENERATED
+// HMemoryUtils.trashcanNow. Engine heap size: 1,220 MB. GUI used memory: 71 MB. Current time: 2/5/26, 2:01:22 AM EST
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// TclEventType: DG_GRAPH_GENERATED
+// Elapsed time: 14 seconds
+selectLabel((HResource) null, "Dashboard"); // b (Dashboard)
+selectTab(PAResourceOtoP.ProjectDashboardView_TABBED_PANE, PAResourceOtoP.ProjectDashboardView_OVERVIEW, "Overview", 0); // y (PAResourceOtoP.ProjectDashboardView_TABBED_PANE)
+selectButton(RDIResourceCommand.RDICommands_SETTINGS, "zsys_wrapper"); // h (RDIResourceCommand.RDICommands_SETTINGS)
+// Run Command: RDIResourceCommand.RDICommands_SETTINGS
+// Tcl (Dont Echo) Command: 'rdi::info_commands {device::*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {debug::*}'
+// Tcl (Dont Echo) Command: 'rdi::info_commands {*}'
+// HMemoryUtils.trashcanNow. Engine heap size: 1,250 MB. GUI used memory: 88 MB. Current time: 2/5/26, 2:01:42 AM EST
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel", "Settings"); // f (RDIResource.BaseDialog_CANCEL)
+dismissDialog("Settings"); // e (dialog0)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, IP Integrator, Create Block Design]", 6, false); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_CREATE_NEW_DIAGRAM
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel", "Create Block Design"); // f (RDIResource.BaseDialog_CANCEL)
+// [GUI Memory]: 178 MB (+34865kb) [00:00:40]
+dismissDialog("Create Block Design"); // az (design_1)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,250 MB. GUI used memory: 80 MB. Current time: 2/5/26, 2:01:52 AM EST
+// Elapsed time: 24 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd)]", 1, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd)]", 1, true, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 1,276 MB. GUI used memory: 105 MB. Current time: 2/5/26, 2:02:17 AM EST
+// Elapsed time: 14 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd), zsys_i : zsys (zsys.bd), zsys(STRUCTURE) (zsys.vhd)]", 3, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Node
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd), zsys_i : zsys (zsys.bd), zsys(STRUCTURE) (zsys.vhd)]", 3); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd), zsys_i : zsys (zsys.bd), zsys(STRUCTURE) (zsys.vhd), SC0720_0 : zsys_SC0720_0_0 (zsys_SC0720_0_0.xci)]", 4, false); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,277 MB. GUI used memory: 106 MB. Current time: 2/5/26, 2:02:32 AM EST
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, zsys_wrapper(STRUCTURE) (zsys_wrapper.vhd), zsys_i : zsys (zsys.bd), zsys(STRUCTURE) (zsys.vhd), SC0720_0 : zsys_SC0720_0_0 (zsys_SC0720_0_0.xci)]", 4, false, false, false, false, false, true); // E (PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE) - Double Click
+// Run Command: PAResourceCommand.PACommandNames_RECUSTOMIZE_CORE
+// HOptionPane Warning: ''zsys_SC0720_0_0.xci' IP is part of a block design. Please open the block design 'zsys.bd' and customize the IP. (Re-customize IP)'
+// 'o' command handler elapsed time: 6 seconds
+selectButton("OptionPane.button", "OK", "Re-customize IP"); // JButton (OptionPane.button)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, IP Integrator, Open Block Design]", 7, false); // g (PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, Flow Navigator Tree)
+// Run Command: PAResourceCommand.PACommandNames_OPEN_BLOCK_DESIGN
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+// TclEventType: RSB_SCRIPT_TASK
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: RSB_PROPERTY_CHANGE
+// TclEventType: RSB_LOCK_CHANGE
+// TclEventType: RSB_SCRIPT_TASK
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: open_bd_design {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd} 
+// TclEventType: RSB_OPEN_DIAGRAM
+// [Engine Memory]: 1,346 MB (+68085kb) [00:01:30]
+// TclEventType: PAUSE_COMPOSITE_FILE_CHANGE_GUI
+runTclCommand (PAResourceOtoP.PAViews_SYSTEM, "unselect_objects"); // gb (PAResourceOtoP.PAViews_SYSTEM, PlanAheadTabSystem)
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // x (PAResourceOtoP.PAViews_PROJECT_SUMMARY, PlanAheadTabProject Summary)
+// 'bN' command handler elapsed time: 3 seconds
+dismissDialog("Open Block Design"); // bk (Open Block Design Progress)
+// Elapsed time: 10 seconds
+selectButton(PAResourceCommand.PACommandNames_ZOOM_FIT, "System_zoom_fit"); // C (PAResourceCommand.PACommandNames_ZOOM_FIT, System_zoom_fit)
+// Run Command: PAResourceCommand.PACommandNames_ZOOM_FIT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,379 MB. GUI used memory: 110 MB. Current time: 2/5/26, 2:03:12 AM EST
+// HMemoryUtils.trashcanNow. Engine heap size: 1,382 MB. GUI used memory: 110 MB. Current time: 2/5/26, 2:03:52 AM EST
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 32250331 ms to process. Increasing delay to 2000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  22367 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2701 ms.

@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Feb  5 01:58:21 2026
+# Process ID         : 25024
+# Current directory  : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log
+# Command line       : vivado.exe -source ../scripts/script_main.tcl -mode batch -notrace -tclargs --run_board_selection
+# Log file           : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log/vivado.log
+# Journal file       : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log\vivado.jou
+# Running On         : DESKTOP-F1EP304
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9950X3D 16-Core Processor          
+# CPU Frequency      : 4300 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 66094 MB
+# Swap memory        : 4160 MB
+# Total Virtual      : 70254 MB
+# Available Virtual  : 32571 MB
+#-----------------------------------------------------------
+source ../scripts/script_main.tcl -notrace
+update_compile_order -fileset sources_1
+open_bd_design {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd}

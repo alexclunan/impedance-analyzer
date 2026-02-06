@@ -1,0 +1,14 @@
+Creation Date:      2026-02-05 02:00:16
+TE::ID:             62           
+TE::PRODID:         TE0720-04-61Q33MA       
+TE::PARTNAME:       xa7z020clg484-1q     
+TE::BOARDPART:      trenz.biz:te0720_20_1q:part0:1.0    
+TE::SHORTDIR:       1qf_1gb     
+TE::ZYNQFLASHTYP:   qspi-x4-single 
+TE::FPGAFLASHTYP:   s25fl256s-3.3v-qspi-x4-single 
+TE::PCB_REV:        REV04      
+TE::DDR_SIZE:       1GB     
+TE::FLASH_SIZE:     32MB   
+TE::EMMC_SIZE:      8GB    
+TE::OTHERS:         NA       
+TE::NOTES:          NA        

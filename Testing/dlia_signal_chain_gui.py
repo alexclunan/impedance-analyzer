@@ -386,37 +386,37 @@ def main():
 
     # ── Slider specifications (organized by category) ──
     slider_specs_col1 = [  # Signal & Display
-        {"label": "Carrier Vpp", "key": "carrier_vpp", "vmin": 0.1, "vmax": 2.0},
-        {"label": "LPF ENBW kHz", "key": "lpf_enbw_khz", "vmin": 1.0, "vmax": 100.0},
-        {"label": "Graph scale", "key": "graph_scale", "vmin": 0.1, "vmax": 10.0},
-        {"label": "DC bias µV", "key": "dc_bias_uv", "vmin": -100000.0, "vmax": 100000.0},
-        {"label": "OpAmp BW MHz", "key": "opamp_bw_mhz", "vmin": 1.0, "vmax": 100.0},
-        {"label": "OpAmp noise µV", "key": "opamp_noise_uv", "vmin": 0, "vmax": 10},
-        {"label": "OpAmp offset mV", "key": "opamp_offset_mv", "vmin": -10, "vmax": 10},
+        {"label": "Carrier V", "key": "carrier_vpp", "vmin": 0.1, "vmax": 2.0},
+        {"label": "LPF kHz", "key": "lpf_enbw_khz", "vmin": 1.0, "vmax": 100.0},
+        {"label": "Scale", "key": "graph_scale", "vmin": 0.1, "vmax": 10.0},
+        {"label": "DC µV", "key": "dc_bias_uv", "vmin": -100000.0, "vmax": 100000.0},
+        {"label": "OA BW", "key": "opamp_bw_mhz", "vmin": 1.0, "vmax": 100.0},
+        {"label": "OA noise", "key": "opamp_noise_uv", "vmin": 0, "vmax": 10},
+        {"label": "OA offset", "key": "opamp_offset_mv", "vmin": -10, "vmax": 10},
     ]
     slider_specs_col2 = [  # DAC
-        {"label": "DAC bits", "key": "dac_bits", "vmin": 4, "vmax": 24},
-        {"label": "DAC Vref", "key": "dac_v_ref", "vmin": 0.5, "vmax": 2.0},
-        {"label": "DAC INL LSB", "key": "dac_inl_lsb", "vmin": 0, "vmax": 16},
-        {"label": "DAC DNL LSB", "key": "dac_dnl_lsb", "vmin": 0, "vmax": 6},
-        {"label": "DAC gain %FS", "key": "dac_gain_pct_fs", "vmin": -10.0, "vmax": 10.0},
-        {"label": "DAC offset %FS", "key": "dac_offset_pct_fs", "vmin": -10.0, "vmax": 10.0},
+        {"label": "bits", "key": "dac_bits", "vmin": 4, "vmax": 24},
+        {"label": "Vref", "key": "dac_v_ref", "vmin": 0.5, "vmax": 2.0},
+        {"label": "INL", "key": "dac_inl_lsb", "vmin": 0, "vmax": 16},
+        {"label": "DNL", "key": "dac_dnl_lsb", "vmin": 0, "vmax": 6},
+        {"label": "gain%", "key": "dac_gain_pct_fs", "vmin": -10.0, "vmax": 10.0},
+        {"label": "offset%", "key": "dac_offset_pct_fs", "vmin": -10.0, "vmax": 10.0},
     ]
     slider_specs_col3 = [  # ADC
-        {"label": "ADC bits", "key": "adc_bits", "vmin": 4, "vmax": 24},
-        {"label": "ADC Vref", "key": "adc_v_ref", "vmin": 0.5, "vmax": 2.0},
-        {"label": "ADC INL LSB", "key": "adc_inl_lsb", "vmin": 0, "vmax": 16},
-        {"label": "ADC DNL LSB", "key": "adc_dnl_lsb", "vmin": 0, "vmax": 6},
-        {"label": "ADC gain %FS", "key": "adc_gain_pct_fs", "vmin": -10.0, "vmax": 10.0},
-        {"label": "ADC offset %FS", "key": "adc_offset_pct_fs", "vmin": -10.0, "vmax": 10.0},
-        {"label": "ADC jitter ps", "key": "adc_jitter_sec", "vmin": 0, "vmax": 5e-12},
+        {"label": "bits", "key": "adc_bits", "vmin": 4, "vmax": 24},
+        {"label": "Vref", "key": "adc_v_ref", "vmin": 0.5, "vmax": 2.0},
+        {"label": "INL", "key": "adc_inl_lsb", "vmin": 0, "vmax": 16},
+        {"label": "DNL", "key": "adc_dnl_lsb", "vmin": 0, "vmax": 6},
+        {"label": "gain%", "key": "adc_gain_pct_fs", "vmin": -10.0, "vmax": 10.0},
+        {"label": "offset%", "key": "adc_offset_pct_fs", "vmin": -10.0, "vmax": 10.0},
+        {"label": "jitter", "key": "adc_jitter_sec", "vmin": 0, "vmax": 5e-12},
     ]
 
     # Slider layout: 3 columns at bottom (below plots which end at bottom=0.32)
-    row_height = 0.020
-    row_step = 0.023
-    col_width = 0.30
-    col_starts = [0.03, 0.35, 0.67]
+    row_height = 0.018
+    row_step = 0.021
+    col_width = 0.31
+    col_starts = [0.02, 0.35, 0.68]
     slider_bottom = 0.27
 
     # Storage for slider widgets and state
@@ -438,19 +438,25 @@ def main():
     def create_slider_column(specs, col_idx):
         """Create a column of sliders."""
         x_start = col_starts[col_idx]
+        label_width = 0.055  # Fixed width for labels
         for idx, spec in enumerate(specs):
             y = slider_bottom - idx * row_step
             vmin, vmax = spec["vmin"], spec["vmax"]
             valinit = np.clip(float(p.get(spec["key"], vmin)), vmin, vmax)
             
-            # Slider with label
-            ax_slider = fig.add_axes([x_start, y, col_width * 0.85, row_height])
-            slider = Slider(ax_slider, spec["label"], vmin, vmax, valinit=valinit)
+            # Label (separate text, not using slider's built-in label)
+            fig.text(x_start, y + row_height/2, spec["label"], fontsize=7, 
+                    va='center', ha='left', color='#333')
+            
+            # Slider without label
+            slider_x = x_start + label_width
+            slider_w = col_width - label_width - 0.04
+            ax_slider = fig.add_axes([slider_x, y, slider_w, row_height])
+            slider = Slider(ax_slider, "", vmin, vmax, valinit=valinit)
             slider.valtext.set_visible(False)
-            slider.label.set_fontsize(7)
             
             # Value display
-            ax_val = fig.add_axes([x_start + col_width * 0.86, y, col_width * 0.13, row_height])
+            ax_val = fig.add_axes([slider_x + slider_w + 0.005, y, 0.03, row_height])
             ax_val.set_axis_off()
             val_text = ax_val.text(0.5, 0.5, format_val(valinit), ha='center', va='center', 
                                    fontsize=7, transform=ax_val.transAxes)

@@ -1,0 +1,734 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Feb  5 01:58:21 2026
+# Process ID         : 25024
+# Current directory  : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log
+# Command line       : vivado.exe -source ../scripts/script_main.tcl -mode batch -notrace -tclargs --run_board_selection
+# Log file           : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log/vivado.log
+# Journal file       : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log\vivado.jou
+# Running On         : DESKTOP-F1EP304
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9950X3D 16-Core Processor          
+# CPU Frequency      : 4300 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 66094 MB
+# Swap memory        : 4160 MB
+# Total Virtual      : 70254 MB
+# Available Virtual  : 32571 MB
+#-----------------------------------------------------------
+source ../scripts/script_main.tcl -notrace
+-----------------------------------------------------------------------
+INFO:(TE) Load Settings Script finished
+INFO:(TE) Load environment script finished
+INFO:(TE) Load Vivado script finished
+INFO:(TE) Load Utilities script finished
+INFO:(TE) Load Vivado script finished
+INFO:(TE) Load Petalinux script finished
+INFO:(TE) Load Designs script finished
+INFO:(TE) Load User Command scripts finished
+INFO:(TE) Load JTAG Script finished
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+INFO: [TE_INIT-3] Initial project names and paths:
+  TE::VPROJ_NAME:           te0720-rd 
+  TE::VPROJ_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado 
+  TE::VLABPROJ_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado_lab 
+  TE::BOARDDEF_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/board_files 
+  TE::FIRMWARE_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/firmware 
+  TE::IP_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/ip_lib 
+  TE::BD_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design 
+  TE::XDC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints 
+  TE::HDL_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/hdl 
+  TE::SET_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/settings 
+  TE::PETALINUX_PATH:       C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/os/petalinux 
+  TE::WORKSPACE_HSI_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/hsi 
+  TE::WORKSPACE_SDK_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/sdk 
+  TE::LIB_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib 
+  TE::SCRIPT_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/scripts 
+  TE::DOC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/doc 
+  TE::PREBUILT_BI_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/boot_images 
+  TE::PREBUILT_HW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/hardware 
+  TE::PREBUILT_SW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/software 
+  TE::PREBUILT_OS_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/os 
+  TE::PREBUILT_EXPORT_PATH: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../export 
+  TE::LOG_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log 
+  TE::BACKUP_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/backup 
+  TE::ZIP_PATH:             C:/Program Files/7-Zip/7z.exe 
+  TE::XRT_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/xrt 
+  TE::XRT_USED:             false 
+  TE::SDSOC_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../SDSoC_PFM 
+  TE::ADD_SD_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/misc/sd 
+  TE::TMP_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/tmp 
+  TE::XILINXGIT_DEVICETREE: B:/xilinx_git/device-tree-xlnx 
+  TE::XILINXGIT_UBOOT:       
+  TE::XILINXGIT_LINUX:       
+  ------
+-----------------------------------------------------------------------
+INFO:(TE) Parameter Index: 0
+INFO:(TE) Parameter Option: --run_board_selection
+CRITICAL WARNING: (TE) The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters (130 are used). If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using _use_virtual_drive.cmd (it used the OS subst command) to map part of the path to a drive letter.
+Continue? y/N
+CRITICAL WARNING: [TE_INIT-185] Start Project with path which is longer that 80 characters
+-----------------------------------------------------------------------
+INFO: [TE_INIT-89] Run TE::INIT::run_board_selection
+INFO: [TE_INIT-182] Source C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/settings/design_settings.tcl.
+INFO: [TE_INIT-0] Script Info:
+  Xilinx Directory:                           c:/AMDDesignTools
+  Vivado Version:                             Vivado v2025.2 (64-bit)
+  TE Script Version:                          2024.2.1
+  Board Part (Definition Files) CSV Version:  1.4
+  Software IP CSV Version:                    2.6
+  Board Design Modify CSV Version:            1.1
+  ZIP ignore CSV Version:                     1.0
+  ---
+  Start project with:                         _create_win_setup
+  ------
+INFO: [TE_INIT-1] Script Environment:
+  Vivado Setting:           1 
+  LabTools Setting:         0 
+  VITIS Setting:            0 
+  Petalinux Setting:        0 
+  ------ 
+  TIMEOUT Setting:          120 
+  RUNNING_JOBS Setting:     4 
+  ------ 
+  WSL USAGE:                0 
+  TEXT Editor:              DEFAULT 
+  ------ 
+  SERIAL PATH:              ../../../../../../articlebyserial 
+  COMPATH:                  ../../../../../../putty 
+  ------ 
+  TE_GUI_DISABLED:          0 
+  ------ 
+  PLX_SSTATE_CACHE_DOWNLOAD:~/design/sstate-cache/downloads_2025.2/downloads 
+  PLX_SSTATE_CACHE_AARCH64: ~/design/sstate-cache/sstate_aarch64_2025.2/aarch64 
+  PLX_SSTATE_CACHE_MB_LITE: ~/design/sstate-cache/sstate_mb-full_2025.2/mb-lite 
+  ------
+INFO: [TE_INIT-207] Delivered Project
+INFO: [TE_INIT-207] ZIPINFO_CSV=        1.0
+INFO: [TE_INIT-207] ExporterInitials=   GIT
+INFO: [TE_INIT-207] ZIPName=            TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152
+INFO: [TE_INIT-207] Destination=        PublicDoc
+INFO: [TE_INIT-207] Typ=                NA
+INFO: [TE_INIT-207] BoardTyp=           NA
+INFO: [TE_INIT-207] ProjectName=        te0720-rd
+INFO: [TE_INIT-207] ProjectToolName=    Vivado-2024.2
+INFO: [TE_INIT-207] ReleaseDate=        2025.06.18 15:11:52
+INFO: [TE_INIT-207] Revision=           NA
+INFO: [TE_INIT-3] Initial project names and paths:
+  TE::VPROJ_NAME:           te0720-rd 
+  TE::VPROJ_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado 
+  TE::VLABPROJ_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado_lab 
+  TE::BOARDDEF_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/board_files 
+  TE::FIRMWARE_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/firmware 
+  TE::IP_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/ip_lib 
+  TE::BD_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design 
+  TE::XDC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints 
+  TE::HDL_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/hdl 
+  TE::SET_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/settings 
+  TE::PETALINUX_PATH:       C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/os/petalinux 
+  TE::WORKSPACE_HSI_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/hsi 
+  TE::WORKSPACE_SDK_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/sdk 
+  TE::LIB_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib 
+  TE::SCRIPT_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/scripts 
+  TE::DOC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/doc 
+  TE::PREBUILT_BI_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/boot_images 
+  TE::PREBUILT_HW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/hardware 
+  TE::PREBUILT_SW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/software 
+  TE::PREBUILT_OS_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/os 
+  TE::PREBUILT_EXPORT_PATH: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../export 
+  TE::LOG_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log 
+  TE::BACKUP_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/backup 
+  TE::ZIP_PATH:             C:/Program Files/7-Zip/7z.exe 
+  TE::XRT_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/xrt 
+  TE::XRT_USED:             false 
+  TE::SDSOC_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../SDSoC_PFM 
+  TE::ADD_SD_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/misc/sd 
+  TE::TMP_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/tmp 
+  TE::XILINXGIT_DEVICETREE: B:/xilinx_git/device-tree-xlnx 
+  TE::XILINXGIT_UBOOT:       
+  TE::XILINXGIT_LINUX:       
+  ------
+INFO: [TE_INIT-16] Read board part definition list (File C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/board_files/TE0720_board_files.csv).
+INFO: [TE_INIT-18] Read Software list (File: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib/apps_list.csv).
+INFO: [TE_INIT-189] Software Definition CSV version passed
+INFO: [TE_INIT-191] Software Definition CSV Version analyze domain table header
+INFO: [TE_INIT-193] Software Definition CSV Version analyze bsp table header
+INFO: [TE_INIT-197] Software Definition CSV Version analyse app table header
+INFO: [TE_INIT-22] Read ZIP ignore list (File: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib/apps_list.csv).
+INFO: [TE_UTIL-2] Following block designs were found: 
+   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design/zsys_bd.tcl 
+  ------
+-----------------------
+Warning: This block design was generated using Vivado <2024.2> without IP versions in the create_bd_cell commands, but is now being run in <2025.2> of Vivado. There may have been major IP version changes between Vivado <2024.2> and <2025.2>, which could impact the parameter settings of the IPs.
+Should version control be deactivated (y/N):
+Last Input:<L>
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|ID |Product ID          |SoC/FPGA Typ                  |SHORT DIR           |PCB REV                                 |DDR Size  |Flash Size|EMMC Size |Others                        |Notes                         |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|1  |TE0720-03-1CF       |xc7z020clg484-1               |1cf_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|2  |TE0720-03-14S-1C    |xc7z014sclg484-1              |14s_1gb             |REV03|REV02                             |1GB_S     |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|3  |TE0720-03-1CFA      |xc7z020clg484-1               |1cf_1gb             |REV03|REV02                             |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|4  |TE0720-03-1CR       |xc7z020clg484-1               |1cr_256mb           |REV03|REV02                             |256MB     |32MB      |NA        |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|5  |TE0720-03-1QF       |xa7z020clg484-1q              |1qf_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|6  |TE0720-03-1QFA      |xa7z020clg484-1q              |1qf_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|7  |TE0720-03-1QFL      |xa7z020clg484-1q              |1qf_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|8  |TE0720-03-1QFY      |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |4GB       |NA                            |no RTC                        |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|9  |TE0720-03-2IF       |xc7z020clg484-2               |2if_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|10 |TE0720-03-2IFA      |xc7z020clg484-2               |2if_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|11 |TE0720-03-2IFC3     |xc7z020clg484-2               |2if_1gb             |REV03|REV02                             |1GB       |32MB      |4GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|12 |TE0720-03-2IFC8     |xc7z020clg484-2               |2if_1gb             |REV03|REV02                             |1GB       |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|13 |TE0720-03-31C33FA   |xc7z014sclg484-1              |14s_1gb             |REV03                                   |1GB_S     |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|14 |TE0720-03-31C33MA   |xc7z014sclg484-1              |14s_1gb             |REV03                                   |1GB_S     |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|15 |TE0720-03-61C33FA   |xc7z020clg484-1               |1cf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|16 |TE0720-03-61C33MA   |xc7z020clg484-1               |1cf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|17 |TE0720-03-61C33MAS  |xc7z020clg484-1               |1cf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|18 |TE0720-03-61C33MAY  |xc7z020clg484-1               |1cf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |no RTC                        |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|19 |TE0720-03-61C530A   |xc7z020clg484-1               |1cr_256mb           |REV03                                   |256MB     |32MB      |NA        |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|20 |TE0720-03-61Q33FA   |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|21 |TE0720-03-61Q33FAE  |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|22 |TE0720-03-61Q33FL   |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|23 |TE0720-03-61Q33MA   |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|24 |TE0720-03-61Q33MAY  |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |no RTC                        |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|25 |TE0720-03-61Q33ML   |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|26 |TE0720-03-61Q42GA   |xa7z020clg484-1q              |1qf_256mb           |REV03                                   |256MB     |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|27 |TE0720-03-61Q42GAY  |xa7z020clg484-1q              |1qf_256mb           |REV03                                   |256MB     |32MB      |32GB      |NA                            |no RTC                        |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|28 |TE0720-03-61Q43FA   |xa7z020clg484-1q              |1qf_256mb           |REV03                                   |256MB     |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|29 |TE0720-03-61Q43GA   |xa7z020clg484-1q              |1qf_256mb           |REV03                                   |256MB     |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|30 |TE0720-03-61Q43MA   |xa7z020clg484-1q              |1qf_256mb           |REV03                                   |256MB     |32MB      |8GB       |NA                            |automotive Zynq and DDR       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|31 |TE0720-03-61Q86KL   |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |Automotive DDR and QSPI       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|32 |TE0720-03-62I12GA   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|33 |TE0720-03-62I320M   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |NA        |NA                            |"CAO: no Eth                  |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|34 |TE0720-03-62I33-V1  |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |NA        |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|35 |TE0720-03-62I330M   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |NA        |NA                            |"CAO: no Eth                  |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|36 |TE0720-03-62I33FA   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|37 |TE0720-03-62I33FL   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|38 |TE0720-03-62I33GA   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|39 |TE0720-03-62I33MA   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|40 |TE0720-03-62I33MAN  |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|41 |TE0720-03-62I33MAY  |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |no RTC                        |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|42 |TE0720-03-62I33ML   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|43 |TE0720-03-62I33NA   |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|44 |TE0720-03-64I63FA   |xc7z020iclg484-1l             |l1if_512mb          |REV03                                   |512MB     |32MB      |8GB       |NA                            |LP DDR3                       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|45 |TE0720-03-L1IF      |xc7z020iclg484-1l             |l1if_512mb          |REV03|REV02                             |512MB     |32MB      |4GB       |NA                            |LP DDR3                       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|46 |TE0720-03-S006C1    |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|47 |TE0720-03-S007C1    |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|48 |TE0720-03-S008C1    |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|49 |TE0720-03-S009C1    |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|50 |TE0720-03-S010      |xa7z020clg484-1q              |1qf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|51 |TE0720-03-S011      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO: no ETH                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|52 |TE0720-03-S012      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|53 |TE0720-03-S013      |xc7z020clg484-1               |1cf_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|54 |TE0720-03-S014      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|55 |TE0720-03-S016      |xc7z020clg484-1               |1cr_256mb           |REV03                                   |256MB     |32MB      |NA        |NA                            |CAO: no RTC                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|56 |TE0720-03-S017      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO: no RTC                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|57 |TE0720-03-S020      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|58 |TE0720-03-S032      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|59 |TE0720-04-31C33MA   |xc7z014sclg484-1              |14s_1gb             |REV04                                   |1GB_S     |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|60 |TE0720-04-61C33MA   |xc7z020clg484-1               |1cf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|61 |TE0720-04-61C530A   |xc7z020clg484-1               |1cr_256mb           |REV04                                   |256MB     |32MB      |NA        |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|62 |TE0720-04-61Q33MA   |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|63 |TE0720-04-61Q33ML   |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|64 |TE0720-04-61Q43MA   |xa7z020clg484-1q              |1qf_256mb           |REV04                                   |256MB     |32MB      |8GB       |NA                            |automotive Zynq and DDR       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|65 |TE0720-04-61Q86PL   |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |Automotive DDR and QSPI       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|66 |TE0720-04-62I33MA   |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|67 |TE0720-04-62I33MAN  |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|68 |TE0720-04-62I33ML   |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |low profile                   |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|69 |TE0720-04-62I33NA   |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |32GB      |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|70 |TE0720-04-64I63MA   |xc7z020iclg484-1l             |l1if_512mb          |REV04                                   |512MB     |32MB      |8GB       |NA                            |LP DDR3                       |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|71 |TE0720-04-S001C1    |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|72 |TE0720-04-S007C1    |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|73 |TE0720-04-S016      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|74 |TE0720-04-S019      |xc7z020clg484-1               |1cf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|75 |TE0720-04-S022      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|76 |TE0720-04-S023      |xc7z020clg484-2               |2if_1gb             |REV03                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|77 |TE0720-04-S025      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|78 |TE0720-04-S026      |xc7z020clg484-2               |2ef_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|79 |TE0720-04-S027      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |2.5 mm connectors             |CAO and low profile           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|80 |TE0720-04-S028      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|81 |TE0720-04-S029      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|82 |TE0720-04-S030      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |32GB      |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|83 |TE0720-04-S031      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|84 |TE0720-04-S032      |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|85 |TE0720-04-S033      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|86 |TE0720-04-S034      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|87 |TE0720-04-S035      |xc7z020clg484-1               |1cf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|88 |TE0720-04-S036      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|89 |TE0720-04-S037      |xc7z020clg484-2               |2if_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |CAO                           |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
+For better table view please resize windows to full screen!
+------------------------------------------------------------------------
+------------------
+Select Module will be done in 2 steps: 
+-----
+Step 1: (select column filter): 
+-Change module list size (for small monitors only), press: 'full' or 'small' 
+-Display current module list, press: 'L' or 'l' 
+-Restore whole module list, press: 'R' or 'r' 
+-Reduce List by ID, press: 'ID' or 'id' or insert ID columns value directly(filter step is bypassed and id number is used) 
+-Reduce List by Article Number, press: 'AN' or 'an' 
+-Reduce List by SoC/FPGA, press: 'FPGA' or 'fpga' 
+-Reduce List by PCB REV, press: 'PCB' or 'pcb' 
+-Reduce List by DDR, press: 'DDR' or 'ddr' 
+-Reduce List by Flash, press: 'FLASH' or 'flash' 
+-Reduce List by EMMC, press: 'EMMC' or 'emmc' 
+-Reduce List by Others, press: 'OTHERS' or 'others' 
+-Reduce List by Notes, press: 'NOTES' or 'notes' 
+-Exit without selection, press: 'Q' or 'q' 
+-----------------------
+Please Enter Option: 
+Last Input:<ID>
+Note: Input will be compared with list elements, wildcard * possible. Ex.*1*
+Go back to top menu with 'q' or 'Q'
+Step 2: Insert ID:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|ID |Product ID          |SoC/FPGA Typ                  |SHORT DIR           |PCB REV                                 |DDR Size  |Flash Size|EMMC Size |Others                        |Notes                         |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|62 |TE0720-04-61Q33MA   |xa7z020clg484-1q              |1qf_1gb             |REV04                                   |1GB       |32MB      |8GB       |NA                            |NA                            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------
+You like to start with this device? y/N
+What would you like to do?
+- Create and open delivery binary folder, press 0
+- Create vivado project, press 1
+- Both, press 2
+INFO: [TE_INIT-129] Run TE::INIT::run_project 62 1 2 2
+INFO: [TE_INIT-182] Source C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/settings/design_settings.tcl.
+INFO: [TE_INIT-0] Script Info:
+  Xilinx Directory:                           c:/AMDDesignTools
+  Vivado Version:                             Vivado v2025.2 (64-bit)
+  TE Script Version:                          2024.2.1
+  Board Part (Definition Files) CSV Version:  1.4
+  Software IP CSV Version:                    2.6
+  Board Design Modify CSV Version:            1.1
+  ZIP ignore CSV Version:                     1.0
+  ---
+  Start project with:                         _create_win_setup
+  ------
+INFO: [TE_INIT-1] Script Environment:
+  Vivado Setting:           1 
+  LabTools Setting:         0 
+  VITIS Setting:            0 
+  Petalinux Setting:        0 
+  ------ 
+  TIMEOUT Setting:          120 
+  RUNNING_JOBS Setting:     4 
+  ------ 
+  WSL USAGE:                0 
+  TEXT Editor:              DEFAULT 
+  ------ 
+  SERIAL PATH:              ../../../../../../articlebyserial 
+  COMPATH:                  ../../../../../../putty 
+  ------ 
+  TE_GUI_DISABLED:          0 
+  ------ 
+  PLX_SSTATE_CACHE_DOWNLOAD:~/design/sstate-cache/downloads_2025.2/downloads 
+  PLX_SSTATE_CACHE_AARCH64: ~/design/sstate-cache/sstate_aarch64_2025.2/aarch64 
+  PLX_SSTATE_CACHE_MB_LITE: ~/design/sstate-cache/sstate_mb-full_2025.2/mb-lite 
+  ------
+INFO: [TE_INIT-207] Delivered Project
+INFO: [TE_INIT-207] ZIPINFO_CSV=        1.0
+INFO: [TE_INIT-207] ExporterInitials=   GIT
+INFO: [TE_INIT-207] ZIPName=            TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152
+INFO: [TE_INIT-207] Destination=        PublicDoc
+INFO: [TE_INIT-207] Typ=                NA
+INFO: [TE_INIT-207] BoardTyp=           NA
+INFO: [TE_INIT-207] ProjectName=        te0720-rd
+INFO: [TE_INIT-207] ProjectToolName=    Vivado-2024.2
+INFO: [TE_INIT-207] ReleaseDate=        2025.06.18 15:11:52
+INFO: [TE_INIT-207] Revision=           NA
+INFO: [TE_INIT-3] Initial project names and paths:
+  TE::VPROJ_NAME:           te0720-rd 
+  TE::VPROJ_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado 
+  TE::VLABPROJ_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado_lab 
+  TE::BOARDDEF_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/board_files 
+  TE::FIRMWARE_PATH:        C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/firmware 
+  TE::IP_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/ip_lib 
+  TE::BD_PATH:              C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design 
+  TE::XDC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints 
+  TE::HDL_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/hdl 
+  TE::SET_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/settings 
+  TE::PETALINUX_PATH:       C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/os/petalinux 
+  TE::WORKSPACE_HSI_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/hsi 
+  TE::WORKSPACE_SDK_PATH:   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/workspace/sdk 
+  TE::LIB_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib 
+  TE::SCRIPT_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/scripts 
+  TE::DOC_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/doc 
+  TE::PREBUILT_BI_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/boot_images 
+  TE::PREBUILT_HW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/hardware 
+  TE::PREBUILT_SW_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/software 
+  TE::PREBUILT_OS_PATH:     C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/prebuilt/os 
+  TE::PREBUILT_EXPORT_PATH: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../export 
+  TE::LOG_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/v_log 
+  TE::BACKUP_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/backup 
+  TE::ZIP_PATH:             C:/Program Files/7-Zip/7z.exe 
+  TE::XRT_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/xrt 
+  TE::XRT_USED:             false 
+  TE::SDSOC_PATH:           C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/../SDSoC_PFM 
+  TE::ADD_SD_PATH:          C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/misc/sd 
+  TE::TMP_PATH:             C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/tmp 
+  TE::XILINXGIT_DEVICETREE: B:/xilinx_git/device-tree-xlnx 
+  TE::XILINXGIT_UBOOT:       
+  TE::XILINXGIT_LINUX:       
+  ------
+INFO: [TE_INIT-16] Read board part definition list (File C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/board_files/TE0720_board_files.csv).
+INFO: [TE_INIT-18] Read Software list (File: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib/apps_list.csv).
+INFO: [TE_INIT-189] Software Definition CSV version passed
+INFO: [TE_INIT-191] Software Definition CSV Version analyze domain table header
+INFO: [TE_INIT-193] Software Definition CSV Version analyze bsp table header
+INFO: [TE_INIT-197] Software Definition CSV Version analyse app table header
+INFO: [TE_INIT-22] Read ZIP ignore list (File: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/sw_lib/apps_list.csv).
+Found ID: 62
+Board part csv name check:  62 is unique on position 0.
+INFO: [TE_INIT-4] Board Part definition:
+  TE::ID:             62 
+  TE::PRODID:         TE0720-04-61Q33MA 
+  TE::PARTNAME:       xa7z020clg484-1q 
+  TE::BOARDPART:      trenz.biz:te0720_20_1q:part0:1.0 
+  TE::SHORTDIR:       1qf_1gb 
+  TE::ZYNQFLASHTYP:   qspi-x4-single 
+  TE::FPGAFLASHTYP:   s25fl256s-3.3v-qspi-x4-single 
+  TE::PCB_REV:        REV04 
+  TE::DDR_SIZE:       1GB 
+  TE::FLASH_SIZE:     32MB 
+  TE::EMMC_SIZE:      8GB 
+  TE::OTHERS:         NA 
+  TE::NOTES:          NA 
+  ------
+Generate new project (Path: C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado).
+Module CONFIG_SW_EXTPLL not found for 62 0, return default: NA
+INFO: [TE_INIT-187] Use Xilinx Board Store, please wait this takes some time...
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/ac701/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26c/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26c/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26c/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26i/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26i/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k26i/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kc705/1.6/1.6 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kcu105/1.6/1.6 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kcu105/1.7/1.7 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kcu116/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kcu116/1.5/1.5 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kcu1500/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/li-imx274-mipi/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/sp701/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/sp701/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vc707/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vc709/1.8/1.8 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190/production/2.2/2.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190/production/3.0/3.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190/production/3.1/3.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190_newl/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu108/1.6/1.6 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu108/1.7/1.7 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu110/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu118/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu118/2.3/2.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu118/2.4/2.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu128/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu129/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vcu1525/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vermeo_t1_mpsoc/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vermeo_t1_rfsoc/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180/production/2.2/2.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180/production/3.0/3.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180/production/3.1/3.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180_newl/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk120/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/xm105/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zc702/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zc706/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu102/3.3/3.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu102/3.4/3.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu104/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu106/2.4/2.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu106/2.5/2.5 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu106/2.6/2.6 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu111/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu111/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu111/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu1275/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu1285/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu208/production/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu208ld/production/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu216/production/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu216ld/production/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu670/2.0/2.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zcu670ld/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk180/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kr260_carrier/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kr260_som/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kr260_som/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kv260_carrier/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kv260_carrier/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kv260_som/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kv260_som/1.3/1.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kv260_som/1.4/1.4 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vhk158/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/li-imx274-mipi-versal/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190/production/3.2/3.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190_newl/production/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180/production/3.3/3.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vmk180_newl/production/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk120/production/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk180/production/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk120/production/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k24c/1.1/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/k24i/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kd240_carrier/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kd240_som/1.1/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek280/production/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek280/production/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vhk158/production/1.2/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vpk180/production/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kr260_carrier/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190/production/3.4/3.3 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vck190_newl/production/1.3/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek280/production/1.2/1.2 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/emb-plus-vpr-4616/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/kc705/1.7/1.7 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vc707/1.5/1.5 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/v80/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/scu35/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek385/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek385/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vrk160/1.1/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vrk160/1.0/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/emb-plus-vpr-4616/1.1/1.1 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/vek385_2/1.0/1.0 as it does not exist.
+INFO: [Common 17-1670] Creating directory path C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store/XilinxBoardStore/Vivado/2025.2/.xhub/.catalog/boards/Xilinx/zc706/1.5/1.5 as it does not exist.
+INFO: [Common 17-14] Message 'Common 17-1670' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+xhub::refresh_catalog: Time (s): cpu = 00:00:01 ; elapsed = 00:00:34 . Memory (MB): peak = 346.742 ; gain = 0.000
+INFO: [xhubtcl 76-32] Installing object 'trenz.biz:xilinx_board_store:te0720_20_1q:1.0' ...
+INFO: [Common 17-1570] Installing object trenz.biz:xilinx_board_store:te0720_20_1q:1.0 from remote host https://github.com/Xilinx/XilinxBoardStore.git
+INFO: [Common 17-1573] Object trenz.biz:xilinx_board_store:te0720_20_1q:1.0 has been installed successfully.
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado'
+INFO: [TE_INIT-70] Set IP path : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/ip_lib
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/ip_lib'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+Start import design
+INFO: [TE_UTIL-7] Generate C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/vivado_target.xdc
+INFO: [TE_UTIL-8] Following xdc files were found: 
+   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_bitgen_common.xdc 
+ C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_common.xdc 
+ C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_TE0720-SC.xdc 
+ C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/vivado_target.xdc 
+  ------
+Set processing order normal for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_bitgen_common.xdc
+Set use for implementation only for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_bitgen_common.xdc
+Set processing order normal for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_common.xdc
+Set use for implementation only for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_common.xdc
+Set processing order normal for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_TE0720-SC.xdc
+Set use for implementation only for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/_i_TE0720-SC.xdc
+Set processing order normal for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/vivado_target.xdc
+Set use for synthesis and implementation for C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/constraints/vivado_target.xdc
+INFO: [TE_UTIL-2] Following block designs were found: 
+   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design/zsys_bd.tcl 
+  ------
+INFO: [TE_INIT-8] Found BD-Design:
+  TE::BD_TCLNAME:       zsys_bd 
+  TE::PR_TOPLEVELNAME: zsys_wrapper 
+  ------
+  TE::IS_ZSYS:         true
+INFO: [TE_UTIL-2] Following block designs were found: 
+   C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/block_design/zsys_bd.tcl 
+  ------
+INFO: [TE_BD-0] This block design tcl-file was generate with Trenz Electronic GmbH Board Part:trenz.biz:te0720_20_1c:part0:1.0, FPGA: xc7z020clg484-1 at 2025-05-09T10:20:19.
+INFO: [TE_BD-1] This block design tcl-file was modified by TE-Scripts. Modifications are labelled with comment tag  # #TE_MOD# on the Block-Design tcl-file.
+
+CRITICAL WARNING: [BD::TCL 103-2040] This script was generated using Vivado <2024.2> without IP versions in the create_bd_cell commands, but is now being run in <2025.2> of Vivado. There may have been changes to the IP between Vivado <2024.2> and <2025.2>, which could impact the functionality and configuration of the design.
+INFO: [BD::TCL 103-2003] Currently there is no design <zsys> in project, so creating one...
+Wrote  : <C:\Users\Alex\Documents\GitHub\impedance-analyzer\Reference\TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152\te0720-rd\vivado\te0720-rd.srcs\sources_1\bd\zsys\zsys.bd> 
+INFO: [BD::TCL 103-2004] Making design <zsys> as current_bd_design.
+INFO: [BD::TCL 103-2005] Currently the variable <design_name> is equal to "zsys".
+INFO: [BD::TCL 103-2011] Checking if the following IPs exist in the project's IP catalog:  
+trenz.biz:user:SC0720:* xilinx.com:ip:processing_system7:* xilinx.com:ip:vio:* xilinx.com:ip:xlconcat:*  .
+INFO: [BD 5-1043] It is recommended to use inline hdl version xilinx.com:inline_hdl:ilconcat:1.0 for the IP type xilinx.com:ip:xlconcat:2.1 for improved performance and reduced disk space. IPs with VLNV xilinx.com:ip:xlconcat:2.1 will not be supported from release 2025.2. More information on inline hdl IP is available in UG994 
+WARNING: [BD 41-2670] Found an incomplete address path from address space '/processing_system7_0/Data' to master interface '/processing_system7_0/M_AXI_GP0'. Please either complete or remove this path to resolve.
+WARNING: [BD 5-699] No address segments matched 'get_bd_addr_segs -of_objects /processing_system7_0/Data'
+Wrote  : <C:\Users\Alex\Documents\GitHub\impedance-analyzer\Reference\TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152\te0720-rd\vivado\te0720-rd.srcs\sources_1\bd\zsys\zsys.bd> 
+Reading block design file <C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd>...
+Adding component instance block -- trenz.biz:user:SC0720:1.0 - SC0720_0
+Adding component instance block -- xilinx.com:ip:processing_system7:5.5 - processing_system7_0
+Adding component instance block -- xilinx.com:ip:vio:3.0 - vio_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Successfully read diagram <zsys> from block design file <C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd>
+WARNING: [BD 41-2670] Found an incomplete address path from address space '/processing_system7_0/Data' to master interface '/processing_system7_0/M_AXI_GP0'. Please either complete or remove this path to resolve.
+WARNING: [BD 5-699] No address segments matched 'get_bd_addr_segs -of_objects /processing_system7_0/Data'
+INFO: [BD 41-1662] The design 'zsys.bd' is already validated. Therefore parameter propagation will not be re-run.
+Wrote  : <C:\Users\Alex\Documents\GitHub\impedance-analyzer\Reference\TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152\te0720-rd\vivado\te0720-rd.srcs\sources_1\bd\zsys\zsys.bd> 
+VHDL Output written to : c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/synth/zsys.vhd
+VHDL Output written to : c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/sim/zsys.vhd
+VHDL Output written to : c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/hdl/zsys_wrapper.vhd
+INFO: [BD 41-1029] Generation completed for the IP Integrator block SC0720_0 .
+INFO: [IP_Flow 19-5611] Unable to find an associated reset port for the interface 'M_AXI_GP0'. A default connection has been created.
+INFO: [BD 41-1029] Generation completed for the IP Integrator block processing_system7_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block vio_0 .
+INFO: [BD 41-1029] Generation completed for the IP Integrator block xlconcat_0 .
+Exporting to file c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/hw_handoff/zsys.hwh
+Generated Hardware Definition File c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/synth/zsys.hwdef
+INFO: [BD 41-3262] Generated VHDL Instantiation Template file c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/zsys.vho
+INFO: [BD 41-3262] Generated Verilog Instantiation Template file c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/zsys.veo
+INFO: [BD 41-3262] Generated System Verilog Instantiation Template file c:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/zsys_sv.sveo
+generate_target: Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 734.762 ; gain = 44.496
+INFO: [TE_HW-34] Generate top level wrapper
+INFO: [Project 1-1716] Could not find the wrapper file C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/hdl/zsys_wrapper.vhd, checking in project .gen location instead.
+INFO: [Vivado 12-12390] Found file C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.gen/sources_1/bd/zsys/hdl/zsys_wrapper.vhd, adding it to Project
+Start GUI...all other messages will be print inside the GUI TCL console of Vivado
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:emb-plus-vpr-4616:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\emb-plus-vpr-4616\1.0\board.xml as part xcve2302-sfva784-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:emb-plus-vpr-4616:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\emb-plus-vpr-4616\1.1\board.xml as part xcve2302-sfva784-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kcu116:part0:1.4 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\kcu116\1.4\board.xml as part xcku5p-ffvb676-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kcu116:part0:1.5 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\kcu116\1.5\board.xml as part xcku5p-ffvb676-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:scu35:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\scu35\1.0\board.xml as part xcsu35p-sbvb625-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:v80:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\v80\1.0\board.xml as part xcv80-lsva4737-2mhp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:2.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\2.2\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\3.0\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\3.1\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\3.2\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.3 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\3.3\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.4 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190\production\3.4\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190_newl:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190_newl\production\1.0\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190_newl:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190_newl\production\1.1\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190_newl:part0:1.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190_newl\production\1.2\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190_newl:part0:1.3 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vck190_newl\production\1.3\board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu118\2.0\board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.3 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu118\2.3\board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.4 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu118\2.4\board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu128:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu128\production\1.0\board.xml as part xcvu37p-fsvh2892-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu129:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu129\production\1.0\board.xml as part xcvu29p-fsga2577-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu1525:part0:1.3 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vcu1525\1.3\board.xml as part xcvu9p-fsgd2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek280\production\1.0\board.xml as part xcve2802-vsvh1760-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek280\production\1.1\board.xml as part xcve2802-vsvh1760-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280:part0:1.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek280\production\1.2\board.xml as part xcve2802-vsvh1760-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek385:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek385\1.0\board.xml as part xc2ve3858-ssva2112-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek385:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek385\1.1\board.xml as part xc2ve3858-ssva2112-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek385_1:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vek385_2\1.0\board.xml as part xc2ve3858-ssva2112-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vhk158\production\1.0\board.xml as part xcvh1582-vsva3697-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vhk158\production\1.1\board.xml as part xcvh1582-vsva3697-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158:part0:1.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vhk158\production\1.2\board.xml as part xcvh1582-vsva3697-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:2.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180\production\2.2\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180\production\3.0\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180\production\3.1\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180\production\3.2\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.3 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180\production\3.3\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180_newl:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180_newl\production\1.0\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180_newl:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vmk180_newl\production\1.1\board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk120\production\1.0\board.xml as part xcvp1202-vsva2785-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk120\production\1.1\board.xml as part xcvp1202-vsva2785-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120:part0:1.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk120\production\1.2\board.xml as part xcvp1202-vsva2785-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk180\production\1.0\board.xml as part xcvp1802-lsvc4072-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk180\production\1.1\board.xml as part xcvp1802-lsvc4072-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180:part0:1.2 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vpk180\production\1.2\board.xml as part xcvp1802-lsvc4072-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vrk160:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vrk160\1.0\board.xml as part xcvr1602-vsva2488-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vrk160:part0:1.1 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\vrk160\1.1\board.xml as part xcvr1602-vsva2488-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\zcu208ld\production\2.0\board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\zcu216ld\production\2.0\board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at C:/AMDDesignTools/2025.2/data/xhub/boards\XilinxBoardStore\boards\Xilinx\zcu670ld\1.0\board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+INFO: [TE_INIT-139] Run project finished without Error. 
+  ------
+-----------------------------------------------------------------------
+update_compile_order -fileset sources_1
+open_bd_design {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd}
+Reading block design file <C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd>...
+Adding component instance block -- trenz.biz:user:SC0720:1.0 - SC0720_0
+Adding component instance block -- xilinx.com:ip:processing_system7:5.5 - processing_system7_0
+Adding component instance block -- xilinx.com:ip:vio:3.0 - vio_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Successfully read diagram <zsys> from block design file <C:/Users/Alex/Documents/GitHub/impedance-analyzer/Reference/TE0720-te0720-rd-vivado_2024.2-build_1_20250618151152/te0720-rd/vivado/te0720-rd.srcs/sources_1/bd/zsys/zsys.bd>

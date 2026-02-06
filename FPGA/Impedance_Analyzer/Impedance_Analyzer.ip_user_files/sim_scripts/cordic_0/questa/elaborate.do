@@ -1,0 +1,1 @@
+vopt -l elaborate.log +acc=npr -suppress 10016  -L xil_defaultlib -L xbip_utils_v3_0_15 -L c_reg_fd_v12_0_11 -L xbip_dsp48_wrapper_v3_0_7 -L xbip_pipe_v3_0_11 -L c_addsub_v12_0_21 -L mult_gen_v12_0_24 -L axi_utils_v2_0_11 -L cordic_v6_0_25 -L secureip -work xil_defaultlib xil_defaultlib.cordic_0 -o cordic_0_opt
