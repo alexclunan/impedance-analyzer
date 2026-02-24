@@ -1,0 +1,245 @@
+
+*** Running vivado
+    with args -log ADC_Input.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source ADC_Input.tcl
+
+
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Mon Feb 16 14:05:55 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source ADC_Input.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/ip_repo/Configuration_Register_1_0'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+WARNING: [IP_Flow 19-4995] The host OS only allows 260 characters in a normal path. The IP cache path is more than 80 characters. If you experience issues with IP caching, please consider changing the IP cache to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter. 
+Current IP cache path is c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.cache/ip 
+Command: synth_design -top ADC_Input -part xc7z020clg484-2 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg484-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 24988
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:03 . Memory (MB): peak = 1348.289 ; gain = 540.328
+---------------------------------------------------------------------------------
+INFO: [Synth 8-11241] undeclared symbol 'clk_in_int', assumed default net type 'wire' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v:83]
+INFO: [Synth 8-11241] undeclared symbol 'clk_div', assumed default net type 'wire' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v:90]
+INFO: [Synth 8-6157] synthesizing module 'ADC_Input' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.v:55]
+INFO: [Synth 8-6157] synthesizing module 'ADC_Input_selectio_wiz' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v:55]
+	Parameter SYS_W bound to: 16 - type: integer 
+	Parameter DEV_W bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'IBUFDS' [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82819]
+	Parameter DIFF_TERM bound to: FALSE - type: string 
+	Parameter IOSTANDARD bound to: DIFF_SSTL18_I - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IBUFDS' (0#1) [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82819]
+INFO: [Synth 8-6157] synthesizing module 'IDDR' [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:84974]
+	Parameter DDR_CLK_EDGE bound to: SAME_EDGE_PIPELINED - type: string 
+	Parameter INIT_Q1 bound to: 1'b0 
+	Parameter INIT_Q2 bound to: 1'b0 
+	Parameter SRTYPE bound to: ASYNC - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IDDR' (0#1) [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:84974]
+INFO: [Synth 8-6157] synthesizing module 'IBUFDS__parameterized0' [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82819]
+	Parameter IOSTANDARD bound to: DIFF_SSTL18_I - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'IBUFDS__parameterized0' (0#1) [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:82819]
+INFO: [Synth 8-6157] synthesizing module 'BUFR' [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:3017]
+	Parameter BUFR_DIVIDE bound to: BYPASS - type: string 
+	Parameter SIM_DEVICE bound to: 7SERIES - type: string 
+INFO: [Synth 8-6155] done synthesizing module 'BUFR' (0#1) [C:/AMDDesignTools/2025.2/Vivado/scripts/rt/data/unisim_comp.v:3017]
+INFO: [Synth 8-6155] done synthesizing module 'ADC_Input_selectio_wiz' (0#1) [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v:55]
+INFO: [Synth 8-6155] done synthesizing module 'ADC_Input' (0#1) [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.v:55]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 1469.105 ; gain = 661.145
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 1469.105 ; gain = 661.145
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 1469.105 ; gain = 661.145
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1469.105 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 34 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_ooc.xdc] for cell 'inst'
+Finished Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_ooc.xdc] for cell 'inst'
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_ooc.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/ADC_Input_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/ADC_Input_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.xdc] for cell 'inst'
+Finished Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.xdc] for cell 'inst'
+Parsing XDC File [C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1515.477 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.014 . Memory (MB): peak = 1515.477 ; gain = 0.000
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 1515.477 ; gain = 707.516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:11 ; elapsed = 00:00:10 . Memory (MB): peak = 1515.477 ; gain = 707.516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1515.477 ; gain = 707.516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:11 ; elapsed = 00:00:11 . Memory (MB): peak = 1515.477 ; gain = 707.516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1515.477 ; gain = 707.516
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1647.223 ; gain = 839.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1647.223 ; gain = 839.262
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1656.785 ; gain = 848.824
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+-------+------+
+|      |Cell   |Count |
++------+-------+------+
+|1     |BUFR   |     1|
+|2     |IDDR   |    16|
+|3     |IBUFDS |    17|
++------+-------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:13 ; elapsed = 00:00:18 . Memory (MB): peak = 1906.160 ; gain = 1051.828
+Synthesis Optimization Complete : Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 1906.160 ; gain = 1098.199
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1906.160 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 34 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1907.281 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 6a2c3941
+INFO: [Common 17-83] Releasing license: Synthesis
+35 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+INFO: [Common 17-600] The following parameters have non-default value.
+tcl.statsThreshold
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1907.281 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1/ADC_Input.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP ADC_Input, cache-ID = 28bbe469f5d5aa87
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1907.281 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1/ADC_Input.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file ADC_Input_utilization_synth.rpt -pb ADC_Input_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Feb 16 14:06:23 2026...

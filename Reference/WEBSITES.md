@@ -1,1 +1,2 @@
 PCB Integration Guide: https://wiki.trenz-electronic.de/display/PD/4+x+5+SoM+Integration+Guide 
+Device/Package Pinouts xc7z020clg484: https://download.amd.com/adaptive-socs-and-fpgas/developer/adaptive-socs-and-fpgas/package-pinout-files/z7packages/xc7z020clg484pkg.txt 

@@ -1,0 +1,19 @@
+sv xpm -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" \
+
+verilog fifo_generator_v13_2_14 -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"../../ipstatic/simulation/fifo_generator_vlog_beh.v" \
+"../../ipstatic/hdl/fifo_generator_v13_2_rfs.v" \
+
+verilog xil_defaultlib -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"../../../impedance_analyzer.gen/sources_1/ip/wave_delay_fifo/sim/wave_delay_fifo.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_selectio_wiz.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.v" \
+
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
