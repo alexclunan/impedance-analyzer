@@ -2,7 +2,7 @@
 // Author: Alex Clunan
 
 module DAC_driver_top 
-    #(parameter WIDTH = 16
+    #(parameter WIDTH = 16,
       parameter AXI_REGISTER_SIZE = 32) 
 (
     // configuration setup 

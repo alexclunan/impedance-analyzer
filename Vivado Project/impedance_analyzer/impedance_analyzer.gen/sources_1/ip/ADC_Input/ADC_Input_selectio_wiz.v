@@ -1,5 +1,5 @@
 
-// file: ADC_Input_selectio_wiz.v
+// file: adc_input_selectio_wiz.v
 // (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
@@ -52,16 +52,19 @@
 
 `timescale 1ps/1ps
 
-module ADC_Input_selectio_wiz
+module adc_input_selectio_wiz
    // width of the data for the system
- #(parameter SYS_W = 16,
+ #(parameter SYS_W = 9,
    // width of the data for the device
-   parameter DEV_W = 32)
+   parameter DEV_W = 18)
  (
   // From the system into the device
   input  [SYS_W-1:0] data_in_from_pins_p,
   input  [SYS_W-1:0] data_in_from_pins_n,
   output [DEV_W-1:0] data_in_to_device,
+ 
+  output             delay_locked,   // Locked signal from IDELAYCTRL
+  input              ref_clock,      // Reference clock for IDELAYCTRL. Has to come from BUFG.
   input              clk_in_p,      // Differential clock from IOB
   input              clk_in_n,
   output             clk_out,
@@ -73,6 +76,7 @@ module ADC_Input_selectio_wiz
   wire   [SYS_W-1:0] data_in_from_pins_int;
   // Between the delay and serdes
   wire [SYS_W-1:0]  data_in_from_pins_delay;
+  wire ref_clock_bufg;
   // Create the clock logic
 
   IBUFDS
@@ -81,6 +85,12 @@ module ADC_Input_selectio_wiz
      (.I          (clk_in_p),
       .IB         (clk_in_n),
       .O          (clk_in_int));
+
+// High Speed BUFIO clock buffer
+ BUFIO bufio_inst
+   (.O(clk_in_int_buf),
+    .I(clk_in_int));
+
   
    // BUFR generates the slow clock
    BUFR
@@ -107,10 +117,37 @@ module ADC_Input_selectio_wiz
         .IB         (data_in_from_pins_n  [pin_count]),
         .O          (data_in_from_pins_int[pin_count]));
 
-    // Pass through the delay
+    // Instantiate the delay primitive
     ////-------------------------------
-   assign data_in_from_pins_delay[pin_count] = data_in_from_pins_int[pin_count];
- 
+
+     (* IODELAY_GROUP = "adc_input_group" *)
+     IDELAYE2
+       # (
+         .CINVCTRL_SEL           ("FALSE"),                            // TRUE, FALSE
+         .DELAY_SRC              ("IDATAIN"),                          // IDATAIN, DATAIN
+         .HIGH_PERFORMANCE_MODE  ("FALSE"),                            // TRUE, FALSE
+         .IDELAY_TYPE            ("FIXED"),              // FIXED, VARIABLE, or VAR_LOADABLE
+         .IDELAY_VALUE           (0),                  // 0 to 31
+         .REFCLK_FREQUENCY       (200.0),
+         .PIPE_SEL               ("FALSE"),
+         .SIGNAL_PATTERN         ("DATA"))                             // CLOCK, DATA
+       idelaye2_bus
+           (
+         .DATAOUT                (data_in_from_pins_delay[pin_count]),
+         .DATAIN                 (1'b0),                               // Data from FPGA logic
+         .C                      (1'b0),
+         .CE                     (1'b0),
+         .INC                    (1'b0),
+         .IDATAIN                (data_in_from_pins_int  [pin_count]), // Driven by IOB
+         .LD                     (1'b0),
+         .REGRST                 (1'b0),
+         .LDPIPEEN               (1'b0),
+         .CNTVALUEIN             (5'b00000),
+         .CNTVALUEOUT            (),
+         .CINVCTRL               (1'b0)
+         );
+
+
     // Connect the delayed data to the fabric
     ////--------------------------------------
    // DDR register instantation
@@ -122,7 +159,7 @@ module ADC_Input_selectio_wiz
      iddr_inst
       (.Q1             (data_in_to_device[pin_count]),
        .Q2             (data_in_to_device[SYS_W + pin_count]),
-       .C              (clk_div),
+       .C              (clk_in_int_buf),
        .CE             (clock_enable),
        .D              (data_in_from_pins_delay[pin_count]),
        .R              (io_reset),
@@ -132,4 +169,16 @@ module ADC_Input_selectio_wiz
   
 //// NO ODELAY
 
+// IDELAYCTRL is needed for calibration
+(* IODELAY_GROUP = "adc_input_group" *)
+  IDELAYCTRL
+    delayctrl (
+     .RDY    (delay_locked),
+     .REFCLK (ref_clock_bufg),
+     .RST    (io_reset));
+
+  BUFG
+    ref_clk_bufg (
+     .I (ref_clock),
+     .O (ref_clock_bufg));
 endmodule

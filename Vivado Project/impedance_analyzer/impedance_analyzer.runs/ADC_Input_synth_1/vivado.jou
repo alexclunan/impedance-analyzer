@@ -3,12 +3,12 @@
 # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
 # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
 # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
-# Start of session at: Mon Feb 16 14:05:55 2026
-# Process ID         : 38064
-# Current directory  : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1
-# Command line       : vivado.exe -log ADC_Input.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source ADC_Input.tcl
-# Log file           : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1/ADC_Input.vds
-# Journal file       : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1\vivado.jou
+# Start of session at: Tue Feb 24 12:22:37 2026
+# Process ID         : 34888
+# Current directory  : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/adc_input_synth_1
+# Command line       : vivado.exe -log adc_input.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source adc_input.tcl
+# Log file           : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/adc_input_synth_1/adc_input.vds
+# Journal file       : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/adc_input_synth_1\vivado.jou
 # Running On         : DESKTOP-F1EP304
 # Platform           : Windows Server 2016 or Windows 10
 # Operating System   : 26200
@@ -17,8 +17,8 @@
 # CPU Physical cores : 16
 # CPU Logical cores  : 32
 # Host memory        : 66094 MB
-# Swap memory        : 5649 MB
-# Total Virtual      : 71743 MB
-# Available Virtual  : 37349 MB
+# Swap memory        : 4160 MB
+# Total Virtual      : 70254 MB
+# Available Virtual  : 41171 MB
 #-----------------------------------------------------------
-source ADC_Input.tcl -notrace
+source adc_input.tcl -notrace

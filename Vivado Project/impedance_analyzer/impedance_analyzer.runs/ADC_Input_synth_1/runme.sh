@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/ADC_Input_synth_1'
+HD_PWD='C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/adc_input_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log ADC_Input.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source ADC_Input.tcl
+EAStep vivado -log adc_input.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source adc_input.tcl

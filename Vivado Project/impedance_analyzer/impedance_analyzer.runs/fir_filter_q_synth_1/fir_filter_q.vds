@@ -1,0 +1,428 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Feb 24 11:56:57 2026
+# Process ID         : 40356
+# Current directory  : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1
+# Command line       : vivado.exe -log fir_filter_q.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source fir_filter_q.tcl
+# Log file           : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1/fir_filter_q.vds
+# Journal file       : C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1\vivado.jou
+# Running On         : DESKTOP-F1EP304
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : AMD Ryzen 9 9950X3D 16-Core Processor          
+# CPU Frequency      : 4300 MHz
+# CPU Physical cores : 16
+# CPU Logical cores  : 32
+# Host memory        : 66094 MB
+# Swap memory        : 4160 MB
+# Total Virtual      : 70254 MB
+# Available Virtual  : 41291 MB
+#-----------------------------------------------------------
+source fir_filter_q.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/ip_repo/Configuration_Register_1_0'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+WARNING: [IP_Flow 19-4995] The host OS only allows 260 characters in a normal path. The IP cache path is more than 80 characters. If you experience issues with IP caching, please consider changing the IP cache to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter. 
+Current IP cache path is c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.cache/ip 
+Command: synth_design -top fir_filter_q -part xc7z020clg484-2 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7z020'
+INFO: [Device 21-403] Loading part xc7z020clg484-2
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 38776
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1348.473 ; gain = 539.688
+---------------------------------------------------------------------------------
+INFO: [Synth 8-638] synthesizing module 'fir_filter_q' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/synth/fir_filter_q.vhd:80]
+	Parameter C_XDEVICEFAMILY bound to: zynq - type: string 
+	Parameter C_ELABORATION_DIR bound to: ./ - type: string 
+	Parameter C_COMPONENT_NAME bound to: fir_filter_q - type: string 
+	Parameter C_COEF_FILE bound to: fir_filter_q.mif - type: string 
+	Parameter C_COEF_FILE_LINES bound to: 32 - type: integer 
+	Parameter C_DATA_COEFFICIENT_TYPE bound to: 0 - type: integer 
+	Parameter C_FILTER_TYPE bound to: 0 - type: integer 
+	Parameter C_INTERP_RATE bound to: 1 - type: integer 
+	Parameter C_DECIM_RATE bound to: 1 - type: integer 
+	Parameter C_ZERO_PACKING_FACTOR bound to: 1 - type: integer 
+	Parameter C_SYMMETRY bound to: 1 - type: integer 
+	Parameter C_NUM_FILTS bound to: 1 - type: integer 
+	Parameter C_NUM_TAPS bound to: 20 - type: integer 
+	Parameter C_NUM_CHANNELS bound to: 1 - type: integer 
+	Parameter C_CHANNEL_PATTERN bound to: fixed - type: string 
+	Parameter C_ROUND_MODE bound to: 1 - type: integer 
+	Parameter C_COEF_RELOAD bound to: 1 - type: integer 
+	Parameter C_NUM_RELOAD_SLOTS bound to: 1 - type: integer 
+	Parameter C_COL_MODE bound to: 1 - type: integer 
+	Parameter C_COL_PIPE_LEN bound to: 4 - type: integer 
+	Parameter C_COL_CONFIG bound to: 1 - type: string 
+	Parameter C_OPTIMIZATION bound to: 0 - type: integer 
+	Parameter C_DATA_PATH_WIDTHS bound to: 16,16 - type: string 
+	Parameter C_DATA_IP_PATH_WIDTHS bound to: 32 - type: string 
+	Parameter C_DATA_PX_PATH_WIDTHS bound to: 32 - type: string 
+	Parameter C_DATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_COEF_PATH_WIDTHS bound to: 16,16 - type: string 
+	Parameter C_COEF_WIDTH bound to: 16 - type: integer 
+	Parameter C_DATA_PATH_SRC bound to: 0,1 - type: string 
+	Parameter C_COEF_PATH_SRC bound to: 0,0 - type: string 
+	Parameter C_PX_PATH_SRC bound to: 0,1 - type: string 
+	Parameter C_DATA_PATH_SIGN bound to: 1,0 - type: string 
+	Parameter C_COEF_PATH_SIGN bound to: 0,0 - type: string 
+	Parameter C_ACCUM_PATH_WIDTHS bound to: 38,37 - type: string 
+	Parameter C_OUTPUT_WIDTH bound to: 32 - type: integer 
+	Parameter C_OUTPUT_PATH_WIDTHS bound to: 32 - type: string 
+	Parameter C_ACCUM_OP_PATH_WIDTHS bound to: 53 - type: string 
+	Parameter C_EXT_MULT_CNFG bound to: 0,1,0,16 - type: string 
+	Parameter C_DATA_PATH_PSAMP_SRC bound to: 0 - type: string 
+	Parameter C_OP_PATH_PSAMP_SRC bound to: 0 - type: string 
+	Parameter C_NUM_MADDS bound to: 1 - type: integer 
+	Parameter C_OPT_MADDS bound to: none - type: string 
+	Parameter C_OVERSAMPLING_RATE bound to: 10 - type: integer 
+	Parameter C_INPUT_RATE bound to: 2000 - type: integer 
+	Parameter C_OUTPUT_RATE bound to: 2000 - type: integer 
+	Parameter C_DATA_MEMTYPE bound to: 0 - type: integer 
+	Parameter C_COEF_MEMTYPE bound to: 2 - type: integer 
+	Parameter C_IPBUFF_MEMTYPE bound to: 0 - type: integer 
+	Parameter C_OPBUFF_MEMTYPE bound to: 0 - type: integer 
+	Parameter C_DATAPATH_MEMTYPE bound to: 0 - type: integer 
+	Parameter C_MEM_ARRANGEMENT bound to: 3 - type: integer 
+	Parameter C_DATA_MEM_PACKING bound to: 0 - type: integer 
+	Parameter C_COEF_MEM_PACKING bound to: 0 - type: integer 
+	Parameter C_FILTS_PACKED bound to: 0 - type: integer 
+	Parameter C_LATENCY bound to: 24 - type: integer 
+	Parameter C_HAS_ARESETn bound to: 2 - type: integer 
+	Parameter C_HAS_ACLKEN bound to: 0 - type: integer 
+	Parameter C_DATA_HAS_TLAST bound to: 0 - type: integer 
+	Parameter C_S_DATA_HAS_FIFO bound to: 1 - type: integer 
+	Parameter C_S_DATA_HAS_TUSER bound to: 0 - type: integer 
+	Parameter C_S_DATA_TDATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_S_DATA_TUSER_WIDTH bound to: 1 - type: integer 
+	Parameter C_M_DATA_HAS_TREADY bound to: 0 - type: integer 
+	Parameter C_M_DATA_HAS_TUSER bound to: 0 - type: integer 
+	Parameter C_M_DATA_TDATA_WIDTH bound to: 32 - type: integer 
+	Parameter C_M_DATA_TUSER_WIDTH bound to: 1 - type: integer 
+	Parameter C_HAS_CONFIG_CHANNEL bound to: 1 - type: integer 
+	Parameter C_CONFIG_SYNC_MODE bound to: 0 - type: integer 
+	Parameter C_CONFIG_PACKET_SIZE bound to: 0 - type: integer 
+	Parameter C_CONFIG_TDATA_WIDTH bound to: 8 - type: integer 
+	Parameter C_RELOAD_TDATA_WIDTH bound to: 16 - type: integer 
+INFO: [Synth 8-3491] module 'fir_compiler_v7_2_26' declared at 'c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/hdl/fir_compiler_v7_2_vh_rfs.vhd:73330' bound to instance 'U0' of component 'fir_compiler_v7_2_26' [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/synth/fir_filter_q.vhd:233]
+INFO: [Synth 8-256] done synthesizing module 'fir_filter_q' (0#1) [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/synth/fir_filter_q.vhd:80]
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized30 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized30 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized29 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized29 is either unconnected or has no load
+INFO: [Synth 8-7129] Port WE in module delay__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module delay__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CLK in module delay__parameterized28 is either unconnected or has no load
+INFO: [Synth 8-7129] Port WE in module delay__parameterized27 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module delay__parameterized27 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized27 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized27 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CLK in module delay__parameterized27 is either unconnected or has no load
+INFO: [Synth 8-7129] Port PAT_DET_IM in module calc__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port PAT_DET_B_IM in module calc__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port PRE_ADDSUB in module calc__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port PRE_ADD_BYPASS in module calc__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CED in module calc__parameterized1 is either unconnected or has no load
+INFO: [Synth 8-7129] Port WE in module delay__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module delay__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CLK in module delay__parameterized26 is either unconnected or has no load
+INFO: [Synth 8-7129] Port WE in module delay__parameterized25 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CE in module delay__parameterized25 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR in module delay__parameterized25 is either unconnected or has no load
+INFO: [Synth 8-7129] Port SCLR_ALT in module delay__parameterized25 is either unconnected or has no load
+INFO: [Synth 8-7129] Port CLK in module delay__parameterized25 is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][115] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][114] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][113] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][112] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][111] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][110] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][109] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][108] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][107] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][106] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][105] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][104] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][103] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][102] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][101] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][100] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][99] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][98] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][97] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][96] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][95] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][94] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][93] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][92] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][91] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][90] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][89] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][88] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][87] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][86] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][85] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][84] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][83] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][82] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][81] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][80] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][79] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][78] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][77] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][76] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][75] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][74] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][73] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][72] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][71] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][70] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][69] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][68] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][67] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][66] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][65] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][64] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][63] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][62] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][61] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][60] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][59] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][58] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][57] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][56] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][55] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][54] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][53] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][52] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][51] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][50] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][49] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[fab][48] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[casc][115] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[casc][114] in module add_accum is either unconnected or has no load
+INFO: [Synth 8-7129] Port POUT[casc][113] in module add_accum is either unconnected or has no load
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.034 . Memory (MB): peak = 1686.316 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 3 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/fir_filter_q_ooc.xdc] for cell 'U0'
+Finished Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/fir_filter_q_ooc.xdc] for cell 'U0'
+Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/constraints/fir_compiler_v7_2.xdc] for cell 'U0'
+Finished Parsing XDC File [c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/fir_filter_q/constraints/fir_compiler_v7_2.xdc] for cell 'U0'
+Parsing XDC File [C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1/dont_touch.xdc]
+Finished Parsing XDC File [C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1686.316 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.043 . Memory (MB): peak = 1686.316 ; gain = 0.000
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7z020clg484-2
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:16 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cntrl_signals[0].i_delay' (delay__parameterized15) to 'U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cntrl_signals[1].i_delay'
+INFO: [Synth 8-223] decloning instance 'U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cntrl_signals[5].i_delay' (delay__parameterized16) to 'U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cntrl_signals[8].i_delay'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 220 (col length:60)
+BRAMs: 280 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1686.316 ; gain = 877.531
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1735.305 ; gain = 926.520
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1765.742 ; gain = 956.957
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-5591] srl_style attribute value srl_reg on U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cnfg_and_reload.i_cnfg_and_reload/g_fsel_store.i_update_chan_dly/gen_dly.gen_shiftreg.gen_rtl_delay.delay_bus_reg[0][0] cannot be supported because of smaller than expected depth of fanout-free flop chain.
+WARNING: [Synth 8-5591] srl_style attribute value srl_reg on U0/i_synth/g_single_rate.i_single_rate/g_semi_parallel_and_smac.g_cnfg_and_reload.i_cnfg_and_reload/g_fsel_store.i_reset_fill_chan_dly/gen_dly.gen_shiftreg.gen_rtl_delay.delay_bus_reg[0][0] cannot be supported because of smaller than expected depth of fanout-free flop chain.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:21 ; elapsed = 00:00:22 . Memory (MB): peak = 1766.512 ; gain = 957.727
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++---------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name          | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++---------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|calc__parameterized1 | (C'+A':B')' | 30     | 18     | 48     | -      | 48     | 1    | 1    | 1    | -    | -     | 0    | 1    | 
+|calc                 | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
+|calc__parameterized0 | Dynamic     | -      | -      | -      | -      | 48     | -    | -    | -    | -    | 1     | 1    | 1    | 
++---------------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |CARRY4   |     2|
+|2     |DSP48E1  |     3|
+|4     |LUT1     |     3|
+|5     |LUT2     |    22|
+|6     |LUT3     |    17|
+|7     |LUT4     |    16|
+|8     |LUT5     |    12|
+|9     |LUT6     |    14|
+|10    |RAM16X1D |     1|
+|11    |RAM32M   |     3|
+|12    |SRL16E   |   166|
+|13    |FDRE     |   388|
+|14    |FDSE     |     5|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 2 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:12 ; elapsed = 00:00:23 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+Synthesis Optimization Complete : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1995.777 ; gain = 1186.992
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.013 . Memory (MB): peak = 1995.777 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 9 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1998.539 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 4 instances were transformed.
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 1 instance 
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 3 instances
+
+Synth Design complete | Checksum: ff5a6331
+INFO: [Common 17-83] Releasing license: Synthesis
+126 Infos, 3 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+INFO: [Common 17-600] The following parameters have non-default value.
+tcl.statsThreshold
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 1998.539 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1/fir_filter_q.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP fir_filter_q, cache-ID = f74349be99784c4a
+INFO: [Coretcl 2-1174] Renamed 48 cell refs.
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 1998.539 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/fir_filter_q_synth_1/fir_filter_q.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file fir_filter_q_utilization_synth.rpt -pb fir_filter_q_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Tue Feb 24 11:57:31 2026...

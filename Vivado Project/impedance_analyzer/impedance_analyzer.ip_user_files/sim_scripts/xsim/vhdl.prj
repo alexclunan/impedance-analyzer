@@ -7,14 +7,24 @@ vhdl fifo_generator_v13_2_14  \
 vhdl xbip_utils_v3_0_15  \
 "../../ipstatic/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
 
+vhdl axi_utils_v2_0_11  \
+"../../ipstatic/hdl/axi_utils_v2_0_vh_rfs.vhd" \
+
+vhdl xbip_pipe_v3_0_11  \
+"../../ipstatic/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
+
+vhdl fir_compiler_v7_2_26  \
+"../../ipstatic/hdl/fir_compiler_v7_2_vh_rfs.vhd" \
+
+vhdl xil_defaultlib  \
+"../../../impedance_analyzer.gen/sources_1/ip/fir_filter_q/sim/fir_filter_q.vhd" \
+"../../../impedance_analyzer.gen/sources_1/ip/fir_filter_i/sim/fir_filter_i.vhd" \
+
 vhdl c_reg_fd_v12_0_11  \
 "../../ipstatic/hdl/c_reg_fd_v12_0_vh_rfs.vhd" \
 
 vhdl xbip_dsp48_wrapper_v3_0_7  \
 "../../ipstatic/hdl/xbip_dsp48_wrapper_v3_0_vh_rfs.vhd" \
-
-vhdl xbip_pipe_v3_0_11  \
-"../../ipstatic/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
 
 vhdl c_addsub_v12_0_21  \
 "../../ipstatic/hdl/c_addsub_v12_0_vh_rfs.vhd" \
@@ -22,14 +32,26 @@ vhdl c_addsub_v12_0_21  \
 vhdl mult_gen_v12_0_24  \
 "../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
 
-vhdl axi_utils_v2_0_11  \
-"../../ipstatic/hdl/axi_utils_v2_0_vh_rfs.vhd" \
-
 vhdl cordic_v6_0_25  \
 "../../ipstatic/hdl/cordic_v6_0_vh_rfs.vhd" \
 
 vhdl xil_defaultlib  \
-"../../../impedance_analyzer.gen/sources_1/ip/DDS_Generator/sim/DDS_Generator.vhd" \
+"../../../impedance_analyzer.gen/sources_1/ip/cordic_vectoring/sim/cordic_vectoring.vhd" \
+"../../../impedance_analyzer.gen/sources_1/ip/cordic_sincos_dac/sim/cordic_sincos_dac.vhd" \
+"../../../impedance_analyzer.gen/sources_1/ip/cordic_sincos_adc/sim/cordic_sincos_adc.vhd" \
+
+vhdl cic_compiler_v4_0_22  \
+"../../ipstatic/hdl/cic_compiler_v4_0_vh_rfs.vhd" \
+
+vhdl xil_defaultlib  \
+"../../../impedance_analyzer.gen/sources_1/ip/cic_decimator_i/sim/cic_decimator_i.vhd" \
+"../../../impedance_analyzer.gen/sources_1/ip/cic_compiler_0/sim/cic_compiler_0.vhd" \
+
+vhdl axi_bram_ctrl_v4_1_13  \
+"../../ipstatic/hdl/axi_bram_ctrl_v4_1_rfs.vhd" \
+
+vhdl xil_defaultlib  \
+"../../../impedance_analyzer.gen/sources_1/ip/bram_ctrl/sim/bram_ctrl.vhd" \
 
 # Do not sort compile order
 nosort

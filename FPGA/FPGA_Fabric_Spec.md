@@ -40,9 +40,10 @@ Digital lock-in amplifier (DLIA) for impedance spectroscopy. The FPGA fabric imp
 **Source:** External 200 MHz low-jitter oscillator (direct).
 
 **Contains:**
-- Phase Accumulator (custom RTL)
+- Phase Accumulator -- master (custom RTL)
 - CORDIC Sine/Cosine Generator (Xilinx IP)
-- DAC Output Interface / SelectIO (Xilinx IP + custom wrapper)
+- DAC Output Interface / SelectIO (Xilinx IP + custom wrapper, includes test MUX)
+- Path Delay Calibration -- step generator (custom RTL)
 
 **I/O Bank:** Bank 35 (LVDS output to AD9122)
 
@@ -52,12 +53,13 @@ Digital lock-in amplifier (DLIA) for impedance spectroscopy. The FPGA fabric imp
 
 **Contains:**
 - ADC Data Realignment (custom RTL)
-- Phase Synchronizer (custom RTL, CDC from DAC domain)
-- Phase Accumulator (custom RTL)
+- Phase Synchronizer -- continuous master-slave CDC (custom RTL)
+- Phase Accumulator -- slave (custom RTL)
 - CORDIC Sine/Cosine Generator (Xilinx IP)
 - Analog Path Delay FIFO (Xilinx IP)
 - Mixer (custom RTL)
 - Timestamp Counter (custom RTL)
+- Path Delay Calibration -- threshold detector (custom RTL)
 
 **I/O Bank:** Bank 13 (LVDS input from AD9467)
 
@@ -86,22 +88,30 @@ Digital lock-in amplifier (DLIA) for impedance spectroscopy. The FPGA fabric imp
 ### 3.1 Excitation Path (DAC Side)
 
 ```
-FCW [48] --> Phase Accumulator --> phase [16] --> CORDIC Sin/Cos --> sin [16] --> DAC (Bank 35)
-                                                                --> cos [16]    (used on ADC side only)
+FCW [48] --> Phase Accumulator (master) --> phase [16] --> CORDIC Sin/Cos --> sin [16] --+--> DAC (Bank 35)
+                  |                                                         cos [16]    |
+                  | phase_msb [1]                                                       |
+                  v                                                                     |
+            Phase Synchronizer -----> ADC domain (Section 3.2)                          |
+                                                                                        |
+            Path Delay Calibration ---> test_pulse [16] ---> MUX (test/normal) ---------+
 ```
 
-The DAC-side CORDIC sine output drives the AD9122 through the SelectIO serializer. The cosine output is unused on this side (the ADC-side generates its own sin/cos from a synchronized phase accumulator).
+During normal operation, the DAC-side CORDIC sine output drives the AD9122 through the SelectIO serializer. During path delay calibration, a MUX bypasses the DDS output and injects a sharp step signal for analog delay measurement.
 
 ### 3.2 Measurement Path (ADC Side)
 
 ```
 AD9467 LVDS DDR (Bank 13) --> SelectIO IDDR --> raw [32]
   --> ADC Data Realignment --> adc_sample [16]
+                                    |
+                                    +--> Path Delay Calibration (threshold detector, timestamp capture)
 
-Phase Synchronizer (CDC: DAC --> ADC domain, carries FCW + Phase MSB)
-  --> Phase Accumulator --> phase [16]
-    --> CORDIC Sin/Cos --> {cos [16], sin [16]}
-      --> Analog Path Delay FIFO [32] --> {cos_delayed [16], sin_delayed [16]}
+Phase Synchronizer (CDC: DAC --> ADC domain, continuous master-slave tracking)
+  --> phase_msb [1], fcw [48]
+    --> Phase Accumulator (slave, corrects on each MSB edge) --> phase [16]
+      --> CORDIC Sin/Cos --> {cos [16], sin [16]}
+        --> Analog Path Delay FIFO [32] --> {cos_delayed [16], sin_delayed [16]}
 
 Mixer: adc_sample [16] x cos_delayed [16] --> I [32]
        adc_sample [16] x sin_delayed [16] --> Q [32]
@@ -190,7 +200,7 @@ Phase Adjuster: phase [32] - base_offset [32] --> corrected_phase [32]
 
 **Implementation:** Xilinx SelectIO Wizard v5.1 + Custom RTL wrapper
 
-**Function:** Serializes 16-bit DAC data into LVDS differential output for the AD9122. Forwards a synchronous clock to the DAC.
+**Function:** Serializes 16-bit DAC data into LVDS differential output for the AD9122. Forwards a synchronous clock to the DAC. Includes a MUX to select between normal DDS output and the test pulse from the Path Delay Calibration block (Section 4.19).
 
 **SelectIO Configuration:**
 
@@ -210,7 +220,9 @@ Phase Adjuster: phase [32] - base_offset [32] --> corrected_phase [32]
 |---|---|---|---|
 | `clock` | input | 1 | 200 MHz DAC clock |
 | `reset_n` | input | 1 | Active-low asynchronous reset |
-| `dac_data` | input | 16 | DAC sample (2's complement) |
+| `dds_data` | input | 16 | Normal DDS sine output (2's complement) |
+| `test_pulse_data` | input | 16 | Test pulse from Path Delay Calibration |
+| `test_mode` | input | 1 | 0 = normal DDS output, 1 = test pulse |
 | `axi_config0..6` | input | 32 each | Configuration registers |
 | `data_out_p` | output | 8 | LVDS positive |
 | `data_out_n` | output | 8 | LVDS negative |
@@ -227,7 +239,7 @@ Phase Adjuster: phase [32] - base_offset [32] --> corrected_phase [32]
 
 **Function:** Sits between the SelectIO IDDR deserializer and the processing pipeline. Performs two functions:
 
-1. **Byte reordering:** The AD9467 outputs DDR data with D[15:1] on the rising edge and D[14:0] on the falling edge of DCO. After IDDR deserialization into a 32-bit word, this block reconstructs the 16-bit sample.
+1. **Byte reordering:** The AD9467 outputs DDR data with D[15:0] on the rising edge and D[15:0] on the falling edge of DCO. After IDDR deserialization into a 32-bit word, this block reconstructs the 16-bit sample.
 2. **Per-lane LVDS polarity inversion:** Some LVDS differential pairs have swapped P/N traces on the PCB. A configurable 16-bit bitmask inverts individual data lanes to correct this.
 
 **Ports:**
@@ -244,13 +256,22 @@ Phase Adjuster: phase [32] - base_offset [32] --> corrected_phase [32]
 
 ---
 
-### 4.5 Phase Synchronizer
+### 4.5 Phase Synchronizer (Continuous Master-Slave)
 
 **Implementation:** Custom RTL
 
-**Function:** Clock domain crossing between the DAC clock (200 MHz external) and the ADC clock (AD9467 DCO, 200 MHz). These clocks are nominally the same frequency but asynchronous (the DCO has variable propagation delay through the AD9467).
+**Function:** Maintains continuous phase alignment between the DAC-side (master) and ADC-side (slave) phase accumulators across asynchronous clock domains. Both clocks are nominally 200 MHz but asynchronous (external oscillator vs. AD9467 DCO, which has variable propagation delay).
 
-The synchronizer transfers the DAC-side phase accumulator MSB edge across the clock domain boundary using a double-flop synchronizer with edge detection. The ADC-side phase accumulator uses this synchronized edge to align its phase with the DAC side.
+**Synchronization mechanism:**
+
+1. The DAC-side phase accumulator is the **master**. It runs freely and its MSB is exported.
+2. The master MSB is synchronized to the ADC clock domain via a **double-flop synchronizer**.
+3. An **edge detector** in the ADC domain identifies each MSB transition (rising and falling), which occurs once per half-cycle of the output waveform.
+4. On each detected MSB edge, the ADC-side (slave) phase accumulator **compares its own MSB** to the synchronized master MSB.
+5. If the slave MSB does not match the master MSB, the slave applies a **single-LSB correction** (+1 or -1) to its accumulator to nudge it back into alignment.
+6. This creates a continuous phase-locked relationship where the slave tracks the master within a bounded phase error (determined by CDC latency, typically 2-3 ADC clock cycles = 10-15 ns).
+
+Because the two clocks are derived from the same source, frequency drift is negligible. The synchronizer only needs to correct for the fixed phase offset and any cycle-to-cycle jitter. The remaining constant phase offset between clock domains is absorbed by the Phase Adjuster (Section 4.13).
 
 **Ports:**
 
@@ -259,28 +280,34 @@ The synchronizer transfers the DAC-side phase accumulator MSB edge across the cl
 | `dac_clock` | input | 1 | 200 MHz DAC clock |
 | `adc_clock` | input | 1 | AD9467 DCO |
 | `reset_n` | input | 1 | Active-low asynchronous reset |
-| `dac_phase_msb` | input | 1 | MSB of DAC-side phase accumulator |
+| `dac_phase_msb` | input | 1 | MSB of master (DAC) phase accumulator |
 | `fcw` | input | 48 | Frequency control word (stable, from config registers) |
-| `synced_phase_msb` | output | 1 | Synchronized MSB in ADC clock domain |
+| `synced_phase_msb` | output | 1 | Synchronized master MSB in ADC clock domain |
 | `synced_fcw` | output | 48 | FCW registered in ADC clock domain |
+| `correction` | output | 2 | Correction signal to slave accumulator: +1, 0, or -1 |
 
 **Existing HDL:** `FPGA/Custom Hardware Source Files/phase_accumulator_aligner.v` (stub, needs rewrite)
 
-**Design Note:** The FCW is static during operation (guaranteed by the config-while-reset constraint), so it does not require true CDC -- it is simply registered into the ADC clock domain while the pipeline is held in reset.
+**Design Note:** The FCW is static during operation (guaranteed by the config-while-reset constraint), so it does not require true CDC -- it is simply registered into the ADC clock domain while the pipeline is held in reset. Only the MSB requires continuous real-time synchronization.
 
 ---
 
-### 4.6 Phase Accumulator (ADC Domain)
+### 4.6 Phase Accumulator (ADC Domain -- Slave)
 
 **Implementation:** Custom RTL
 
-**Function:** Identical architecture to the DAC-side phase accumulator (Section 4.1). Receives the FCW and phase alignment signal from the Phase Synchronizer. Runs on the AD9467 DCO clock.
+**Function:** Slave phase accumulator that tracks the DAC-side master. Same 48-bit accumulator core as Section 4.1, with the addition of a correction input from the Phase Synchronizer. On each synchronized MSB edge from the master, this accumulator compares its own MSB and applies a +1 or -1 correction to stay aligned. During normal accumulation cycles (no correction), it operates identically to the master.
 
-**Ports:** Same as Section 4.1, with the addition of:
+**Ports:**
 
 | Port | Direction | Width | Description |
 |---|---|---|---|
-| `synced_phase_msb` | input | 1 | Phase alignment from synchronizer |
+| `clock` | input | 1 | AD9467 DCO |
+| `reset_n` | input | 1 | Active-low asynchronous reset |
+| `fcw` | input | 48 | Frequency control word (from synchronizer) |
+| `correction` | input | 2 | Phase correction from synchronizer: +1, 0, or -1 |
+| `phase_out` | output | 16 | Phase output (accumulator bits [47:32]) |
+| `phase_msb` | output | 1 | MSB for synchronizer feedback |
 
 ---
 
@@ -389,7 +416,7 @@ The synchronizer transfers the DAC-side phase accumulator MSB edge across the cl
 
 **Implementation:** Xilinx CIC Compiler IP + Xilinx FIR Compiler IP + Custom RTL wrapper
 
-**Function:** Two-stage decimation and filtering. The CIC provides high-ratio decimation with automatic bit-growth management (Hogenauer pruning). The FIR provides a sharp cutoff and compensates for CIC passband droop. Separate I and Q instances process the two channels identically.
+**Function:** Decimation and filtering. The CIC handles all sample rate reduction (200 MHz down to 70 kHz - 1 MHz, programmable). The FIR operates at the decimated rate with no additional decimation, providing a sharp 10 kHz low-pass cutoff and CIC passband droop compensation. Separate I and Q instances process the two channels identically.
 
 All logic runs on the ADC clock with a clock enable for the decimated output rate.
 
@@ -404,7 +431,8 @@ All logic runs on the ADC clock with a clock enable for the decimated output rat
 | Number of Stages | TBD (3-5 typical) |
 | Differential Delay | 1 |
 | Decimation Ratio | Runtime-programmable via `S_AXIS_CONFIG` |
-| Target Decimation Ratio | ~20,000:1 (for 10 kHz output from 200 MHz) |
+| Decimation Ratio Range | 200:1 to ~3,000:1 (output sample rate 1 MHz to ~70 kHz) |
+| Maximum Rate (IP setting) | 4096 |
 | Sample Rate | 200 MHz input |
 | Has ARESETN | Yes |
 
@@ -432,10 +460,11 @@ All logic runs on the ADC clock with a clock enable for the decimated output rat
 | Coefficient Width | 16-24 bits (TBD) |
 | Number of Taps | TBD (design-time parameter) |
 | Coefficient Reload | Enabled (via AXI) |
+| Decimation Factor | 1 (no decimation -- CIC handles all decimation) |
 | Optimization | Area or Speed (TBD based on resource budget) |
-| Preliminary Cutoff | 10 kHz (at decimated sample rate) |
+| Cutoff Frequency | 10 kHz (passband, independent of output sample rate) |
 
-The FIR coefficient set is computed by the PS (ARM) and loaded via the AXI reload interface between experiments. This allows runtime-configurable cutoff frequency and filter response without regenerating the bitstream. CIC passband droop compensation is incorporated into the FIR coefficient design.
+The FIR operates at the CIC output rate (70 kHz to 1 MHz depending on CIC decimation setting) and provides the sharp 10 kHz low-pass cutoff. It performs no additional decimation. The FIR coefficient set is computed by the PS (ARM) based on the current CIC output rate and loaded via the AXI reload interface between experiments. This allows runtime-configurable cutoff frequency and filter response without regenerating the bitstream. CIC passband droop compensation is incorporated into the FIR coefficient design.
 
 **Key AXI-Stream Ports:**
 
@@ -548,6 +577,7 @@ Using a single CORDIC instance (rather than separate SQRT and arctan blocks) hal
 2. **Startup sequencing:** Releases reset in the correct order (config registers settle -> CIC config loaded -> FIR coefficients loaded -> pipeline enabled).
 3. **Measurement control:** Starts/stops measurements, coordinates data capture.
 4. **Block enables:** Individual enable/disable for pipeline stages.
+5. **Path delay calibration sequencing:** Manages the calibration flow (assert test_mode -> generate step -> arm threshold detector -> wait for completion -> report timestamps to PS via status registers).
 
 Controlled by the PS via configuration register commands and status readback.
 
@@ -576,6 +606,55 @@ The architecture is designed so the BRAM can be replaced with an AXI-Stream inte
 **Implementation:** PL GPIO
 
 **Function:** Output pins for external triggering and synchronization. Directly driven by the Detection Logic block.
+
+---
+
+### 4.19 Path Delay Calibration
+
+**Implementation:** Custom RTL
+
+**Function:** Measures the analog round-trip delay through the signal chain (DAC -> analog front-end -> ADC) so the PS can set the Analog Path Delay FIFO (REG2) to the correct value. This is a semi-automated calibration: the PL generates and measures; the PS reads the result and writes REG2.
+
+**Operation (triggered by PS via State Machine):**
+
+1. State Machine places the processing pipeline in reset and asserts `test_mode` on the DAC Output Interface MUX.
+2. The DAC-side **step generator** drives a steady low value (e.g., mid-scale) for a settling period.
+3. On a trigger command, the step generator drives a sharp transition to full-scale. At the same moment, it captures the 64-bit timestamp (`tx_timestamp`).
+4. The ADC-side **threshold detector** monitors `adc_sample` from the ADC Data Realignment block. When the sample crosses a configurable threshold, it captures the 64-bit timestamp (`rx_timestamp`).
+5. Both timestamps are stored in registers readable by the PS.
+6. The PS computes the delay: `path_delay_cycles = rx_timestamp - tx_timestamp`.
+7. The PS writes `path_delay_cycles` to REG2 (Analog Path Delay FIFO offset).
+8. State Machine de-asserts `test_mode` and resumes normal operation.
+
+**DAC-Side Ports (Step Generator):**
+
+| Port | Direction | Width | Description |
+|---|---|---|---|
+| `clock` | input | 1 | 200 MHz DAC clock |
+| `reset_n` | input | 1 | Active-low asynchronous reset |
+| `calibration_start` | input | 1 | Trigger from State Machine |
+| `test_pulse_data` | output | 16 | Step signal to DAC MUX |
+| `test_mode` | output | 1 | MUX select for DAC Output Interface |
+| `tx_timestamp` | output | 64 | DAC-side timestamp at step edge |
+| `tx_timestamp_valid` | output | 1 | Timestamp captured |
+
+**ADC-Side Ports (Threshold Detector):**
+
+| Port | Direction | Width | Description |
+|---|---|---|---|
+| `clock` | input | 1 | AD9467 DCO |
+| `reset_n` | input | 1 | Active-low asynchronous reset |
+| `calibration_armed` | input | 1 | Armed by State Machine after step is sent |
+| `adc_sample` | input | 16 | ADC sample from realignment block |
+| `threshold` | input | 16 | Detection threshold (from config register) |
+| `timestamp` | input | 64 | Current timestamp counter value |
+| `rx_timestamp` | output | 64 | ADC-side timestamp at threshold crossing |
+| `rx_timestamp_valid` | output | 1 | Timestamp captured |
+
+**Design Notes:**
+- The `tx_timestamp` is in the DAC clock domain and `rx_timestamp` is in the ADC clock domain. Since both clocks are nominally 200 MHz from the same source, the timestamp difference directly gives the delay in clock cycles. The PS reads both via config/status registers.
+- The threshold should be set to approximately 50% of the step amplitude to capture the midpoint of the analog response.
+- Multiple calibration runs can be averaged by the PS for improved accuracy.
 
 ---
 
@@ -645,11 +724,13 @@ Main DAC/ADC/CLK Controller. The PS configures the AD9467, AD9122, and any exter
 
 **PS to PL (configuration):**
 - FCW, analog path delay, processing enable, trigger parameters, state machine commands, base phase offset, CIC decimation ratio, ADC realignment config
+- Calibration control (start, threshold)
 - FIR coefficients (via FIR Compiler AXI reload interface)
 
-**PL to PS (measurement data):**
+**PL to PS (measurement data and status):**
 - Magnitude (32-bit), corrected phase (32-bit), timestamps (64-bit)
 - Status/trigger flags
+- Path delay calibration timestamps (tx_timestamp, rx_timestamp -- 64-bit each, read-only)
 - Readout via AXI BRAM Controller
 
 ---
@@ -672,8 +753,14 @@ All registers are 32-bit, 4-byte aligned. Base address assigned by Vivado.
 | REG9 | 0x24 | `trigger_config` | Trigger mode and configuration |
 | REG10 | 0x28 | `state_machine_ctrl` | State machine command / status |
 | REG11 | 0x2C | `adc_realign_config` | Bits [15:0]: LVDS polarity inversion bitmask. Bit 16: capture select |
-| REG12+ | 0x30+ | | Data stream, component status readback |
-| REG13-63 | 0x34-0xFC | | Reserved / TBD |
+| REG12 | 0x30 | `calibration_ctrl` | Bit 0: calibration start. Bit 1: calibration done (read). Bit 2: calibration armed |
+| REG13 | 0x34 | `calibration_threshold` | ADC threshold for step detection [15:0] |
+| REG14 | 0x38 | `tx_timestamp[31:0]` | DAC-side timestamp at step edge, lower 32 bits (read-only) |
+| REG15 | 0x3C | `tx_timestamp[63:32]` | DAC-side timestamp at step edge, upper 32 bits (read-only) |
+| REG16 | 0x40 | `rx_timestamp[31:0]` | ADC-side timestamp at threshold crossing, lower 32 bits (read-only) |
+| REG17 | 0x44 | `rx_timestamp[63:32]` | ADC-side timestamp at threshold crossing, upper 32 bits (read-only) |
+| REG18+ | 0x48+ | | Data stream, component status readback |
+| REG19-63 | 0x4C-0xFC | | Reserved / TBD |
 
 **Operational constraint:** All register writes must occur while the State Machine holds the pipeline in reset. The PS must not modify registers during active measurement.
 
@@ -698,7 +785,7 @@ All registers are 32-bit, 4-byte aligned. Base address assigned by Vivado.
 | CORDIC Sin/Cos (x2) | ~400-800 | ~400-800 | 0 | 0 | Max pipeline, 200 MHz |
 | CORDIC Vectoring (x1) | ~200-400 | ~200-400 | 0 | 0 | Decimated rate, relaxed timing |
 | ADC Data Realignment | ~50 | ~100 | 0 | 0 | Combinational + registers |
-| Phase Synchronizer | ~50 | ~150 | 0 | 0 | Double-flop + edge detect |
+| Phase Synchronizer | ~80 | ~200 | 0 | 0 | Double-flop + edge detect + correction logic |
 | Analog Path Delay FIFO | ~20 | ~50 | 1 | 0 | 256 x 32-bit BRAM |
 | Mixer | ~50 | ~100 | 0 | 2 | Two DSP48E1 multiplies |
 | Timestamp Counter | ~30 | ~70 | 0 | 0 | 64-bit counter |
@@ -710,8 +797,9 @@ All registers are 32-bit, 4-byte aligned. Base address assigned by Vivado.
 | State Machine | ~100-300 | ~100-300 | 0 | 0 | Depends on complexity |
 | Triggering Logic | ~100-200 | ~100-200 | 0 | 0 | Comparators + control |
 | AXI BRAM Controller | ~100 | ~100 | 1-4 | 0 | Xilinx IP |
+| Path Delay Calibration | ~100 | ~200 | 0 | 0 | Step gen + threshold detect + timestamp capture |
 | SelectIO (ADC + DAC) | ~100 | ~200 | 0 | 0 | ISERDES/OSERDES primitives |
-| **Estimated Total** | **~2,000-5,000** | **~4,000-6,000** | **~4-12** | **~6-46** | |
+| **Estimated Total** | **~2,100-5,200** | **~4,200-6,400** | **~4-12** | **~6-46** | |
 | **Utilization** | **~4-10%** | **~4-6%** | **~3-9%** | **~3-21%** | Comfortably within budget |
 
 Resource usage is dominated by the FIR Compiler (DSP48 count scales with tap count) and CIC Compiler (register width scales with decimation ratio and stages). The XC7Z020 has ample headroom for this design.

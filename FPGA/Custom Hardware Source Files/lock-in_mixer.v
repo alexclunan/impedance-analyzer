@@ -1,7 +1,7 @@
 // mixer for lock-in amplifier
 // assumes FIFO is written to every cycle with data from DDS block
 // Author: Alex Clunan
-module lock-in_mixer 
+module lock_in_mixer 
     // module width
     #(parameter WIDTH = 16
     // input FIFO size

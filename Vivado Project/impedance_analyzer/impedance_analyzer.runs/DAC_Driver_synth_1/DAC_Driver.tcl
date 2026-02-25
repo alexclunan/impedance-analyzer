@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver.tcl"
+  variable script "C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver.tcl"
   variable category "vivado_synth"
 }
 
@@ -55,7 +55,7 @@ if {$::dispatch::connected} {
   }
 }
 
-OPTRACE "DAC_Driver_synth_1" START { ROLLUP_AUTO }
+OPTRACE "dac_driver_synth_1" START { ROLLUP_AUTO }
 set_param tcl.statsThreshold 360
 set_param general.usePosixSpawnForFork 1
 set_param project.vivado.isBlockSynthRun true
@@ -69,17 +69,20 @@ set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.cache/wt} [current_project]
 set_property parent.project_path {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.xpr} [current_project]
+set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property board_part_repo_paths {C:/Users/Alex/AppData/Roaming/Xilinx/Vivado/2025.2/xhub/board_store/xilinx_board_store} [current_project]
 set_property board_part trenz.biz:te0720_20_1q:part0:1.0 [current_project]
+set_property ip_repo_paths {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/ip_repo/Configuration_Register_1_0}} [current_project]
+update_ip_catalog
 set_property ip_output_repo {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.cache/ip} [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.srcs/sources_1/ip/DAC_Driver/DAC_Driver.xci}}
-set_property used_in_implementation false [get_files -all {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_ooc.xdc}}]
-set_property used_in_implementation false [get_files -all {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver.xdc}}]
+read_ip -quiet {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.srcs/sources_1/ip/dac_driver/dac_driver.xci}}
+set_property used_in_implementation false [get_files -all {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_ooc.xdc}}]
+set_property used_in_implementation false [get_files -all {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver.xdc}}]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -95,14 +98,14 @@ set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 OPTRACE "Configure IP Cache" START { }
 
-set cacheID [config_ip_cache -export -no_bom  -dir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1} -new_name DAC_Driver -ip [get_ips DAC_Driver]]
+set cacheID [config_ip_cache -export -no_bom  -dir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1} -new_name dac_driver -ip [get_ips dac_driver]]
 
 OPTRACE "Configure IP Cache" END { }
 if { $cacheID == "" } {
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top DAC_Driver -part xc7z020clg484-2 -incremental_mode off -mode out_of_context
+synth_design -top dac_driver -part xc7z020clg484-2 -incremental_mode off -mode out_of_context
 OPTRACE "synth_design" END { }
 OPTRACE "Write IP Cache" START { }
 
@@ -113,24 +116,24 @@ OPTRACE "Write IP Cache" START { }
 set_param constraints.enableBinaryConstraints false
 
 catch {
- write_checkpoint -force -noxdef -rename_prefix DAC_Driver_ DAC_Driver.dcp
+ write_checkpoint -force -noxdef -rename_prefix dac_driver_ dac_driver.dcp
 
  set ipCachedFiles {}
- write_verilog -force -mode synth_stub -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ DAC_Driver_stub.v
- lappend ipCachedFiles DAC_Driver_stub.v
+ write_verilog -force -mode synth_stub -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ dac_driver_stub.v
+ lappend ipCachedFiles dac_driver_stub.v
 
- write_vhdl -force -mode synth_stub -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ DAC_Driver_stub.vhdl
- lappend ipCachedFiles DAC_Driver_stub.vhdl
+ write_vhdl -force -mode synth_stub -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ dac_driver_stub.vhdl
+ lappend ipCachedFiles dac_driver_stub.vhdl
 
- write_verilog -force -mode funcsim -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ DAC_Driver_sim_netlist.v
- lappend ipCachedFiles DAC_Driver_sim_netlist.v
+ write_verilog -force -mode funcsim -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ dac_driver_sim_netlist.v
+ lappend ipCachedFiles dac_driver_sim_netlist.v
 
- write_vhdl -force -mode funcsim -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ DAC_Driver_sim_netlist.vhdl
- lappend ipCachedFiles DAC_Driver_sim_netlist.vhdl
+ write_vhdl -force -mode funcsim -rename_top decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix -prefix decalper_eb_ot_sdeen_pot_pi_dehcac_xnilix_ dac_driver_sim_netlist.vhdl
+ lappend ipCachedFiles dac_driver_sim_netlist.vhdl
  set TIME_taken [expr [clock seconds] - $TIME_start]
 
  if { [get_msg_config -count -severity {CRITICAL WARNING}] == 0 } {
-  config_ip_cache -add -dcp DAC_Driver.dcp -move_files $ipCachedFiles   -synth_runtime $TIME_taken  -ip [get_ips DAC_Driver]
+  config_ip_cache -add -dcp dac_driver.dcp -move_files $ipCachedFiles   -synth_runtime $TIME_taken  -ip [get_ips dac_driver]
  }
 OPTRACE "Write IP Cache" END { }
 }
@@ -138,44 +141,44 @@ if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"
 }
 
-rename_ref -prefix_all DAC_Driver_
+rename_ref -prefix_all dac_driver_
 
 OPTRACE "write_checkpoint" START { CHECKPOINT }
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef DAC_Driver.dcp
+write_checkpoint -force -noxdef dac_driver.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-generate_parallel_reports -reports { "report_utilization -file DAC_Driver_utilization_synth.rpt -pb DAC_Driver_utilization_synth.pb"  } 
+generate_parallel_reports -reports { "report_utilization -file dac_driver_utilization_synth.rpt -pb dac_driver_utilization_synth.pb"  } 
 OPTRACE "synth reports" END { }
 
 if { [catch {
-  file copy -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver.dcp} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver.dcp}
+  file copy -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver.dcp} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver.dcp}
 } _RESULT ] } { 
   send_msg_id runtcl-3 status "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  write_verilog -force -mode synth_stub {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.v}
+  write_verilog -force -mode synth_stub {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode synth_stub {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.vhdl}
+  write_vhdl -force -mode synth_stub {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_verilog -force -mode funcsim {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_sim_netlist.v}
+  write_verilog -force -mode funcsim {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_sim_netlist.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode funcsim {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_sim_netlist.vhdl}
+  write_vhdl -force -mode funcsim {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_sim_netlist.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -185,32 +188,32 @@ if { [catch {
 
 
 if { [catch {
-  file copy -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver.dcp} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver.dcp}
+  file copy -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver.dcp} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver.dcp}
 } _RESULT ] } { 
   send_msg_id runtcl-3 status "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver_stub.v} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.v}
+  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver_stub.v} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver_stub.vhdl} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.vhdl}
+  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver_stub.vhdl} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver_sim_netlist.v} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_sim_netlist.v}
+  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver_sim_netlist.v} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_sim_netlist.v}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1/DAC_Driver_sim_netlist.vhdl} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_sim_netlist.vhdl}
+  file rename -force {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1/dac_driver_sim_netlist.vhdl} {c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_sim_netlist.vhdl}
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -218,17 +221,17 @@ if { [catch {
 close [open .end.used_ip_cache.rst w]
 }; # end if cacheID 
 
-if {[file isdir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/DAC_Driver}]} {
+if {[file isdir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/dac_driver}]} {
   catch { 
-    file copy -force {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.v}} {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/DAC_Driver}
+    file copy -force {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.v}} {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/dac_driver}
   }
 }
 
-if {[file isdir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/DAC_Driver}]} {
+if {[file isdir {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/dac_driver}]} {
   catch { 
-    file copy -force {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_stub.vhdl}} {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/DAC_Driver}
+    file copy -force {{c:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_stub.vhdl}} {C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.ip_user_files/ip/dac_driver}
   }
 }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]
-OPTRACE "DAC_Driver_synth_1" END { }
+OPTRACE "dac_driver_synth_1" END { }

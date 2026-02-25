@@ -1,5 +1,5 @@
 
-// file: DAC_Driver.v
+// file: dac_driver.v
 // (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
@@ -52,13 +52,13 @@
 
 `timescale 1ps/1ps
 
-(* CORE_GENERATION_INFO = "DAC_Driver,selectio_wiz_v5_1_20,{component_name=DAC_Driver,bus_dir=OUTPUTS,bus_sig_type=DIFF,bus_io_std=DIFF_SSTL18_I,use_serialization=true,use_phase_detector=false,serialization_factor=4,enable_bitslip=false,enable_train=false,system_data_width=8,bus_in_delay=NONE,bus_out_delay=NONE,clk_sig_type=SINGLE,clk_io_std=LVCMOS18,clk_buf=BUFIO2,active_edge=RISING,clk_delay=NONE,selio_bus_in_delay=NONE,selio_bus_out_delay=NONE,selio_clk_buf=BUFIO,selio_active_edge=DDR,selio_ddr_alignment=SAME_EDGE_PIPELINED,selio_oddr_alignment=SAME_EDGE,ddr_alignment=C0,selio_interface_type=NETWORKING,interface_type=NETWORKING,selio_bus_in_tap=0,selio_bus_out_tap=0,selio_clk_io_std=DIFF_SSTL18_I,selio_clk_sig_type=DIFF}" *)
+(* CORE_GENERATION_INFO = "dac_driver,selectio_wiz_v5_1_20,{component_name=dac_driver,bus_dir=OUTPUTS,bus_sig_type=DIFF,bus_io_std=DIFF_SSTL18_I,use_serialization=false,use_phase_detector=false,serialization_factor=4,enable_bitslip=false,enable_train=false,system_data_width=16,bus_in_delay=NONE,bus_out_delay=NONE,clk_sig_type=SINGLE,clk_io_std=LVCMOS18,clk_buf=BUFIO2,active_edge=RISING,clk_delay=NONE,selio_bus_in_delay=NONE,selio_bus_out_delay=NONE,selio_clk_buf=BUFIO,selio_active_edge=SDR,selio_ddr_alignment=SAME_EDGE_PIPELINED,selio_oddr_alignment=SAME_EDGE,ddr_alignment=C0,selio_interface_type=NETWORKING,interface_type=NETWORKING,selio_bus_in_tap=0,selio_bus_out_tap=0,selio_clk_io_std=DIFF_SSTL18_I,selio_clk_sig_type=DIFF}" *)
 
-module DAC_Driver
+module dac_driver
    // width of the data for the system
- #(parameter SYS_W = 8,
+ #(parameter SYS_W = 16,
    // width of the data for the device
-   parameter DEV_W = 32)
+   parameter DEV_W = 16)
  (
   // From the device out to the system
   input  [DEV_W-1:0] data_out_from_device,
@@ -68,12 +68,12 @@ module DAC_Driver
   output  clk_to_pins_n,
   input              clk_in_p,      // Differential clock from IOB
   input              clk_in_n,
-  output             clk_div_out,   // Slow clock output
+  output             clk_out,
   input              clk_reset,
   input              io_reset);
 
 
-  DAC_Driver_selectio_wiz 
+  dac_driver_selectio_wiz 
   #(
    .SYS_W(SYS_W),
    .DEV_W(DEV_W)
@@ -87,7 +87,7 @@ module DAC_Driver
    .clk_to_pins_n(clk_to_pins_n),
    .clk_in_p(clk_in_p),                          
    .clk_in_n(clk_in_n),
-   .clk_div_out(clk_div_out),                       
+   .clk_out(clk_out),
    .clk_reset(clk_reset),
    .io_reset(io_reset)
 ); 

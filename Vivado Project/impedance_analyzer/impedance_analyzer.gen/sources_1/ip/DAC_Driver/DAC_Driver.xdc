@@ -1,5 +1,5 @@
 
-# file: DAC_Driver.xdc
+# file: dac_driver.xdc
 # (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # This file contains confidential and proprietary information
@@ -47,7 +47,7 @@
 
 # These commands create the primary clock and set the jitter value.
 # Commented constraints are just for reference
-# All these constraints are applied in DAC_Driver_OOC.xdc
+# All these constraints are applied in dac_driver_OOC.xdc
 #----------------------------------------------------------------
 #create_clock -period 10 [get_ports clk_in_p]
 #set_input_jitter [get_clocks -of_objects [get_ports clk_in_p] 0.1

@@ -1,0 +1,30 @@
+Time resolution is 1 ps
+=== Magnitude/Phase Calculator Testbench ===
+DATA_WIDTH: 32, CORDIC_WIDTH: 64
+PASS: Reset: CORDIC tvalid is low
+PASS: Reset: CORDIC tdata is zero
+PASS: Reset: magnitude is zero
+PASS: Reset: phase is zero
+PASS: Reset: valid_out is low
+PASS: Packing: lower 32 bits == I (0xAAAA_BBBB)
+PASS: Packing: upper 32 bits == Q (0xCCCC_DDDD)
+PASS: Packing: tvalid asserted
+PASS: CE gate: tvalid low when ce deasserted
+PASS: CE gate: tdata holds previous value
+PASS: valid_in gate: tvalid low when valid_in deasserted
+PASS: valid_in gate: tvalid high when valid_in reasserted
+PASS: Unpack: magnitude == 0x0000_7FFF (lower 32 bits)
+PASS: Unpack: phase == 0x3243_F6A9 (upper 32 bits)
+PASS: Unpack: valid_out asserted
+PASS: valid_out: deasserts when CORDIC invalid
+PASS: valid_out: reasserts when CORDIC valid
+PASS: Seq 1: I=1 Q=0 packed correctly
+PASS: Seq 2: I=0 Q=1 packed correctly
+PASS: Seq 3: I=-1 Q=-1 packed correctly
+PASS: Mid-reset: CORDIC tvalid cleared
+PASS: Mid-reset: magnitude cleared
+PASS: Mid-reset: phase cleared
+PASS: Mid-reset: valid_out cleared
+=== Test Complete: 0 errors ===
+ALL TESTS PASSED
+$finish called at time : 85 ns : File "C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_mag_phase_calculator.sv" Line 226

@@ -1,0 +1,23 @@
+0.7
+2020.2
+Nov 14 2025
+19:37:27
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/adc_data_realignment.v,1771999641,verilog,,,,adc_data_realignment,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/dac_output_wrapper.v,1772001902,verilog,,,,dac_output_wrapper,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/decimator_lpf_wrapper.v,1772001902,verilog,,,,decimator_lpf_wrapper,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/mag_phase_calculator.v,1772001902,verilog,,,,mag_phase_calculator,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/mixer.v,1772000377,verilog,,,,mixer,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_accumulator.v,1771997550,verilog,,C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_accumulator_slave.v,,phase_accumulator,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_accumulator_slave.v,1772000377,verilog,,C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_synchronizer.v,,phase_accumulator_slave,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_adjuster.v,1771998885,verilog,,,,phase_adjuster,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/phase_synchronizer.v,1772000377,verilog,,,,phase_synchronizer,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/Custom Hardware Source Files/timestamp_counter.v,1771998594,verilog,,,,timestamp_counter,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_adc_data_realignment.sv,1771999641,systemVerilog,,,,tb_adc_data_realignment,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_dac_output_wrapper.sv,1772001902,systemVerilog,,,,tb_dac_output_wrapper,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_decimator_lpf_wrapper.sv,1772001902,systemVerilog,,,,tb_decimator_lpf_wrapper,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_mag_phase_calculator.sv,1772001902,systemVerilog,,,,tb_mag_phase_calculator,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_mixer.sv,1772000377,systemVerilog,,,,tb_mixer,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_phase_accumulator_slave.sv,1772001059,systemVerilog,,,,tb_phase_accumulator_slave,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_phase_adjuster.sv,1771998885,systemVerilog,,,,tb_phase_adjuster,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/FPGA/testbenches/tb_phase_synchronizer.sv,1772001295,systemVerilog,,,,tb_phase_synchronizer,,uvm,../../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef,,,,,
+C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.sim/sim_1/behav/xsim/glbl.v,1756381829,verilog,,,,glbl,,uvm,,,,,,

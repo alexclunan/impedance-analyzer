@@ -1,10 +1,10 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
-| Date         : Mon Feb 16 14:06:23 2026
+| Date         : Tue Feb 24 12:23:01 2026
 | Host         : DESKTOP-F1EP304 running 64-bit major release  (build 9200)
-| Command      : report_utilization -file ADC_Input_utilization_synth.rpt -pb ADC_Input_utilization_synth.pb
-| Design       : ADC_Input
+| Command      : report_utilization -file adc_input_utilization_synth.rpt -pb adc_input_utilization_synth.pb
+| Design       : adc_input
 | Device       : xc7z020clg484-2
 | Speed File   : -2
 | Design State : Synthesized
@@ -95,20 +95,21 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |   34 |     0 |          0 |       200 | 17.00 |
+| Bonded IOB                  |   20 |     0 |          0 |       200 | 10.00 |
 | Bonded IPADs                |    0 |     0 |          0 |         2 |  0.00 |
 | Bonded IOPADs               |    0 |     0 |          0 |       130 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |         4 |  0.00 |
 | PHASER_REF                  |    0 |     0 |          0 |         4 |  0.00 |
 | OUT_FIFO                    |    0 |     0 |          0 |        16 |  0.00 |
 | IN_FIFO                     |    0 |     0 |          0 |        16 |  0.00 |
-| IDELAYCTRL                  |    0 |     0 |          0 |         4 |  0.00 |
-| IBUFDS                      |   17 |     0 |          0 |       192 |  8.85 |
+| IDELAYCTRL                  |    1 |     0 |          0 |         4 | 25.00 |
+| IBUFDS                      |   10 |     0 |          0 |       192 |  5.21 |
 | PHASER_OUT/PHASER_OUT_PHY   |    0 |     0 |          0 |        16 |  0.00 |
 | PHASER_IN/PHASER_IN_PHY     |    0 |     0 |          0 |        16 |  0.00 |
-| IDELAYE2/IDELAYE2_FINEDELAY |    0 |     0 |          0 |       200 |  0.00 |
-| ILOGIC                      |   16 |     0 |          0 |       200 |  8.00 |
-|   IDDR                      |   16 |       |            |           |       |
+| IDELAYE2/IDELAYE2_FINEDELAY |    9 |     0 |          0 |       200 |  4.50 |
+|   IDELAYE2 only             |    9 |     0 |            |           |       |
+| ILOGIC                      |    9 |     0 |          0 |       200 |  4.50 |
+|   IDDR                      |    9 |       |            |           |       |
 | OLOGIC                      |    0 |     0 |          0 |       200 |  0.00 |
 +-----------------------------+------+-------+------------+-----------+-------+
 
@@ -116,17 +117,18 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 5. Clocking
 -----------
 
-+------------+------+-------+------------+-----------+-------+
-|  Site Type | Used | Fixed | Prohibited | Available | Util% |
-+------------+------+-------+------------+-----------+-------+
-| BUFGCTRL   |    0 |     0 |          0 |        32 |  0.00 |
-| BUFIO      |    0 |     0 |          0 |        16 |  0.00 |
-| MMCME2_ADV |    0 |     0 |          0 |         4 |  0.00 |
-| PLLE2_ADV  |    0 |     0 |          0 |         4 |  0.00 |
-| BUFMRCE    |    0 |     0 |          0 |         8 |  0.00 |
-| BUFHCE     |    0 |     0 |          0 |        72 |  0.00 |
-| BUFR       |    1 |     0 |          0 |        16 |  6.25 |
-+------------+------+-------+------------+-----------+-------+
++--------------+------+-------+------------+-----------+-------+
+|   Site Type  | Used | Fixed | Prohibited | Available | Util% |
++--------------+------+-------+------------+-----------+-------+
+| BUFGCTRL     |    1 |     0 |          0 |        32 |  3.13 |
+| BUFIO        |    1 |     0 |          0 |        16 |  6.25 |
+|   BUFIO only |    1 |     0 |            |           |       |
+| MMCME2_ADV   |    0 |     0 |          0 |         4 |  0.00 |
+| PLLE2_ADV    |    0 |     0 |          0 |         4 |  0.00 |
+| BUFMRCE      |    0 |     0 |          0 |         8 |  0.00 |
+| BUFHCE       |    0 |     0 |          0 |        72 |  0.00 |
+| BUFR         |    1 |     0 |          0 |        16 |  6.25 |
++--------------+------+-------+------------+-----------+-------+
 
 
 6. Specific Feature
@@ -149,13 +151,17 @@ Warning! For any ECO changes, please run place_design if there are unplaced inst
 7. Primitives
 -------------
 
-+----------+------+---------------------+
-| Ref Name | Used | Functional Category |
-+----------+------+---------------------+
-| IBUFDS   |   17 |                  IO |
-| IDDR     |   16 |                  IO |
-| BUFR     |    1 |               Clock |
-+----------+------+---------------------+
++------------+------+---------------------+
+|  Ref Name  | Used | Functional Category |
++------------+------+---------------------+
+| IBUFDS     |   10 |                  IO |
+| IDELAYE2   |    9 |                  IO |
+| IDDR       |    9 |                  IO |
+| IDELAYCTRL |    1 |                  IO |
+| BUFR       |    1 |               Clock |
+| BUFIO      |    1 |               Clock |
+| BUFG       |    1 |               Clock |
++------------+------+---------------------+
 
 
 8. Black Boxes

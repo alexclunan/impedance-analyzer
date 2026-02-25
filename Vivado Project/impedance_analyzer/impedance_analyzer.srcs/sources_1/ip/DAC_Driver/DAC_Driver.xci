@@ -1,26 +1,26 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "DAC_Driver",
+    "xci_name": "dac_driver",
     "component_reference": "xilinx.com:ip:selectio_wiz:5.1",
     "ip_revision": "20",
-    "gen_directory": "../../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver",
+    "gen_directory": "../../../../impedance_analyzer.gen/sources_1/ip/dac_driver",
     "parameters": {
       "component_parameters": {
-        "Component_Name": [ { "value": "DAC_Driver", "resolve_type": "user", "usage": "all" } ],
+        "Component_Name": [ { "value": "dac_driver", "resolve_type": "user", "usage": "all" } ],
         "NOTES": [ { "value": "None", "resolve_type": "user", "usage": "all" } ],
-        "USE_TEMPLATE": [ { "value": "Custom", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "USE_TEMPLATE": [ { "value": "Custom", "resolve_type": "user", "usage": "all" } ],
         "BUS_DIR": [ { "value": "OUTPUTS", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "BUS_SIG_TYPE": [ { "value": "DIFF", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "BUS_IO_STD": [ { "value": "DIFF_SSTL18_I", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "USE_PHASE_DETECTOR": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
-        "SELIO_ACTIVE_EDGE": [ { "value": "DDR", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
-        "USE_SERIALIZATION": [ { "value": "true", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "SELIO_ACTIVE_EDGE": [ { "value": "SDR", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "USE_SERIALIZATION": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "SERIALIZATION_FACTOR": [ { "value": "4", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "ENABLE_BITSLIP": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "ENABLE_TRAIN": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "TRAIN_CONSTANT": [ { "value": "0", "resolve_type": "user", "usage": "all" } ],
-        "SYSTEM_DATA_WIDTH": [ { "value": "8", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "SYSTEM_DATA_WIDTH": [ { "value": "16", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "INTERFACE_TYPE": [ { "value": "NETWORKING", "resolve_type": "user", "usage": "all" } ],
         "SELIO_INTERFACE_TYPE": [ { "value": "NETWORKING", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "BUS_IN_DELAY": [ { "value": "NONE", "resolve_type": "user", "usage": "all" } ],
@@ -46,10 +46,10 @@
         "CLK_DELAY": [ { "value": "NONE", "resolve_type": "user", "usage": "all" } ],
         "CLK_TAP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "CLK_FWD": [ { "value": "true", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
-        "CLK_FWD_SER": [ { "value": "true", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "CLK_FWD_SER": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "IDDR_RST_TYPE": [ { "value": "ASYNC", "resolve_type": "user", "usage": "all" } ],
         "SELIO_IDDR_RST_TYPE": [ { "value": "ASYNC", "resolve_type": "user", "usage": "all" } ],
-        "CLK_EN": [ { "value": "false", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "CLK_EN": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "CONFIG_CLK_FWD": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "CLK_FWD_SIG_TYPE": [ { "value": "DIFF", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
         "CLK_FWD_IO_STD": [ { "value": "DIFF_SSTL18_I", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
@@ -59,7 +59,7 @@
         "IDELAY_HIGH_PERF_MODE": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ]
       },
       "model_parameters": {
-        "c_component_name": [ { "value": "DAC_Driver", "resolve_type": "generated", "usage": "all" } ],
+        "c_component_name": [ { "value": "dac_driver", "resolve_type": "generated", "usage": "all" } ],
         "C_INCLUDE_IDELAYCTRL": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_INCLUDE_IDELAYCTRL_BUFG": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_DEVICE_FAMILY": [ { "value": "zynq", "resolve_type": "generated", "usage": "all" } ],
@@ -67,13 +67,13 @@
         "C_BUS_DIR": [ { "value": "OUTPUTS", "resolve_type": "generated", "usage": "all" } ],
         "C_BUS_SIG_TYPE": [ { "value": "DIFF", "resolve_type": "generated", "usage": "all" } ],
         "C_BUS_IO_STD": [ { "value": "DIFF_SSTL18_I", "resolve_type": "generated", "usage": "all" } ],
-        "C_USE_SERIALIZATION": [ { "value": "true", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
+        "C_USE_SERIALIZATION": [ { "value": "false", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
         "C_SERIALIZATION_FACTOR": [ { "value": "4", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_USE_PHASE_DETECTOR": [ { "value": "false", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
         "C_ENABLE_BITSLIP": [ { "value": "false", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
         "C_ENABLE_TRAIN": [ { "value": "false", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
         "C_TRAIN_CONSTANT": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_SYSTEM_DATA_WIDTH": [ { "value": "8", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_SYSTEM_DATA_WIDTH": [ { "value": "16", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_BUS_IN_DELAY": [ { "value": "NONE", "resolve_type": "generated", "usage": "all" } ],
         "C_SELIO_BUS_IN_DELAY": [ { "value": "NONE", "resolve_type": "generated", "usage": "all" } ],
         "C_BUS_IN_TAP": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
@@ -91,7 +91,7 @@
         "C_CLK_BUF": [ { "value": "BUFIO2", "resolve_type": "generated", "usage": "all" } ],
         "C_SELIO_CLK_BUF": [ { "value": "BUFIO", "resolve_type": "generated", "usage": "all" } ],
         "C_ACTIVE_EDGE": [ { "value": "RISING", "resolve_type": "generated", "usage": "all" } ],
-        "C_SELIO_ACTIVE_EDGE": [ { "value": "DDR", "resolve_type": "generated", "usage": "all" } ],
+        "C_SELIO_ACTIVE_EDGE": [ { "value": "SDR", "resolve_type": "generated", "usage": "all" } ],
         "C_INTERFACE_TYPE": [ { "value": "NETWORKING", "resolve_type": "generated", "usage": "all" } ],
         "C_SELIO_INTERFACE_TYPE": [ { "value": "NETWORKING", "resolve_type": "generated", "usage": "all" } ],
         "C_DDR_ALIGNMENT": [ { "value": "C0", "resolve_type": "generated", "usage": "all" } ],
@@ -103,7 +103,7 @@
         "C_CLK_TAP_wrap": [ { "value": "STAY_AT_LIMIT", "resolve_type": "generated", "usage": "all" } ],
         "C_CLK_FWD": [ { "value": "true", "resolve_type": "generated", "format": "bool", "usage": "all" } ],
         "C_USE_TEMPLATE": [ { "value": "Custom", "resolve_type": "generated", "usage": "all" } ],
-        "C_DATA_RATE_STRING": [ { "value": "4", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_DATA_RATE_STRING": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_DEVICE": [ { "value": "2", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_IDDR_RST_TYPE": [ { "value": "ASYNC", "resolve_type": "generated", "usage": "all" } ],
         "C_SELIO_IDDR_RST_TYPE": [ { "value": "ASYNC", "resolve_type": "generated", "usage": "all" } ],
@@ -131,7 +131,7 @@
         "IPCONTEXT": [ { "value": "IP_Flow" } ],
         "IPREVISION": [ { "value": "20" } ],
         "MANAGED": [ { "value": "TRUE" } ],
-        "OUTPUTDIR": [ { "value": "../../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver" } ],
+        "OUTPUTDIR": [ { "value": "../../../../impedance_analyzer.gen/sources_1/ip/dac_driver" } ],
         "SELECTEDSIMMODEL": [ { "value": "" } ],
         "SHAREDDIR": [ { "value": "." } ],
         "SWVERSION": [ { "value": "2025.2" } ],
@@ -140,16 +140,16 @@
     },
     "boundary": {
       "ports": {
-        "data_out_to_pins_p": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
-        "data_out_to_pins_n": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
+        "data_out_to_pins_p": [ { "direction": "out", "size_left": "15", "size_right": "0" } ],
+        "data_out_to_pins_n": [ { "direction": "out", "size_left": "15", "size_right": "0" } ],
         "clk_in_p": [ { "direction": "in", "driver_value": "0" } ],
         "clk_in_n": [ { "direction": "in", "driver_value": "0" } ],
-        "data_out_from_device": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0" } ],
+        "data_out_from_device": [ { "direction": "in", "size_left": "15", "size_right": "0", "driver_value": "0" } ],
         "clk_reset": [ { "direction": "in", "driver_value": "0" } ],
         "io_reset": [ { "direction": "in", "driver_value": "0" } ],
         "clk_to_pins_p": [ { "direction": "out" } ],
         "clk_to_pins_n": [ { "direction": "out" } ],
-        "clk_div_out": [ { "direction": "out" } ]
+        "clk_out": [ { "direction": "out" } ]
       },
       "interfaces": {
         "io_reset": {
@@ -200,7 +200,7 @@
             "DATA": [ { "physical_name": "data_out_from_device" } ]
           }
         },
-        "clk_div_out": {
+        "clk_out": {
           "vlnv": "xilinx.com:signal:clock:1.0",
           "abstraction_type": "xilinx.com:signal:clock_rtl:1.0",
           "mode": "master",
@@ -215,7 +215,7 @@
             "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
           },
           "port_maps": {
-            "CLK": [ { "physical_name": "clk_div_out" } ]
+            "CLK": [ { "physical_name": "clk_out" } ]
           }
         },
         "diff_clk_to_pins": {
@@ -234,5 +234,5 @@
       }
     }
   },
-  "checksum": "19e75806"
+  "checksum": "e0d49bf6"
 }

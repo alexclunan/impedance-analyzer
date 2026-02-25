@@ -8,10 +8,17 @@ verilog fifo_generator_v13_2_14 -i "../../../../../../../../../../AMDDesignTools
 
 verilog xil_defaultlib -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
 "../../../impedance_analyzer.gen/sources_1/ip/wave_delay_fifo/sim/wave_delay_fifo.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver_selectio_wiz.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/DAC_Driver/DAC_Driver.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input_selectio_wiz.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/ADC_Input/ADC_Input.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_selectio_wiz.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver.v" \
+
+verilog blk_mem_gen_v8_4_12 -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"../../ipstatic/simulation/blk_mem_gen_v8_4.v" \
+
+verilog xil_defaultlib -i "../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+"../../../impedance_analyzer.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/analog_delay_fifo/sim/analog_delay_fifo.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/adc_input/adc_input_selectio_wiz.v" \
+"../../../impedance_analyzer.gen/sources_1/ip/adc_input/adc_input.v" \
 
 verilog xil_defaultlib "glbl.v"
 

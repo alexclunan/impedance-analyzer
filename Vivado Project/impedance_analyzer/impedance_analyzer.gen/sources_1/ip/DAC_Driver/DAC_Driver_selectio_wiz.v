@@ -1,5 +1,5 @@
 
-// file: DAC_Driver_selectio_wiz.v
+// file: dac_driver_selectio_wiz.v
 // (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
@@ -52,11 +52,11 @@
 
 `timescale 1ps/1ps
 
-module DAC_Driver_selectio_wiz
+module dac_driver_selectio_wiz
    // width of the data for the system
- #(parameter SYS_W = 8,
+ #(parameter SYS_W = 16,
    // width of the data for the device
-   parameter DEV_W = 32)
+   parameter DEV_W = 16)
  (
   // From the device out to the system
   input  [DEV_W-1:0] data_out_from_device,
@@ -66,10 +66,9 @@ module DAC_Driver_selectio_wiz
   output  clk_to_pins_n,
   input              clk_in_p,      // Differential clock from IOB
   input              clk_in_n,
-  output             clk_div_out,   // Slow clock output
+  output             clk_out,
   input              clk_reset,
   input              io_reset);
-  localparam         num_serial_bits = DEV_W/SYS_W;
   wire clock_enable = 1'b1;
   // Signal declarations
   ////------------------------------
@@ -78,9 +77,6 @@ module DAC_Driver_selectio_wiz
   wire   [SYS_W-1:0] data_out_to_pins_int;
   // Between the delay and serdes
   wire   [SYS_W-1:0] data_out_to_pins_predelay;
-  // Array to use intermediately from the serdes to the internal
-  //  devices. bus "0" is the leftmost bus
-  wire [SYS_W-1:0]  oserdes_d[0:13];   // fills in starting with 13
   // Create the clock logic
 
   IBUFDS
@@ -89,28 +85,20 @@ module DAC_Driver_selectio_wiz
      (.I          (clk_in_p),
       .IB         (clk_in_n),
       .O          (clk_in_int));
-
-// High Speed BUFIO clock buffer
- BUFIO bufio_inst
-   (.O(clk_in_int_buf),
-    .I(clk_in_int));
-
   
    // BUFR generates the slow clock
    BUFR
     #(.SIM_DEVICE("7SERIES"),
-    .BUFR_DIVIDE("2"))
+    .BUFR_DIVIDE("BYPASS"))
     clkout_buf_inst
     (.O (clk_div),
      .CE(1'b1),
-     .CLR(clk_reset),
+     .CLR(1'b0),
      .I (clk_in_int));
 
-   assign clk_div_out = clk_div; // This is regional clock
-
+   assign clk_out = clk_div; // This is regional clock;
   // We have multiple bits- step over every bit, instantiating the required elements
   genvar pin_count;
-  genvar slice_count;
   generate for (pin_count = 0; pin_count < SYS_W; pin_count = pin_count + 1) begin: pins
     // Instantiate the buffers
     ////------------------------------
@@ -126,60 +114,20 @@ module DAC_Driver_selectio_wiz
     ////-------------------------------
    assign data_out_to_pins_int[pin_count]    = data_out_to_pins_predelay[pin_count];
  
-     // Instantiate the serdes primitive
-     ////------------------------------
+    // Connect the delayed data to the fabric
+    ////--------------------------------------
 
-     // declare the oserdes
-     OSERDESE2
-       # (
-         .DATA_RATE_OQ   ("DDR"),
-         .DATA_RATE_TQ   ("DDR"),
-         .DATA_WIDTH     (4),
-         .TRISTATE_WIDTH (4),
-         .SERDES_MODE    ("MASTER"))
-       oserdese2_master (
-         .D1             (oserdes_d[13][pin_count]),
-         .D2             (oserdes_d[12][pin_count]),
-         .D3             (oserdes_d[11][pin_count]),
-         .D4             (oserdes_d[10][pin_count]),
-         .D5             (oserdes_d[9][pin_count]),
-         .D6             (oserdes_d[8][pin_count]),
-         .D7             (oserdes_d[7][pin_count]),
-         .D8             (oserdes_d[6][pin_count]),
-         .T1             (1'b0),
-         .T2             (1'b0),
-         .T3             (1'b0),
-         .T4             (1'b0),
-         .SHIFTIN1       (1'b0),
-         .SHIFTIN2       (1'b0),
-         .SHIFTOUT1      (),
-         .SHIFTOUT2      (),
-         .OCE            (clock_enable),
-         .CLK            (clk_in_int_buf),
-         .CLKDIV         (clk_div),
-         .OQ             (data_out_to_pins_predelay[pin_count]),
-         .TQ             (),
-         .OFB            (),
-         .TFB            (),
-         .TBYTEIN        (1'b0),
-         .TBYTEOUT       (),
-         .TCE            (1'b0),
-         .RST            (io_reset));
-
-     // Concatenate the serdes outputs together. Keep the timesliced
-     //   bits together, and placing the earliest bits on the right
-     //   ie, if data comes in 0, 1, 2, 3, 4, 5, 6, 7, ...
-     //       the output will be 3210, 7654, ...
-     ////---------------------------------------------------------
-     for (slice_count = 0; slice_count < num_serial_bits; slice_count = slice_count + 1) begin: out_slices
-        // This places the first data in time on the right
-        assign oserdes_d[14-slice_count-1] =
-           data_out_from_device[slice_count*SYS_W+:SYS_W];
-        // To place the first data in time on the left, use the
-        //   following code, instead
-        // assign oserdes_d[slice_count] =
-        //    data_out_from_device[slice_count*SYS_W+:SYS_W];
-     end
+    // Pack the registers into the IOB
+    wire data_out_from_device_q;
+    (* IOB = "true" *)
+    FDRE fdre_out_inst
+      (.D              (data_out_from_device[pin_count]),
+       .C              (clk_div),
+       .CE             (clock_enable),
+       .R              (io_reset),
+       .Q              (data_out_from_device_q)
+      );
+    assign data_out_to_pins_predelay[pin_count] = data_out_from_device_q;
   end
   endgenerate
   
@@ -190,44 +138,18 @@ module DAC_Driver_selectio_wiz
 //// NO ODELAY
    // clock forwarding logic
 
-     // declare the oserdes
-     OSERDESE2
-       # (
-         .DATA_RATE_OQ   ("DDR"),
-         .DATA_RATE_TQ   ("SDR"),
-         .DATA_WIDTH     (4),
-         .TRISTATE_WIDTH (1),
-         .SERDES_MODE    ("MASTER"))
-       clk_fwd (
-         .D1             (1'b1),
-         .D2             (1'b0),
-         .D3             (1'b1),
-         .D4             (1'b0),
-         .D5             (1'b1),
-         .D6             (1'b0),
-         .D7             (1'b1),
-         .D8             (1'b0),
-         .T1             (1'b0),
-         .T2             (1'b0),
-         .T3             (1'b0),
-         .T4             (1'b0),
-         .SHIFTIN1       (1'b0),
-         .SHIFTIN2       (1'b0),
-         .SHIFTOUT1      (),
-         .SHIFTOUT2      (),
-         .OCE            (clock_enable),
- 
-         .CLK            (clk_div),
-         .CLKDIV         (clk_div),
-         .OQ             (clk_fwd_out),
-         .TQ             (),
-         .OFB            (),
-         .TFB            (),
-         .TBYTEIN        (1'b0),
-         .TBYTEOUT       (),
-         .TCE            (1'b0),
-         .RST            (io_reset));
-
+    ODDR
+     #(.DDR_CLK_EDGE   ("SAME_EDGE"), //"OPPOSITE_EDGE" "SAME_EDGE"
+       .INIT           (1'b0),
+       .SRTYPE         ("ASYNC"))
+     oddr_inst
+      (.D1             (1'b1),
+       .D2             (1'b0),
+       .C              (clk_div),
+       .CE             (clock_enable),
+       .Q              (clk_fwd_out),
+       .R              (clk_reset),
+       .S              (1'b0));
 
 // Clock Output Buffer
     OBUFDS

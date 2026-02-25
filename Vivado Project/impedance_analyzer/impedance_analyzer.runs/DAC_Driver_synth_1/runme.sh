@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/DAC_Driver_synth_1'
+HD_PWD='C:/Users/Alex/Documents/GitHub/impedance-analyzer/Vivado Project/impedance_analyzer/impedance_analyzer.runs/dac_driver_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log
@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log DAC_Driver.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source DAC_Driver.tcl
+EAStep vivado -log dac_driver.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dac_driver.tcl

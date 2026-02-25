@@ -1,0 +1,51 @@
+---
+description: FPGA RTL development conventions, style rules, and documentation requirements for the impedance analyzer project
+alwaysApply: true
+---
+
+# FPGA Development Rules
+
+## RTL Coding Style
+
+All custom RTL must match the style established in `phase_accumulator.v` and `lock-in_mixer.v`:
+
+- **Header:** First line is a lowercase comment describing the module purpose. Second line is `// Author: Alex Clunan`. No blank line before `module`.
+- **Parameters:** Declared inline with `#(parameter ...)` before the port list. Comment above the parameter block describes the group (e.g., `// accumulator parameters`).
+- **Ports:** Grouped by function with a comment labeling each group (e.g., `// frequency control`, `// phase outputs`). Use `input`/`output` without `wire`/`reg` keywords in the port list.
+- **Registers:** Declared with `reg` after the port list, each with a short comment (e.g., `// accumulator register`).
+- **Always blocks:** Use `always @(posedge clock or negedge reset_n)`. Reset branch comment: `// asynchronous low reset`. Active branch comment describes the operation (e.g., `// accumulate phase`).
+- **Outputs:** Use continuous `assign` from internal registers at the bottom of the module.
+- **Reset:** Always async active-low (`reset_n`). Clear registers with `{WIDTH{1'b0}}` syntax.
+- **No redundant comments:** Do not narrate what the code obviously does. Comments explain intent, grouping, or non-obvious behavior only.
+
+## Testbench Conventions
+
+All testbenches use SystemVerilog (`.sv`) with `timescale 1ns / 1ps`:
+
+- **Reset release:** Always at `@(negedge clock)` to avoid race conditions with the DUT's posedge-triggered always block. Never release reset at `@(posedge clock)`.
+- **Sampling:** Use `@(negedge clock)` after `@(posedge clock)` to sample outputs after register updates settle.
+- **Check task:** Use the shared `check` task pattern with `$error` on fail and `$display` on pass, with an `errors` counter.
+- **Identity equality:** Use `===` (not `==`) in check conditions to catch X/Z values.
+- **Summary:** End with error count, "ALL TESTS PASSED" or "SOME TESTS FAILED", and `$finish`.
+- **Naming:** `tb_<module_name>.sv` in `FPGA/Custom Hardware Source Files/testbenches/`.
+
+## Documentation Updates
+
+After creating or modifying any module or testbench, update these files:
+
+1. **`FPGA/testbenches/testbench_reference.md`** -- Add/update the test table for any new or changed testbench. Include the exact check string and a plain-English description for every test case.
+2. **Implementation plan** (`rtl_implementation_plan_3060d662.plan.md`) -- Mark completed steps and update any details that changed during implementation.
+3. **`FPGA/FPGA_Fabric_Spec.md`** -- Update if any port, parameter, or architectural decision changes from what the spec describes.
+
+## File Organization
+
+- RTL source: `FPGA/Custom Hardware Source Files/<module_name>.v`
+- Testbenches: `FPGA/testbenches/tb_<module_name>.sv` (separate from design sources so Vivado does not import them)
+- All names use `snake_case`
+
+## General Reminders
+
+- Check the implementation plan before building to confirm the module's spec, ports, and dependencies.
+- Reference `FPGA_Fabric_Spec.md` for authoritative port lists and parameter values.
+- When a module's interface changes, check downstream dependents in the dependency graph and update them.
+- Parameterize widths -- do not hardcode bit widths in RTL unless there is a specific reason.

@@ -1,5 +1,5 @@
 
-// file: ADC_Input.v
+// file: adc_input.v
 // (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
@@ -52,25 +52,27 @@
 
 `timescale 1ps/1ps
 
-(* CORE_GENERATION_INFO = "ADC_Input,selectio_wiz_v5_1_20,{component_name=ADC_Input,bus_dir=INPUTS,bus_sig_type=DIFF,bus_io_std=DIFF_SSTL18_I,use_serialization=false,use_phase_detector=false,serialization_factor=4,enable_bitslip=false,enable_train=false,system_data_width=16,bus_in_delay=NONE,bus_out_delay=NONE,clk_sig_type=SINGLE,clk_io_std=LVCMOS18,clk_buf=BUFIO2,active_edge=RISING,clk_delay=NONE,selio_bus_in_delay=NONE,selio_bus_out_delay=NONE,selio_clk_buf=BUFIO,selio_active_edge=DDR,selio_ddr_alignment=SAME_EDGE_PIPELINED,selio_oddr_alignment=SAME_EDGE,ddr_alignment=C0,selio_interface_type=NETWORKING,interface_type=NETWORKING,selio_bus_in_tap=0,selio_bus_out_tap=0,selio_clk_io_std=DIFF_SSTL18_I,selio_clk_sig_type=DIFF}" *)
+(* CORE_GENERATION_INFO = "adc_input,selectio_wiz_v5_1_20,{component_name=adc_input,bus_dir=INPUTS,bus_sig_type=DIFF,bus_io_std=DIFF_SSTL18_I,use_serialization=false,use_phase_detector=false,serialization_factor=4,enable_bitslip=false,enable_train=false,system_data_width=9,bus_in_delay=NONE,bus_out_delay=NONE,clk_sig_type=SINGLE,clk_io_std=LVCMOS18,clk_buf=BUFIO2,active_edge=RISING,clk_delay=NONE,selio_bus_in_delay=FIXED,selio_bus_out_delay=NONE,selio_clk_buf=BUFIO,selio_active_edge=DDR,selio_ddr_alignment=SAME_EDGE_PIPELINED,selio_oddr_alignment=SAME_EDGE,ddr_alignment=C0,selio_interface_type=NETWORKING,interface_type=NETWORKING,selio_bus_in_tap=0,selio_bus_out_tap=0,selio_clk_io_std=DIFF_SSTL18_I,selio_clk_sig_type=DIFF}" *)
 
-module ADC_Input
+module adc_input
    // width of the data for the system
- #(parameter SYS_W = 16,
+ #(parameter SYS_W = 9,
    // width of the data for the device
-   parameter DEV_W = 32)
+   parameter DEV_W = 18)
  (
   // From the system into the device
   input  [SYS_W-1:0] data_in_from_pins_p,
   input  [SYS_W-1:0] data_in_from_pins_n,
   output [DEV_W-1:0] data_in_to_device,
+  output             delay_locked,   // Locked signal from IDELAYCTRL
+  input              ref_clock,      // Reference clock for IDELAYCTRL. Has to come from BUFG.
   input              clk_in_p,      // Differential clock from IOB
   input              clk_in_n,
   output             clk_out,
   input              io_reset);
 
 
-  ADC_Input_selectio_wiz 
+  adc_input_selectio_wiz 
   #(
    .SYS_W(SYS_W),
    .DEV_W(DEV_W)
@@ -80,6 +82,8 @@ module ADC_Input
    .data_in_from_pins_p(data_in_from_pins_p),
    .data_in_from_pins_n(data_in_from_pins_n),
    .data_in_to_device(data_in_to_device),
+   .delay_locked(delay_locked),                      
+   .ref_clock(ref_clock),                         
    .clk_in_p(clk_in_p),                          
    .clk_in_n(clk_in_n),
    .clk_out(clk_out),

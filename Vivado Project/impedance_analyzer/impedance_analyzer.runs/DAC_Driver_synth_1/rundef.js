@@ -24,7 +24,7 @@ eval( EAInclude(ISEJScriptLib) );
 
 
 ISEStep( "vivado",
-         "-log DAC_Driver.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source DAC_Driver.tcl" );
+         "-log dac_driver.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source dac_driver.tcl" );
 
 
 

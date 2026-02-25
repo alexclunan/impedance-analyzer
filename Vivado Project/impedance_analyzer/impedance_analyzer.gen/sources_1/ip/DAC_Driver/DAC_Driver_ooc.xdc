@@ -1,5 +1,5 @@
 
-# file: DAC_Driver_ooc.xdc
+# file: dac_driver_ooc.xdc
 # (c) Copyright 2017-2018, 2023 Advanced Micro Devices, Inc. All rights reserved.
 #
 # This file contains confidential and proprietary information
