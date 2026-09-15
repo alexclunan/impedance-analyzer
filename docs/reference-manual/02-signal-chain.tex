@@ -1,0 +1,141 @@
+\chapter{Signal Chain and Theory of Operation}
+\label{ch:signal}
+
+This chapter follows the signal from digital synthesis, out through the DAC and
+analog front end, back in through the ADC, through quadrature demodulation to
+magnitude/phase, and into the packetizer and trigger engine. Module names refer
+to \file{FPGA/Custom Hardware Source Files/}; the demodulator cores live inside
+the packaged \code{modulator\_chain} IP.
+
+\section{Clock and reset domains}
+Two synchronous domains, both from the \SI{200}{\mega\hertz} oscillator:
+\begin{itemize}[nosep]
+  \item \textbf{\SI{200}{\mega\hertz} (\code{clk\_out1})} --- synthesis and
+    demodulation front end (DDS, mixers, \code{dac\_multitone\_mixer},
+    \code{am\_modulator}, \code{demod\_frame\_combiner}).
+  \item \textbf{\SI{100}{\mega\hertz} (\code{clk\_out2})} --- control/output:
+    \code{output\_packetizer\_v2}, \code{timestamp\_counter}, the AXI register
+    file, DMA, and the \code{trigger\_engine}.
+\end{itemize}
+The \SI{200}{}$\to$\SI{100}{\mega\hertz} crossing is a single AXIS CDC FIFO
+between the frame combiner and the packetizer. \code{reset\_manager} generates
+the per-domain synchronized resets (using \code{reset\_sync}) from
+\reg{SYS\_CTRL0}. The trigger fire path stays entirely in the
+\SI{100}{\mega\hertz} timestamp domain, so the output edge has no CDC.
+
+\section{Excitation synthesis (DDS $\to$ DAC)}
+Each of four \code{modulator\_chain} instances contains a rasterized DDS
+(Xilinx DDS Compiler, full-range fix16.15) producing a cosine carrier and its
+quadrature sine. \code{dac\_multitone\_mixer} scales each cosine by its per-tone
+amplitude (\reg{CH$n$\_FA[31:16]}, unsigned Q1.15, \code{0x8000} = unity), gates
+it by the per-tone enable (\reg{CHANNEL\_EN[3:0]}), sums the four, and saturates
+to 16 bits. The sine outputs are \emph{not} summed --- they are the internal
+quadrature local oscillator for demodulation. The frequency of tone $n$ is
+$f_n = \text{FCW}_n \times \SI{12.5}{\kilo\hertz}$ (Section~\ref{sec:fpga-regs}).
+The composite goes through \code{dac\_output\_wrapper} (which serializes the
+16-bit samples to 8 DDR LVDS pairs with a FRAME strobe) to the AD9122.
+
+To keep the multi-tone sum from clipping, the host splits unity across the
+enabled tones (1 tone = full scale, 2 = half each, 4 = quarter each); the mixer's
+saturation is a hard backstop.
+
+\section{Analog path}
+DAC $\to$ reconstruction/buffer amplifier $\to$ SMA $\to$ sensor electrodes; the
+returning current $\to$ low-noise transimpedance front end $\to$ programmable-gain
+amplifier (\reg{ANALOG1} sets its gain) $\to$ differential driver $\to$ AD9467.
+Components are detailed in Chapter~\ref{ch:hardware}. The excitation must sit
+above the \SI{400}{\kilo\hertz} analog high-pass cutoff.
+
+\section{Acquisition and input routing}
+\code{adc\_lvds\_capture} deserializes the AD9467 LVDS output into 16-bit samples
+in the \SI{200}{\mega\hertz} domain. A \code{mux} (\code{mux.v}, selected by
+\reg{SYS\_CTRL0[6]}) chooses the demodulator input: the live ADC, or an internal
+loopback from \code{am\_modulator}. The loopback path AM-modulates a replayed
+message onto the DDS carrier (envelope $1 + m\,x(t)$, $m = 0.5$), providing a
+self-test signal with no analog hardware. For replay, \code{sample\_hold}
+paces PC-pushed samples out at ${\sim}625$\,kSa/s
+($\SI{200}{\mega\hertz}/320$).
+
+\section{Quadrature demodulation (the lock-in)}
+\label{sec:lockin}
+Each \code{modulator\_chain} multiplies the input by the cosine and sine of its
+reference to form the in-phase and quadrature products, low-pass filters and
+decimates them (CIC + FIR), and converts the complex result to polar form with a
+CORDIC:
+\[
+X = x[n]\cos(\omega_\text{ref} n), \qquad
+Y = x[n]\sin(\omega_\text{ref} n),
+\]
+\[
+R = \sqrt{X^2 + Y^2}, \qquad \varphi = \operatorname{atan2}(Y, X).
+\]
+The CORDIC polar output arrives on \code{r\_phase\_out\_tdata[63:0]} as
+\textbf{magnitude \code{fix32\_30}} in \code{[31:0]} and \textbf{phase
+\code{fix32\_29}} in \code{[63:32]}. In engineering units:
+\[
+\text{mag} = \frac{\text{sig}}{2^{30}}, \qquad \varphi = \frac{\text{phase}}{2^{29}}\ \text{rad}.
+\]
+The demod output rate is $\sim$\SI{200}{\kilo\hertz} per channel.
+
+\section{Framing and packetization}
+\code{demod\_frame\_combiner} takes the four chains' polar buses directly and
+packs them, the raw-ADC monitor, and the per-channel over-range (OR) flags into
+one 288-bit (36-byte) ``super-record'' per demod instant:
+\[
+\{\underbrace{\text{OR}[1:0], 14'b0, \text{adc}[15:0]}_{\text{status}},\ r_3,\ r_2,\ r_1,\ r_0\},
+\]
+and hands it to the \SI{200}{}$\to$\SI{100}{\mega\hertz} CDC FIFO. In the
+\SI{100}{\mega\hertz} domain, \code{output\_packetizer\_v2} stamps each record
+with the local timestamp and serializes \emph{only} the channels selected by
+\code{channel\_mask} into 32-bit AXIS beats (field order in
+Section~\ref{sec:datastream}). \code{records\_per\_packet} sets \code{TLAST} =
+one S2MM DMA buffer; both mask and count are latched at packet boundaries so a
+mid-stream change cannot corrupt framing. This is the self-describing format the
+PC deinterleaves. The stream then goes over AXI DMA (S2MM) to the PS.
+
+\section{Timebase and the trigger engine}
+\code{timestamp\_counter} is a free-running 64-bit counter clocked at
+\SI{100}{\mega\hertz} but incrementing by 2, so one count is \SI{5}{\nano\second}.
+Its value stamps every record, so every sample the PC sees carries an absolute
+board time.
+
+\code{trigger\_engine} (Stage 2, dual output) turns a PS decision into a
+jitter-free edge. The PS loads a target timestamp $T$ and pulse width $W$ per
+output into spare AXI registers, then pulses a shared fire strobe; each output
+goes HIGH exactly when the counter reaches its $T$, holds for $W$, and returns
+LOW. Because $T$ is read straight from the same counter that stamped the data,
+there is no clock synchronization anywhere. The two outputs (main AA7,
+secondary AA6) implement the reference's dual-actuator pattern via
+$T_1 = T_0 + \text{pair\_delay}$; a width of 0 disables an output.
+
+\paragraph{Detection (PS).} The stateful detection --- rolling-baseline bipolar
+peak detection, per-channel phase-window classification, and fixed/velocity delay
+math --- runs in \code{iza\_replay.c} on the PS, not the fabric
+(\file{guides/firmware-guide.md}, \file{guides/triggering-guide.md}).
+
+\section{Module catalog}
+The active custom modules and their role in the chain:
+\begin{center}
+\begin{longtable}{@{}l l@{}}
+\toprule
+Module & Role \\
+\midrule\endhead
+\code{modulator\_chain} (IP) & per-tone DDS + quadrature demod (CIC/FIR/CORDIC) \\
+\code{dac\_multitone\_mixer} & sum/scale/gate the four carriers into the DAC excitation \\
+\code{dac\_output\_wrapper}  & serialize 16-bit samples to AD9122 LVDS (byte mode) \\
+\code{am\_modulator}         & AM loopback / self-test signal \\
+\code{sample\_hold}          & pace replayed samples at \SI{625}{\kilo\hertz} \\
+\code{mux}                   & demod input select (ADC vs loopback) \\
+\code{adc\_lvds\_capture}, \code{adc\_bit\_reorder}, \code{adc\_fifo\_read} & AD9467 LVDS capture path \\
+\code{demod\_frame\_combiner}& pack 4 channels + ADC + OR into a super-record \\
+\code{output\_packetizer\_v2}& self-describing packetizer to DMA \\
+\code{timestamp\_counter}    & 5 ns free-running timebase \\
+\code{trigger\_engine}       & dual fire-at-timestamp outputs \\
+\code{reset\_manager}, \code{reset\_sync} & per-domain synchronized resets \\
+\code{spi\_rd\_tristate}     & SPI read tristate for the converters \\
+\code{AXI\_register\_file} (IP) & the 16 control registers \\
+\bottomrule
+\end{longtable}
+\end{center}
+Retired modules (superseded, moved to \file{retired hardware/}) are listed in the
+FPGA developer guide.

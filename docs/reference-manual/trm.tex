@@ -1,0 +1,83 @@
+% trm.tex — Impedance Analyzer Technical Reference Manual (master document)
+% Build:  latexmk -pdf trm.tex     (or: pdflatex trm && bibtex trm && pdflatex trm x2)
+% pdflatex-compatible: no fontspec / no xelatex-only packages.
+\documentclass[11pt,openany]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+
+% ---- colors / style ----
+\definecolor{codebg}{RGB}{245,245,247}
+\definecolor{codekw}{RGB}{20,80,160}
+\definecolor{codcmt}{RGB}{90,120,90}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  keywordstyle=\color{codekw}\bfseries,
+  commentstyle=\color{codcmt}\itshape,
+  breaklines=true, frame=single, framerule=0pt, showstringspaces=false,
+  columns=fullflexible, keepspaces=true, xleftmargin=6pt, xrightmargin=6pt,
+}
+\newcommand{\reg}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{#1}}
+
+% A callout for figures the reader must supply/refresh.
+\newcommand{\figureneeded}[1]{%
+  \begin{center}\fbox{\parbox{0.92\linewidth}{\small\textbf{FIGURE NEEDED.} #1}}\end{center}}
+
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Impedance Analyzer TRM}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\title{\vspace{-1cm}\textbf{FPGA Multi-Frequency Impedance Analyzer}\\[4pt]
+       \large Technical Reference Manual}
+\author{Swami Lab @ University of Virginia --- ECE Capstone}
+\date{Generated \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent This manual is the authoritative technical reference for the FPGA-based
+multi-frequency impedance analyzer: a digital lock-in amplifier (DLIA) and
+low-latency triggering instrument implemented on a Xilinx Zynq-7020 (Trenz
+TE0720 SoM) with an AD9122 DAC and AD9467 ADC on a custom carrier board. It
+covers the system architecture, the analog and digital signal chains, the
+UDP wire protocol, the AXI/SPI register maps, and the physical hardware. It is
+one half of the documentation set; the operational and developer \emph{guides}
+(build, deploy, GUI, CLI, firmware) live as Markdown under \file{docs/guides/}.
+
+\medskip\noindent\textbf{Source of truth.} Every register, struct, port and
+scaling constant in this manual is transcribed from current source
+(\file{iza\_protocol.h}, \file{iza\_packet.py}, \file{iza\_ctrl.py},
+\file{register\_map.py}, \file{iza\_replay.c}, the Verilog, and
+\file{full\_design.bd}), not from the historical planning notes archived under
+\file{docs/archive/}.
+\end{abstract}
+
+\tableofcontents
+
+\input{01-architecture}
+\input{02-signal-chain}
+\input{03-protocol}
+\input{04-register-map}
+\input{05-hardware}
+
+\end{document}

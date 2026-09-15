@@ -71,6 +71,7 @@ Digital lock-in amplifier (DLIA) for impedance spectroscopy. The FPGA fabric imp
 - CIC Decimator (Xilinx CIC Compiler IP)
 - FIR Filter (Xilinx FIR Compiler IP)
 - Magnitude and Phase Calculator (custom RTL wrapper + Xilinx CORDIC IP)
+- Running Mean Subtractor (custom RTL, optional AC-coupled magnitude readout)
 - Phase Adjuster (custom RTL)
 
 ### 2.4 Triggering / Readout Domain
@@ -126,6 +127,9 @@ FIR Filter:    I_dec [32] --> I_filt [32]
 
 Magnitude/Phase Calculator (CORDIC vectoring):
   I_filt [32], Q_filt [32] --> magnitude [32], phase [32]
+
+Running Mean Subtractor:
+  magnitude [32] --> running_mean [32], magnitude_ac [33 signed]
 
 Phase Adjuster: phase [32] - base_offset [32] --> corrected_phase [32]
 ```
@@ -528,6 +532,38 @@ Using a single CORDIC instance (rather than separate SQRT and arctan blocks) hal
 | `phase` | output | 32 | atan2(Q, I) in radians (signed fraction) |
 | `valid_out` | output | 1 | Output valid |
 
+#### 4.12.1 Running Mean Subtractor
+
+**Implementation:** Custom RTL
+
+**Function:** Estimates the DC component of the magnitude stream and subtracts it to produce an AC-coupled signed magnitude output. This block is intended as a post-CORDIC readout aid after `magnitude`, not as part of the I/Q lock-in filtering path. The mean updates only when `valid_in` is asserted.
+
+**Averaging Method:** First-order IIR running mean:
+
+```
+mean_next = mean + ((signal_in - mean) >>> AVG_SHIFT)
+signal_ac = signal_in - mean
+```
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|---|---|---|
+| `DATA_WIDTH` | 32 | Width of unsigned magnitude input and mean output |
+| `AVG_SHIFT` | 10 | Averaging time constant control; larger values adapt more slowly |
+
+**Ports:**
+
+| Port | Direction | Width | Description |
+|---|---|---|---|
+| `clock` | input | 1 | Processing clock |
+| `reset_n` | input | 1 | Active-low asynchronous reset |
+| `signal_in` | input | `DATA_WIDTH` | Unsigned magnitude input |
+| `valid_in` | input | 1 | Input valid; qualifies mean update |
+| `mean_out` | output | `DATA_WIDTH` | Estimated DC component |
+| `signal_ac` | output | `DATA_WIDTH+1` signed | AC-coupled magnitude (`signal_in - mean`) |
+| `valid_out` | output | 1 | Output valid, aligned to accepted input samples |
+
 ---
 
 ### 4.13 Phase Adjuster
@@ -792,6 +828,7 @@ All registers are 32-bit, 4-byte aligned. Base address assigned by Vivado.
 | CIC Compiler (x2) | ~200-600 | ~200-600 | 0-2 | 0-4 | Depends on stages, decimation ratio |
 | FIR Compiler (x2) | ~200-800 | ~200-800 | 1-4 | 4-40 | Depends on taps, optimization |
 | Magnitude/Phase wrapper | ~50 | ~100 | 0 | 0 | Glue logic |
+| Running Mean Subtractor | ~40-80 | ~70-120 | 0 | 0 | Valid-gated IIR mean + signed subtract |
 | Phase Adjuster | ~30 | ~40 | 0 | 0 | 32-bit subtractor |
 | Config Registers | ~200 | ~2,100 | 0 | 0 | 64 x 32-bit regs + AXI |
 | State Machine | ~100-300 | ~100-300 | 0 | 0 | Depends on complexity |

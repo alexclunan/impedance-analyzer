@@ -1,0 +1,273 @@
+\chapter{Wire Protocol}
+\label{ch:protocol}
+
+All host--board communication is UDP. There is no TCP anywhere in the system:
+the data path is loss-tolerant (sequence-numbered, drop-on-full) and the control
+path is request/response with application-level retries. Every multi-byte field
+is \textbf{little-endian} (the Cortex-A9 PS and the x86 PC are both LE, so the
+firmware \code{memcpy}s structs straight onto the wire). This chapter is the
+authoritative byte-level specification; it is transcribed from
+\file{iza\_protocol.h} (firmware) and \file{iza\_packet.py}/\file{iza\_ctrl.py}
+(PC), which must be kept in sync with each other.
+
+\section{UDP ports and magic numbers}
+\label{sec:ports}
+
+Each flow is identified by a 32-bit ASCII ``magic'' as its first word.
+
+\begin{center}
+\begin{tabular}{@{}l l l l l@{}}
+\toprule
+Flow & Direction & Port & Magic & ASCII \\
+\midrule
+Measurement data stream & board $\to$ PC & 7100 & \texttt{0x31415A49} & ``IZA1'' \\
+Sample push (replay)    & PC $\to$ board & 7200 & \texttt{0x31415A53} & ``SZA1'' \\
+Replay/rate telemetry   & board $\to$ PC & 7201 & \texttt{0x31415A54} & ``TZA1'' \\
+Control request/response& PC $\leftrightarrow$ board & 7202 & \texttt{0x31415A43} & ``CZA1'' \\
+Trigger config          & PC $\to$ board & 7202 & \texttt{0x31415A47} & ``GZA1'' \\
+Trigger event           & board $\to$ PC & 7203 & \texttt{0x31415A45} & ``EZA1'' \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Trigger \emph{config} shares the control port 7202 (the firmware
+\code{control\_thread} branches on the magic) because it is larger than a
+control request can carry; trigger \emph{events} get their own port 7203.
+
+\paragraph{Timestamps.} Every record and every trigger field is stamped in
+\textbf{PL timestamp counts}. The timestamp counter runs at \SI{100}{\mega\hertz}
+but increments by 2, so one count is \SI{5}{\nano\second} --- numerically
+identical to a \SI{200}{\mega\hertz} counter. The PC constant is
+\code{PL\_CLK\_HZ = 200{,}000{,}000}; convert counts to seconds by dividing by
+this. Datagrams are capped at \code{IZA\_MTU\_PAYLOAD = 1440} payload bytes
+(1472 UDP payload $-$ 32 B header) so nothing fragments at a 1500-byte MTU.
+
+\section{Measurement data stream (port 7100)}
+\label{sec:datastream}
+
+The v2 packetizer emits \emph{self-describing, variable-length} records. The
+32-byte header carries \code{chan\_mask} and \code{stride\_words}, which tell
+the receiver the per-record layout; the number of records per datagram and the
+record size both vary with how many channels are enabled.
+
+\subsection{Datagram header (\code{iza\_pkt\_hdr\_t}, 32 bytes)}
+
+Python format string \code{HDR\_FMT = "<IIQBBHIII"}.
+
+\begin{center}
+\begin{tabular}{@{}r l l l@{}}
+\toprule
+Off & Type & Field & Meaning \\
+\midrule
+0  & \code{uint32} & \code{magic}        & \code{IZA\_MAGIC} (``IZA1'') \\
+4  & \code{uint32} & \code{seq}          & datagram sequence, monotonic from 0 \\
+8  & \code{uint64} & \code{first\_ts}    & PL timestamp of first record in payload \\
+16 & \code{uint8}  & \code{chan\_mask}   & \{adc\_en, demod3..0\}: fields per record \\
+17 & \code{uint8}  & \code{stride\_words}& 32-bit words per record \\
+18 & \code{uint16} & \code{flags}        & bit0 = test-pattern run \\
+20 & \code{uint32} & \code{payload\_len} & payload bytes ($n = $ \code{payload\_len}$/(4\cdot$\code{stride\_words}$)$) \\
+24 & \code{uint32} & \code{buf\_seq}     & S2MM buffer count this payload came from \\
+28 & \code{uint32} & \code{rec\_index}   & index of first record within that buffer \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Record layout}
+
+Fields appear in a fixed order; only the enabled ones are present. The record
+size is therefore \code{stride\_words}$\times 4$ bytes, where
+\[
+\text{\code{stride\_words}} = 2 + 2\cdot\mathrm{popcount}(\text{demod bits}) + [\text{adc enabled}].
+\]
+
+\begin{center}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+Words & Field & Present when \\
+\midrule
+2 & \code{ts\_lo}, \code{ts\_hi}          & always \\
+2 each & \code{sig}$_i$, \code{phase}$_i$ & \code{chan\_mask} bit $i$ set ($i=0..3$, ascending) \\
+1 & \code{adc} (int16 sign-extended)      & \code{chan\_mask} bit 4 set \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\code{chan\_mask} bits: 0--3 select demod channels 0--3; bit 4 enables the
+raw-ADC monitor word. The over-range flag is packed into the top two bits of the
+64-bit timestamp: \code{orf = (ts\_hi >> 30) \& 0x3}, and the true timestamp is
+the low 62 bits (\code{TS\_MASK = 0x3FFF\_FFFF\_FFFF\_FFFF}).
+
+\subsection{Fixed-point scaling}
+\label{sec:scaling}
+
+The demodulator (CORDIC polar output from the \code{modulator\_chain} IP) gives
+magnitude in \code{fix32\_30} and phase in \code{fix32\_29}:
+\[
+\text{mag} = \frac{\text{sig}}{2^{30}}, \qquad
+\phi = \frac{\text{phase}}{2^{29}}\ \text{rad}, \qquad
+X = \text{mag}\cos\phi, \quad Y = \text{mag}\sin\phi.
+\]
+$X$ is the in-phase and $Y$ the quadrature component. These are the exact
+constants the recorder (Section~in the ziBin spec) and GUI use.
+
+\paragraph{Legacy fixed record.} The pre-v2 binaries (\code{iza\_stream},
+\code{iza\_dump}) emit a fixed 16-byte \code{iza\_record\_t} = \{\code{int32
+signal}, \code{int32 phase}, \code{uint32 ts\_lo}, \code{uint32 ts\_hi}\}. This
+is exactly the \code{chan\_mask}=0x01, \code{stride\_words}=4 case of the
+self-describing format.
+
+\section{Replay path: sample push + telemetry (ports 7200/7201)}
+
+Verification plan 03 pushes real lab waveforms from PC to board so the analog
+pipeline can be exercised with recorded signals.
+
+\subsection{Sample push (\code{iza\_sample\_hdr\_t}, 24 B) --- PC $\to$ board 7200}
+Header followed by \code{n\_samples} $\times$ int16 (LE). At
+\code{IZA\_SAMPLES\_PER\_DGRAM = 700} that is 1400 B payload + 24 B header
+= 1424 B (no fragmentation). Fields: \code{magic}(SZA1), \code{seq},
+\code{n\_samples}, \code{flags} (bit0 = datagram crosses a loop wrap),
+\code{stream\_pos} (absolute sample index in the looped source).
+
+\subsection{Telemetry (\code{iza\_telem\_t}, 48 B) --- board $\to$ PC 7201}
+Lets the PC servo its send rate toward $\sim$50\,\% ring fill (the board's
+consume rate is fixed by hardware). Fields: \code{magic}(TZA1), \code{seq},
+\code{ring\_fill}, \code{ring\_capacity}, \code{consumed\_total},
+\code{underrun\_count}, \code{overrun\_count}, \code{inbound\_last\_seq},
+\code{inbound\_lost}, \code{uptime\_ms}.
+
+\section{Control channel (port 7202)}
+\label{sec:control}
+
+One transaction per datagram, request then response, matched by \code{seq}.
+
+\subsection{Request (\code{iza\_ctrl\_req\_t}, 80 B)}
+Python: \code{REQ = struct.Struct("<IIBBBBI64s")}.
+\begin{center}
+\begin{tabular}{@{}r l l l@{}}
+\toprule
+Off & Type & Field & Meaning \\
+\midrule
+0  & \code{uint32} & \code{magic}  & \code{IZA\_CMAGIC} (``CZA1'') \\
+4  & \code{uint32} & \code{seq}    & request id (echoed) \\
+8  & \code{uint8}  & \code{op}     & \code{IZA\_OP\_*} (below) \\
+9  & \code{uint8}  & \code{target} & SPI bus for \code{SPI\_XFER}; output mask for \code{TRIG\_TEST} \\
+10 & \code{uint8}  & \code{reg}    & AXI register index 0..15 \\
+11 & \code{uint8}  & \code{len}    & SPI byte count ($\le 64$) \\
+12 & \code{uint32} & \code{value}  & \code{REG\_WRITE} value \\
+16 & \code{uint8[64]} & \code{data} & SPI MOSI bytes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Response (\code{iza\_ctrl\_rsp\_t}, 84 B)}
+Python: \code{RSP = struct.Struct("<IIiIB3x64s")}. Fields: \code{magic},
+\code{seq}, \code{int32 status} (\code{IZA\_CST\_*}), \code{value} (REG\_READ
+result), \code{len} + 3 pad, \code{data[64]} (SPI MISO).
+
+\subsection{Opcodes and codes}
+\begin{center}
+\begin{tabular}{@{}l l | l l@{}}
+\toprule
+Opcode & Meaning & Status & Meaning \\
+\midrule
+\code{IZA\_OP\_REG\_WRITE} (1) & \code{g\_regs[reg]=value} & \code{IZA\_CST\_OK} (0)     & success \\
+\code{IZA\_OP\_REG\_READ}  (2) & \code{value=g\_regs[reg]} & \code{IZA\_CST\_BADOP} ($-1$) & unknown op \\
+\code{IZA\_OP\_SPI\_XFER}  (3) & full-duplex SPI           & \code{IZA\_CST\_BADARG}($-2$) & bad argument \\
+\code{IZA\_OP\_TRIG\_TEST} (4) & manual fire (target=mask) & \code{IZA\_CST\_NODEV} ($-3$) & spidev not open \\
+                              &                            & \code{IZA\_CST\_IOERR} ($-4$) & I/O error \\
+\bottomrule
+\end{tabular}
+\end{center}
+SPI bus targets: \code{IZA\_SPI\_DAC}=0 (AD9122, \code{/dev/spidev1.0}, 4-wire),
+\code{IZA\_SPI\_ADC}=1 (AD9467, \code{/dev/spidev0.0}, 3-wire).
+
+\section{Triggering (config 7202 / events 7203)}
+\label{sec:trigproto}
+
+The detection intelligence runs on the PS (Chapter~\ref{ch:signal}); these
+datagrams carry its configuration and its per-event results. Enumerations:
+\code{mode} $\in$ \{\code{OFF}=0, \code{SOFT}=1 (detect, no pin),
+\code{HW}=2 (PL fires pin)\}; \code{delay\_mode} $\in$
+\{\code{FIXED}=0, \code{VELOCITY}=1\}; \code{combine} $\in$
+\{\code{AND}=0, \code{OR}=1\}. Magnitudes are \code{fix32\_30}, phases
+\code{fix32\_29} radians, all \code{*\_ticks}/\code{*\_ts} in \SI{5}{\nano\second}
+counts.
+
+\subsection{Config (\code{iza\_trig\_cfg\_msg\_t})}
+An 8-byte prefix (\code{magic} GZA1, \code{seq}) followed by the
+\code{iza\_trig\_cfg\_t} body. The PC packs the body with
+\code{TRIG\_CFG = struct.Struct("<8BiiIIIIQQQQQff4f4f4f")}. Key fields:
+
+\begin{center}
+\begin{longtable}{@{}l l p{8.2cm}@{}}
+\toprule
+Field & Type & Meaning \\
+\midrule\endhead
+\code{mode, arm} & u8 & operating mode; armed flag \\
+\code{amp\_channel} & u8 & demod ch (0..3) driving amplitude detection \\
+\code{polarity} & u8 & 0 = peak-then-trough, 1 = trough-then-peak \\
+\code{combine} & u8 & AND/OR over phase channels \\
+\code{phase\_mask} & u8 & channels included in phase classification \\
+\code{delay\_mode} & u8 & fixed vs velocity \\
+\code{emit\_candidates} & u8 & 1 = stream events even when classification fails \\
+\code{amp\_threshold} & i32 & excursion arm level vs baseline (fix32\_30) \\
+\code{min\_peak\_diff} & i32 & minimum peak-to-trough to fire (fix32\_30) \\
+\code{baseline\_shift} & u32 & magnitude leaky-integrator shift (1..30) \\
+\code{holdoff\_ticks} & u32 & debounce between fires \\
+\code{event\_ticks} & u32 & max ticks to complete one bipolar event \\
+\code{watchdog\_ms} & u32 & auto-disarm if no PC control for this long (0=never) \\
+\code{fixed\_delay\_ticks} & u64 & delay in fixed mode \\
+\code{lead\_offset\_ticks} & u64 & correction added to velocity delay \\
+\code{pulse\_width\_ticks} & u64 & output-0 pulse width \\
+\code{pulse\_width2\_ticks} & u64 & output-1 pulse width (dual actuator) \\
+\code{pair\_delay\_ticks} & u64 & delay of output 1 after output 0 \\
+\code{distance\_ratio} & f32 & detection$\to$actuation / detection-window \\
+\code{phase\_mean/lo/hi[4]} & f32 & per-channel rotation center and window (rad) \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{Event (\code{iza\_trig\_evt\_t}, 88 B) --- board $\to$ PC 7203}
+Python: \code{TRIG\_EVT = struct.Struct("<3I2H6Q2i4i")}. One datagram per
+detected event (candidate or fire). Event \code{flags}: \code{PASS}=0x1
+(classification satisfied), \code{SOFT}=0x2 (no physical pin), \code{VELOCITY}=0x4.
+
+\begin{center}
+\begin{longtable}{@{}l l p{8.4cm}@{}}
+\toprule
+Field & Type & Meaning \\
+\midrule\endhead
+\code{magic, seq} & u32 & EZA1; event index from 0 \\
+\code{count} & u32 & running total of \emph{fires} (pass) this run \\
+\code{matched\_mask} & u16 & channels in-window at detection \\
+\code{flags} & u16 & \code{IZA\_EVF\_*} \\
+\code{peak\_ts} & u64 & leading-peak PL timestamp \\
+\code{dt\_ticks} & u64 & first-to-second peak transit time \\
+\code{delay\_ticks} & u64 & computed actuation delay \\
+\code{fire\_ts} & u64 & commanded fire timestamp $T$ \\
+\code{actual\_ts} & u64 & actual PL fire ts (= \code{fire\_ts} in soft mode) \\
+\code{latency\_ticks} & u64 & \code{detect\_ts} $-$ \code{peak\_ts}: detection latency \\
+\code{peak\_mag, trough\_mag} & i32 & baseline-subtracted peaks (fix32\_30) \\
+\code{phase\_cent[4]} & i32 & centered phase per channel (fix32\_29) \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{On-disk recording format (ziBin)}
+\label{sec:zibin}
+
+The GUI recorder (\file{iza\_gui/recorder.py}) writes Zurich-Instruments-style
+files so the lab's existing analysis scripts read them unchanged. Per demod
+channel: \file{<base>/iza\_<stamp>/D1/Freq<N>.ziBin} ($N$ = channel$+1$),
+\textbf{big-endian float64} (\code{>f8}), flat 7-column records:
+\[
+[\,t,\ x,\ y,\ \text{freq},\ \text{dio},\ \text{auxin0},\ \text{auxin1}\,].
+\]
+$t$ is board seconds (PL ticks $/$ \code{PL\_CLK\_HZ}); $x=\text{mag}\cos\phi$,
+$y=\text{mag}\sin\phi$ (Section~\ref{sec:scaling}); \code{freq} is the channel's
+excitation in Hz; \code{dio/auxin0/auxin1} are written as 0. A \file{meta.json}
+sidecar records \code{estimated\_sample\_rate\_hz}, the \code{decimation} factor,
+per-channel record counts, and the scaling. Raw ADC (if streamed) lands in
+\file{adc\_int16.bin} (int16 LE). Note: recorder decimation is plain subsampling
+(no anti-alias filter) --- fine for the narrowband demod $x/y$, but the wideband
+raw-ADC stream will alias if decimated.

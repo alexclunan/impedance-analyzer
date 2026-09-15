@@ -80,7 +80,8 @@ module adc_input_selectio_wiz
   // Create the clock logic
 
   IBUFDS
-    #(.IOSTANDARD ("DIFF_SSTL18_I"))
+    #(.DIFF_TERM  ("TRUE"),               // internal 100 ohm on the DCO pair too
+      .IOSTANDARD ("LVDS_25"))
    ibufds_clk_inst
      (.I          (clk_in_p),
       .IB         (clk_in_n),
@@ -110,8 +111,8 @@ module adc_input_selectio_wiz
     ////------------------------------
     // Instantiate a buffer for every bit of the data bus
     IBUFDS
-      #(.DIFF_TERM  ("FALSE"),             // Differential termination
-        .IOSTANDARD ("DIFF_SSTL18_I"))
+      #(.DIFF_TERM  ("TRUE"),             // Differential termination
+        .IOSTANDARD ("LVDS_25"))
      ibufds_inst
        (.I          (data_in_from_pins_p  [pin_count]),
         .IB         (data_in_from_pins_n  [pin_count]),

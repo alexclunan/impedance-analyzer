@@ -1,0 +1,149 @@
+\chapter{Register Maps}
+\label{ch:registers}
+
+The instrument is configured through three register spaces: the FPGA's 16 AXI
+control registers (the signal-processing pipeline), and the SPI register files
+of the AD9122 DAC and AD9467 ADC. This chapter is transcribed from
+\file{iza\_ctrl.py} and \file{iza\_gui/register\_map.py}; it \textbf{supersedes}
+the stale bare-metal \file{config.h} map, which must not be trusted.
+
+\section{FPGA AXI control registers}
+\label{sec:fpga-regs}
+
+Sixteen 32-bit registers in the \code{AXI\_register\_file} IP at base
+\code{0x43C00000} (index $=$ byte offset $/4$). The firmware mirrors every write
+in a shadow store (\code{g\_regs[]}) and serves reads from it, so
+read-modify-write from a single controller is race-free. Reset bits are
+active-high ``released'' (1 = out of reset).
+
+\subsection{SYS\_CTRL0 (reg 0) --- master control and routing}
+\label{sec:sysctrl0}
+
+The single most important register. \code{0x3F} is the normal running state
+(all resets released $+$ run). The routing bits (6, 8) were verified against the
+block design by tracing \code{ilslice}$\to$net; bit 7 has \emph{no} slice and no
+hardware effect.
+
+\begin{center}
+\begin{tabular}{@{}c l p{8.4cm}@{}}
+\toprule
+Bit & Name & Meaning (1 = \ldots) \\
+\midrule
+0 & \code{dds\_rst\_n}      & DDS reset released \\
+1 & \code{pipe\_rst\_n}     & pipeline reset released \\
+2 & \code{dac\_rst\_n}      & DAC-path reset released \\
+3 & \code{fifo\_rst\_n}     & FIFO reset released \\
+4 & \code{dac\_chip\_nreset}& AD9122 chip out of reset (SPI path alive) \\
+5 & \code{run}             & measurement running \\
+6 & \code{adc\_input\_sel} & demod input mux: 0 = analog ADC, 1 = \code{am\_modulator} loopback (replay/self-test) \\
+7 & \emph{(unused)}        & no hardware effect \\
+8 & \code{dac\_output\_sel}& DAC output mux: 0 = generator tones (\code{dds\_cos}), 1 = internal test / replay signal \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Useful composite values: \code{SYS\_RELEASE\_ALL = 0x1F} (resets released, not
+running), \code{SYS\_RUN = 0x3F}. The reset/run bits are masked as
+\code{SYS\_CORE\_MASK = 0x3F} so routing bits 6/8 are preserved across
+\code{run}/\code{reset}. \textbf{Graceful stop matters:} the firmware drops
+\code{run} first, waits $\sim$5\,ms for the packetizer to emit \code{TLAST} and
+the DMA to close its buffer, \emph{then} asserts the resets --- otherwise the
+S2MM transfer is chopped mid-beat and \code{dma\_proxy} hangs (see
+\file{iza\_ctrl.py:reset\_all}).
+
+\subsection{Other pipeline registers}
+
+\begin{center}
+\begin{longtable}{@{}c l p{9.2cm}@{}}
+\toprule
+Reg & Name & Fields \\
+\midrule\endhead
+1 & \code{ANALOG1}   & \code{[3:0]} PGA gain \emph{code}. Code is inverse to gain:
+                       $\text{gain}_{\text{dB}} = 26 - 2\cdot\text{code}$ (code 0 = 26\,dB
+                       \ldots code 10 = 6\,dB). Higher dB = more gain and more front-end noise. \\
+2 & \code{CHANNEL\_EN}& \code{[3:0]} TX tone enables, \code{[7:4]} demod (RX) enables,
+                       \code{[8]} stream raw-ADC monitor. \\
+3 & \code{FIR\_COEFF\_CMD} & reloadable-FIR coefficient loader command:
+                       \code{[15:0]} coefficient (signed 16-bit), \code{[17:16]} opcode
+                       (0 nop, 1 reset index, 2 push, 3 commit), \code{[31]} strobe toggle.
+                       Written by the PC one coefficient at a time; the PL stages them and,
+                       on commit, streams them into the FIR reload interface. \\
+4 & \code{PKT\_CFG}  & \code{[7:0]} records per packet, \code{[11:8]} payload mask,
+                       \code{[15:12]} format. The payload mask must always describe the
+                       real frame layout (the enabled demod channels). \\
+5--8 & \code{CH$n$\_FREQ\_AMP} & \code{[13:0]} frequency word (FCW, $\times$\SI{12.5}{\kilo\hertz}),
+                       \code{[31:16]} amplitude (Q1.15, \code{0x8000} = 100\,\% full scale). \\
+9  & \code{TRIG1\_T\_LO} & trigger output-1 fire timestamp, low 32 bits (PL counts). \\
+10 & \code{TRIG1\_T\_HI} & trigger output-1 fire timestamp, high 32 bits. \\
+11 & \code{TRIG1\_W}     & trigger output-1 pulse width (PL counts; 0 = output 1 disabled). \\
+12 & \code{TRIG\_T\_LO}  & trigger output-0 fire timestamp, low 32 bits. \\
+13 & \code{TRIG\_T\_HI}  & trigger output-0 fire timestamp, high 32 bits. \\
+14 & \code{TRIG\_W}      & output-0 (main) actuation pulse width (PL counts). \\
+15 & \code{TRIG\_CMD}    & PL fire-engine command: \code{[0]} arm, \code{[1]} mode (0 soft, 1 hw),
+                       \code{[8]} fire strobe. \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\paragraph{Register reuse note.} Registers 9--11 were per-tone phase offsets in
+an earlier design; phase offset does not exist in the current hardware, so they
+now carry the second trigger output's fire command. The legacy
+\code{iza\_ctrl.py phase} subcommand still writes regs 9/10 but has no hardware
+effect.
+
+\subsection{Rasterized DDS frequency word}
+The DDS is rasterized with modulus 16000: $f_\text{out} = \text{FCW}\times
+\SI{12.5}{\kilo\hertz}$, FCW in $0..15999$ (14-bit field, \code{FCW\_MASK =
+0x3FFF}). The carrier must land on the \SI{12.5}{\kilo\hertz} grid \emph{and}
+exceed the \SI{400}{\kilo\hertz} analog high-pass cutoff, i.e.\ FCW $\ge 32$.
+Amplitude default \code{0x8000} is Q1.15 unity (a single tone passes through at
+exact full scale); the host auto-balances multi-tone amplitudes so the
+peak-aligned sum cannot clip the DAC (1 tone = full, 2 = half each, 4 = quarter).
+
+\section{AD9122 DAC SPI registers}
+\label{sec:dac-regs}
+
+8-bit instruction \code{[R/W][A6:0]}, byte mode, SPI mode 0, $\le$\SI{40}{\mega\hertz},
+4-wire. The chip must be released (\code{SYS\_CTRL0[4]=1}, i.e.\ \code{run})
+before its SPI path is alive. The \code{dac\_init} sequence (2$\times$
+interpolation default) is: soft reset (\code{0x00}$\leftarrow$0x20 then 0x00);
+power up I/Q DACs + receiver (\code{0x01}$\leftarrow$0x00); data format
+\code{0x03}$\leftarrow$0x01 (\textbf{byte mode}, twos-complement, I-first);
+datapath \code{0x1B}$\leftarrow$0xE4 (baseband, bypass premod/sinc$^{-1}$/NCO);
+the three half-band filters \code{0x1C/0x1D/0x1E} set for the chosen
+interpolation (each register's bit0 = ``bypass HB$n$''); data-rate mode
+\code{0x10}$\leftarrow$0x48; FIFO phase \code{0x17}$\leftarrow$0x04; then a soft
+FIFO align via \code{0x18} and a readback of level \code{0x19} (healthy =
+0x1F/0x0F/0x07). Byte mode is correct for this board because \code{dac\_data\_out}
+is serialized to 8 LVDS pairs (DDR) with FRAME on its own OSERDES --- do not
+``fix'' it to word mode.
+
+Key registers (full decode in \file{register\_map.py}, datasheet Table 10):
+\code{0x00} Comm/reset, \code{0x01} power control, \code{0x03} data format,
+\code{0x0A--0x0F} PLL, \code{0x10--0x13} sync, \code{0x17--0x19} FIFO,
+\code{0x1B} datapath, \code{0x1C--0x1E} HB1--3 interpolation, \code{0x1F} chip
+ID (0x08), \code{0x30--0x35} NCO FTW/phase, \code{0x40--0x47} full-scale/offset,
+\code{0x67--0x73} SED pattern check, \code{0x7F} revision.
+
+\section{AD9467 ADC SPI registers}
+\label{sec:adc-regs}
+
+16-bit instruction \code{[R/W][W1][W0][A12:0]}, buffered writes committed by
+writing \code{0xFF}$\leftarrow$0x01, SPI mode 0, $\le$\SI{25}{\mega\hertz},
+3-wire (reads best-effort). \code{adc\_init} sets normal power
+(\code{0x08}$\leftarrow$0x00), twos-complement output
+(\code{0x14}$\leftarrow$0x09), an optional test pattern (\code{0x0D}), then
+commits. Test-pattern codes (\code{0x0D[3:0]}): 0 off, 1 midscale, 2 $+$FS,
+3 $-$FS, 4 checkerboard, 5 PN23, 6 PN9, 7 one/zero toggle.
+
+Key registers (datasheet Table 13): \code{0x00} port config/soft reset,
+\code{0x01} chip ID (0x50), \code{0x02} speed grade, \code{0x08} power modes,
+\code{0x0D} test I/O, \code{0x0F} analog input, \code{0x10} digital offset,
+\code{0x14} output mode/format, \code{0x15} LVDS drive, \code{0x18} VREF
+full-scale range (default 2.5\,V p-p), \code{0x2C} AC/DC coupling,
+\code{0x36}/\code{0x107} input-buffer bias currents, \code{0xFF} device update.
+
+\paragraph{ADC full-scale caution.} The default input range is 2.5\,V p-p, but
+the \emph{as-built} analog range at the board connector has not been
+independently verified. The GUI and this manual therefore express demod
+magnitude in dimensionless full-scale counts, not volts.

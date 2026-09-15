@@ -38,3 +38,24 @@ fp-info-cache
 
 # Local project settings
 *.kicad_prl
+
+.claude/          # ignore the .claude directory
+.claude*          # or: ignore anything starting with .claude
+
+.cursor/          # ignore the .claude directory
+.cursor*          # or: ignore anything starting with .claude
+.claude/settings.local.json
+
+memory/
+verification plans/
+
+Vivado Project/*
+
+*__pycache__/
+*.py[cod]
+# Packaged IP metadata (overrides the KiCad *.xml rule above)
+!FPGA/ip_repo/**/component.xml
+
+impedance_analyzer.xpr.zip
+
+/FPGA/ip_repo

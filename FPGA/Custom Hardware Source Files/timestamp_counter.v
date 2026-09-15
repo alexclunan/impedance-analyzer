@@ -1,4 +1,5 @@
 // free-running 64-bit timestamp counter for measurement timing
+// Counts up by 2 (200 MHz main clock, this is timed at 100 MHz)
 // Author: Alex Clunan
 module timestamp_counter
     // counter parameters
@@ -19,7 +20,7 @@ always @(posedge clock or negedge reset_n) begin
 
     // increment
     end else begin
-        count <= count + {{(COUNT_WIDTH-1){1'b0}}, 1'b1};
+        count <= count + {{(COUNT_WIDTH-2){1'b0}}, 2'b10};
     end
 end
 

@@ -258,3 +258,168 @@ All testbenches use a 200 MHz clock (5 ns period), async active-low reset, and a
 | 8b | Mid-reset: magnitude cleared | Verify magnitude zeroed |
 | 8c | Mid-reset: phase cleared | Verify phase zeroed |
 | 8d | Mid-reset: valid_out cleared | Verify valid_out zeroed |
+
+---
+
+## tb_path_delay_calibration.sv
+
+**DUT:** `path_delay_calibration.v` -- dual-domain step generator + threshold detector
+**Parameters:** `DATA_WIDTH = 16`, `TIMESTAMP_WIDTH = 64`, `SETTLE_CYCLES = 10` (reduced for sim)
+**Note:** Uses same-frequency DAC and ADC clocks for deterministic delay testing. Testbench provides simple timestamp counters for both domains.
+
+| Test | Check String | Description |
+|------|-------------|-------------|
+| 1a | Reset: test_mode is low | Assert reset, verify `test_mode === 0` |
+| 1b | Reset: test_pulse_data is mid-scale | Verify output is mid-scale (0x0000) |
+| 1c | Reset: tx_timestamp_valid is low | Verify DAC-side timestamp not captured |
+| 1d | Reset: rx_timestamp_valid is low | Verify ADC-side timestamp not captured |
+| 2a | Settle: test_mode asserted | After `calibration_start`, verify test_mode goes high |
+| 2b | Settle: test_pulse_data is mid-scale | During settling period, output stays at mid-scale |
+| 2c | Settle: tx_timestamp_valid still low | Timestamp not yet captured during settling |
+| 3a | Step: test_pulse_data is full-scale | After SETTLE_CYCLES, output transitions to full-scale (0x7FFF) |
+| 3b | Step: tx_timestamp_valid asserted | Timestamp captured at step edge |
+| 3c | Step: test_mode still asserted | Test mode remains active after step |
+| 4 | TX capture: tx_timestamp is non-zero | Verify captured timestamp has a valid value |
+| 5a | Delay: rx_timestamp_valid still low before crossing | With armed detector, sample below threshold |
+| 5b | Threshold: rx_timestamp_valid asserted | Sample crosses threshold, timestamp captured |
+| 5c | Delay: measured delay is positive | `rx_timestamp - tx_timestamp > 0` |
+| 6 | No re-trigger: rx_timestamp unchanged | After first capture, new crossing doesn't re-trigger |
+| 7a | Disarm: rx_timestamp_valid cleared | De-asserting armed clears valid |
+| 7b | Re-arm: rx_timestamp_valid re-triggers on armed sample | Re-arming with sample above threshold re-captures |
+| 8a | Deassert: test_mode returns low | `calibration_start = 0` returns DAC side to IDLE |
+| 8b | Deassert: test_pulse_data is mid-scale | Output returns to mid-scale |
+| 9 | Sub-threshold: rx_timestamp_valid stays low | Sample below threshold doesn't trigger |
+
+---
+
+## tb_trigger_logic.sv
+
+**DUT:** `trigger_logic.v` -- threshold crossing detector with mode selection and GPIO latch
+**Parameters:** `DATA_WIDTH = 32`
+**Config format:** `trigger_config[1:0]` = mode (00=disabled, 01=magnitude, 10=phase, 11=either), `trigger_config[2]` = edge (0=rising, 1=falling)
+
+| Test | Check String | Description |
+|------|-------------|-------------|
+| 1a | Reset: trigger_flag is low | Assert reset, verify trigger flag is 0 |
+| 1b | Reset: gpio_out is low | Assert reset, verify GPIO is 0 |
+| 2 | Disabled: trigger_flag stays low | Mode=00, magnitude crosses threshold, no trigger |
+| 3a | Mag rising baseline: trigger_flag low | Magnitude below threshold, no trigger |
+| 3b | Mag rising: trigger_flag asserted | Magnitude crosses above threshold, single-cycle pulse |
+| 3c | Mag rising: trigger_flag clears next cycle | Verify pulse is only one cycle |
+| 4 | GPIO: latched high after trigger | GPIO stays high after trigger fires |
+| 4b | GPIO: still latched after 5 cycles | GPIO remains latched without reset |
+| 5a | Mag falling baseline: trigger_flag low | Magnitude above threshold with edge=1, no trigger |
+| 5b | Mag falling: trigger_flag asserted | Magnitude drops below threshold, trigger fires |
+| 6a | Phase baseline: trigger_flag low | Phase below threshold, mode=10 |
+| 6b | Phase rising: trigger_flag asserted | Phase crosses above threshold |
+| 7a | Combined baseline: trigger_flag low | Both below threshold, mode=11 |
+| 7b | Combined mag-only: trigger_flag asserted | Only magnitude crosses, trigger fires (OR logic) |
+| 8a | No false trigger: stays low below threshold | Multiple samples below threshold, no trigger |
+| 8b | No false trigger: GPIO stays low | GPIO not set when no trigger |
+| 9 | Valid gating: trigger_flag stays low without data_valid | Crossing occurs but `data_valid` never asserted |
+| 10a | Negative baseline: trigger_flag low | Negative threshold, magnitude below (more negative) |
+| 10b | Negative rising: trigger_flag asserted | Magnitude crosses above negative threshold |
+
+---
+
+## tb_state_machine.sv
+
+**DUT:** `state_machine.v` -- system-level FSM controlling measurement flow
+**States:** IDLE(0), CONFIGURE(1), STARTUP_CIC(2), STARTUP_FIR(3), RUN(4), STOP(5), CAL_START(6), CAL_ARM(7), CAL_DONE(8)
+**Commands:** NOP(0), CONFIGURE(1), START(2), STOP(3), CALIBRATE(4)
+**Status format:** `[3:0]` = state, `[4]` = processing_enable, `[5]` = calibration_done
+
+| Test | Check String | Description |
+|------|-------------|-------------|
+| 1a | Reset: state is IDLE | Assert reset, verify state = 0 |
+| 1b | Reset: pipeline_reset_n is low | Pipeline in reset |
+| 1c | Reset: processing_enable is low | Processing disabled |
+| 1d | Reset: calibration_start is low | No calibration activity |
+| 2a | Configure: state is CONFIGURE | CMD_CONFIGURE from IDLE |
+| 2b | Configure: pipeline_reset_n is low | Pipeline stays in reset |
+| 2c | Configure: processing_enable is low | Processing stays disabled |
+| 3 | Startup CIC: state is STARTUP_CIC or beyond | CMD_START triggers CIC config |
+| 4a | Startup FIR: state is STARTUP_FIR | Auto-advances from CIC after 1 cycle |
+| 4b | Startup FIR: pipeline still in reset | Pipeline not yet released |
+| 5a | Run: state is RUN | `fir_reload_done` triggers RUN |
+| 5b | Run: pipeline_reset_n is high | Pipeline released |
+| 5c | Run: processing_enable is high | Processing active |
+| 5d | Run stable: pipeline_reset_n still high | Stays active over multiple cycles |
+| 5e | Run stable: processing_enable still high | Stays active |
+| 6a | Stop: state is STOP or IDLE | CMD_STOP from RUN |
+| 6b | Stop: pipeline_reset_n is low | Pipeline back in reset |
+| 6c | Stop: processing_enable is low | Processing disabled |
+| 6d | Back to IDLE: state is IDLE | STOP auto-transitions to IDLE |
+| 7a | Cal start: state is CAL_START | CMD_CALIBRATE from IDLE |
+| 7b | Cal start: calibration_start asserted | Step generator triggered |
+| 7c | Cal start: pipeline in reset | Pipeline in reset during calibration |
+| 7d | Cal arm: state is CAL_ARM | `tx_timestamp_valid` advances to ARM |
+| 7e | Cal arm: calibration_armed asserted | Threshold detector armed |
+| 7f | Cal done: state is CAL_DONE or IDLE | `rx_timestamp_valid` completes calibration |
+| 7g | Cal complete: state is IDLE | Returns to IDLE |
+| 7h | Cal complete: calibration_done in status | Status bit [5] set |
+| 7i | Cal complete: calibration_start deasserted | Step generator released |
+| 7j | Cal complete: calibration_armed deasserted | Detector disarmed |
+| 8a | Invalid cmd: IDLE ignores CMD_STOP | Wrong command for state |
+| 8b | Invalid cmd: IDLE ignores CMD_START | Must configure first |
+| 8c | Invalid cmd: CONFIGURE ignores CMD_CALIBRATE | Wrong command for state |
+| 9a | Pre-reset: state is RUN | Verify in RUN before reset test |
+| 9b | Mid-reset: state is IDLE | Async reset from RUN -> IDLE |
+| 9c | Mid-reset: pipeline_reset_n is low | Pipeline in reset |
+| 9d | Post-reset: state is IDLE | Stable IDLE after reset release |
+| 10a | Flow: entered CONFIGURE | Full normal flow test |
+| 10b | Flow: in STARTUP_FIR waiting | Waiting for FIR reload |
+| 10c | Flow: entered RUN | FIR done -> RUN |
+| 10d | Flow: pipeline active | Processing enabled |
+| 10e | Flow: back to IDLE | STOP -> IDLE |
+
+---
+
+## tb_am_modulator.sv
+
+**DUT:** `am_modulator.v` -- AM modulates CORDIC cosine carrier with internal oscillator
+**Parameters:** `INPUT_WIDTH = 16`, `OUTPUT_WIDTH = 17`, `MOD_ACCUM_WIDTH = 32`
+**Note:** Output feeds mixer `adc_sample` (with `INPUT_WIDTH=17`). `mod_fcw = 0` gives carrier passthrough.
+
+| Test | Check String | Description |
+|------|-------------|-------------|
+| 1 | Reset: am_out is zero | Assert reset, verify output cleared |
+| 2a | Passthrough: max positive cos_in == am_out | `mod_fcw=0`, carrier passes through unchanged |
+| 2b | Passthrough: max negative cos_in == am_out | Negative carrier also passes through |
+| 2c | Passthrough: zero cos_in == 0 | Zero carrier gives zero output |
+| 3 | Modulation: am_out differs from carrier with non-zero FCW | Non-zero `mod_fcw` causes output to deviate from carrier |
+| 4 | Range: no overflow in 256 cycles with max carrier | Run max carrier with fast modulation, verify 17-bit range |
+| 5 | Zero carrier: am_out is zero with any FCW | Zero carrier × any envelope = zero output |
+| 6a | Symmetry: positive envelope increases output | Positive modulation envelope makes output > carrier |
+| 6b | Symmetry: negative envelope decreases output | Negative modulation envelope makes output < carrier |
+| 7a | Small mod: am_out close to carrier with mod_envelope=1 | Tiny envelope change barely affects output |
+| 7b | Accum check: output > carrier after 257 cycles of modulation | Accumulated envelope causes measurable output increase |
+| 8 | Mid-reset: am_out cleared | Assert reset mid-operation, verify output zeroed |
+
+---
+
+## tb_am_testbed_sv.sv
+
+**DUT:** `am_testbed_sv.sv` -- generated block-design wrapper for DDS carrier, DAC output, lock-in mixer, CIC/FIR filtering, 32-bit signal output, and 32-bit phase output
+**Parameters:** 200 MHz clock, `fcw = 48'h1999_9999_999A` for 20 MHz carrier, unipolar Q1.15 sine envelope `0.50 + 0.45*sin(...)`
+**Note:** Filter response checks are measurement/logging only in this first version; they do not enforce pass/fail cutoff thresholds. The testbench also probes mixer, CIC, and FIR internals so waveform/debug data is available even if the generated SV wrapper has not yet exposed the new block-design debug ports. `sampled_*` signals update only on their matching stage valid signal.
+
+| Test | Check String | Description |
+|------|-------------|-------------|
+| 1a | Reset: phase_msb_0 is zero | Assert block resets, verify phase accumulator MSB is cleared |
+| 1b | Reset: timestamps is zero | Assert timestamp reset, verify timestamp output is cleared |
+| 2a | Timestamp: timestamps increments after reset release | Release resets, verify timestamp counter advances |
+| 2b | 20 MHz carrier: phase_msb_0 toggles during observation window | Use `fcw = 48'h1999_9999_999A`, count phase MSB transitions |
+| 2c | 20 MHz carrier: data_out_to_pins_0 changes during observation window | Verify the DAC pin output is active in normal DDS mode |
+| 2d | 20 MHz carrier: data_out_to_pins_0 is known | Verify the DAC pin output is not X/Z after reset release |
+| 3 | AM model: adc_input follows unipolar Q1.15 carrier-envelope product | Check testbench AM model computes `(carrier * envelope) >>> 15` before driving `adc_input` |
+| 4a | Sine 1000 Hz: settling completed | Discard 128 `signal_out_valid` samples before measuring 1 kHz modulation |
+| 4b | Sine 1000 Hz: collected measurement samples | Collect 256 valid `signal_out` samples and print average value plus FIR I/Q debug averages |
+| 5a | Sine 5000 Hz: settling completed | Discard 128 valid samples before measuring 5 kHz modulation |
+| 5b | Sine 5000 Hz: collected measurement samples | Collect 256 valid `signal_out` samples and print average value plus FIR I/Q debug averages |
+| 6a | Sine 10000 Hz: settling completed | Discard 128 valid samples before measuring 10 kHz cutoff behavior |
+| 6b | Sine 10000 Hz: collected measurement samples | Collect 256 valid `signal_out` samples and print average value plus FIR I/Q debug averages |
+| 7a | Sine 15000 Hz: settling completed | Discard 128 valid samples before measuring above-cutoff behavior |
+| 7b | Sine 15000 Hz: collected measurement samples | Collect 256 valid `signal_out` samples and print average value plus FIR I/Q debug averages |
+| 8a | Sine 20000 Hz: settling completed | Discard 128 valid samples before measuring 20 kHz modulation |
+| 8b | Sine 20000 Hz: collected measurement samples | Collect 256 valid `signal_out` samples and print average value plus FIR I/Q debug averages |

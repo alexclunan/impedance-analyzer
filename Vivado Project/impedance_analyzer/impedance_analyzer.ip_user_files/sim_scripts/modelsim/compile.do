@@ -1,118 +1,38 @@
 vlib modelsim_lib/work
 vlib modelsim_lib/msim
 
+vlib modelsim_lib/msim/xilinx_vip
 vlib modelsim_lib/msim/xpm
-vlib modelsim_lib/msim/fifo_generator_v13_2_14
 vlib modelsim_lib/msim/xil_defaultlib
-vlib modelsim_lib/msim/xbip_utils_v3_0_15
-vlib modelsim_lib/msim/axi_utils_v2_0_11
-vlib modelsim_lib/msim/xbip_pipe_v3_0_11
-vlib modelsim_lib/msim/fir_compiler_v7_2_26
-vlib modelsim_lib/msim/c_reg_fd_v12_0_11
-vlib modelsim_lib/msim/xbip_dsp48_wrapper_v3_0_7
-vlib modelsim_lib/msim/c_addsub_v12_0_21
-vlib modelsim_lib/msim/mult_gen_v12_0_24
-vlib modelsim_lib/msim/cordic_v6_0_25
-vlib modelsim_lib/msim/cic_compiler_v4_0_22
-vlib modelsim_lib/msim/axi_bram_ctrl_v4_1_13
-vlib modelsim_lib/msim/blk_mem_gen_v8_4_12
 
+vmap xilinx_vip modelsim_lib/msim/xilinx_vip
 vmap xpm modelsim_lib/msim/xpm
-vmap fifo_generator_v13_2_14 modelsim_lib/msim/fifo_generator_v13_2_14
 vmap xil_defaultlib modelsim_lib/msim/xil_defaultlib
-vmap xbip_utils_v3_0_15 modelsim_lib/msim/xbip_utils_v3_0_15
-vmap axi_utils_v2_0_11 modelsim_lib/msim/axi_utils_v2_0_11
-vmap xbip_pipe_v3_0_11 modelsim_lib/msim/xbip_pipe_v3_0_11
-vmap fir_compiler_v7_2_26 modelsim_lib/msim/fir_compiler_v7_2_26
-vmap c_reg_fd_v12_0_11 modelsim_lib/msim/c_reg_fd_v12_0_11
-vmap xbip_dsp48_wrapper_v3_0_7 modelsim_lib/msim/xbip_dsp48_wrapper_v3_0_7
-vmap c_addsub_v12_0_21 modelsim_lib/msim/c_addsub_v12_0_21
-vmap mult_gen_v12_0_24 modelsim_lib/msim/mult_gen_v12_0_24
-vmap cordic_v6_0_25 modelsim_lib/msim/cordic_v6_0_25
-vmap cic_compiler_v4_0_22 modelsim_lib/msim/cic_compiler_v4_0_22
-vmap axi_bram_ctrl_v4_1_13 modelsim_lib/msim/axi_bram_ctrl_v4_1_13
-vmap blk_mem_gen_v8_4_12 modelsim_lib/msim/blk_mem_gen_v8_4_12
 
-vlog -work xpm  -incr -mfcu  -sv "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
+vlog -work xilinx_vip  -incr -mfcu  -sv -L smartconnect_v1_0 -L axi_vip_v1_1_22 -L processing_system7_vip_v1_0_24 -L xilinx_vip "+incdir+C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/include" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi4stream_vip_axi4streampc.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi_vip_axi4pc.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/xil_common_vip_pkg.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi4stream_vip_pkg.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi_vip_pkg.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi4stream_vip_if.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/axi_vip_if.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/clk_vip_if.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/hdl/rst_vip_if.sv" \
+
+vlog -work xpm  -incr -mfcu  -sv -L smartconnect_v1_0 -L axi_vip_v1_1_22 -L processing_system7_vip_v1_0_24 -L xilinx_vip "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" "+incdir+../../../../ip_repo/Configuration_Register_1_0/drivers/Configuration_Register_v1_0/src" "+incdir+../../../../ip_repo/AXI_register_file_1_0/drivers/AXI_register_file_v1_0/src" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/ec67/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/9a25/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/f0b6/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/00fe/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/434f/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/a415" "+incdir+C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/include" \
 "C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv" \
+"C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv" \
 "C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv" \
 
 vcom -work xpm  -93  \
 "C:/AMDDesignTools/2025.2/Vivado/data/ip/xpm/xpm_VCOMP.vhd" \
 
-vlog -work fifo_generator_v13_2_14  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../ipstatic/simulation/fifo_generator_vlog_beh.v" \
+vlog -work xil_defaultlib  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" "+incdir+../../../../ip_repo/Configuration_Register_1_0/drivers/Configuration_Register_v1_0/src" "+incdir+../../../../ip_repo/AXI_register_file_1_0/drivers/AXI_register_file_v1_0/src" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/ec67/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/9a25/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/f0b6/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/00fe/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/434f/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/a415" "+incdir+C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/include" \
+"../../../../../FPGA/Custom Hardware Source Files/phase_accumulator.v" \
 
-vcom -work fifo_generator_v13_2_14  -93  \
-"../../ipstatic/hdl/fifo_generator_v13_2_rfs.vhd" \
-
-vlog -work fifo_generator_v13_2_14  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../ipstatic/hdl/fifo_generator_v13_2_rfs.v" \
-
-vlog -work xil_defaultlib  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../../impedance_analyzer.gen/sources_1/ip/wave_delay_fifo/sim/wave_delay_fifo.v" \
-
-vcom -work xbip_utils_v3_0_15  -93  \
-"../../ipstatic/hdl/xbip_utils_v3_0_vh_rfs.vhd" \
-
-vcom -work axi_utils_v2_0_11  -93  \
-"../../ipstatic/hdl/axi_utils_v2_0_vh_rfs.vhd" \
-
-vcom -work xbip_pipe_v3_0_11  -93  \
-"../../ipstatic/hdl/xbip_pipe_v3_0_vh_rfs.vhd" \
-
-vcom -work fir_compiler_v7_2_26  -93  \
-"../../ipstatic/hdl/fir_compiler_v7_2_vh_rfs.vhd" \
-
-vcom -work xil_defaultlib  -93  \
-"../../../impedance_analyzer.gen/sources_1/ip/fir_filter_q/sim/fir_filter_q.vhd" \
-"../../../impedance_analyzer.gen/sources_1/ip/fir_filter_i/sim/fir_filter_i.vhd" \
-
-vlog -work xil_defaultlib  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../../impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver_selectio_wiz.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/dac_driver/dac_driver.v" \
-
-vcom -work c_reg_fd_v12_0_11  -93  \
-"../../ipstatic/hdl/c_reg_fd_v12_0_vh_rfs.vhd" \
-
-vcom -work xbip_dsp48_wrapper_v3_0_7  -93  \
-"../../ipstatic/hdl/xbip_dsp48_wrapper_v3_0_vh_rfs.vhd" \
-
-vcom -work c_addsub_v12_0_21  -93  \
-"../../ipstatic/hdl/c_addsub_v12_0_vh_rfs.vhd" \
-
-vcom -work mult_gen_v12_0_24  -93  \
-"../../ipstatic/hdl/mult_gen_v12_0_vh_rfs.vhd" \
-
-vcom -work cordic_v6_0_25  -93  \
-"../../ipstatic/hdl/cordic_v6_0_vh_rfs.vhd" \
-
-vcom -work xil_defaultlib  -93  \
-"../../../impedance_analyzer.gen/sources_1/ip/cordic_vectoring/sim/cordic_vectoring.vhd" \
-"../../../impedance_analyzer.gen/sources_1/ip/cordic_sincos_dac/sim/cordic_sincos_dac.vhd" \
-"../../../impedance_analyzer.gen/sources_1/ip/cordic_sincos_adc/sim/cordic_sincos_adc.vhd" \
-
-vcom -work cic_compiler_v4_0_22  -93  \
-"../../ipstatic/hdl/cic_compiler_v4_0_vh_rfs.vhd" \
-
-vcom -work xil_defaultlib  -93  \
-"../../../impedance_analyzer.gen/sources_1/ip/cic_decimator_i/sim/cic_decimator_i.vhd" \
-"../../../impedance_analyzer.gen/sources_1/ip/cic_compiler_0/sim/cic_compiler_0.vhd" \
-
-vcom -work axi_bram_ctrl_v4_1_13  -93  \
-"../../ipstatic/hdl/axi_bram_ctrl_v4_1_rfs.vhd" \
-
-vcom -work xil_defaultlib  -93  \
-"../../../impedance_analyzer.gen/sources_1/ip/bram_ctrl/sim/bram_ctrl.vhd" \
-
-vlog -work blk_mem_gen_v8_4_12  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../ipstatic/simulation/blk_mem_gen_v8_4.v" \
-
-vlog -work xil_defaultlib  -incr -mfcu  "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" \
-"../../../impedance_analyzer.gen/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/analog_delay_fifo/sim/analog_delay_fifo.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/adc_input/adc_input_selectio_wiz.v" \
-"../../../impedance_analyzer.gen/sources_1/ip/adc_input/adc_input.v" \
+vlog -work xil_defaultlib  -incr -mfcu  -sv -L smartconnect_v1_0 -L axi_vip_v1_1_22 -L processing_system7_vip_v1_0_24 -L xilinx_vip "+incdir+../../../../../../../../../../AMDDesignTools/2025.2/Vivado/data/rsb/busdef" "+incdir+../../../../ip_repo/Configuration_Register_1_0/drivers/Configuration_Register_v1_0/src" "+incdir+../../../../ip_repo/AXI_register_file_1_0/drivers/AXI_register_file_v1_0/src" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/ec67/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/9a25/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/f0b6/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/00fe/hdl/verilog" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/434f/hdl" "+incdir+../../../impedance_analyzer.gen/sources_1/bd/full_design/ipshared/a415" "+incdir+C:/AMDDesignTools/2025.2/Vivado/data/xilinx_vip/include" \
+"../../../../../FPGA/testbenches/tb_phase_accumulator.sv" \
 
 vlog -work xil_defaultlib \
 "glbl.v"

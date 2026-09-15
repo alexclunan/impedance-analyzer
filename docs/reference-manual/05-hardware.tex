@@ -1,0 +1,101 @@
+\chapter{Hardware and PCB}
+\label{ch:hardware}
+
+The instrument is a Xilinx Zynq-7020 system-on-module on a custom mixed-signal
+carrier board. This chapter documents the compute module, the board-level signal
+chains, and the notable components. Full schematics and the bill of materials are
+in \file{PCB/PCB Schematic.pdf} and \file{PCB/PCB\_BoM.csv}; the Altium project
+sources are intentionally kept out of the repository.
+
+\section{Compute module (TE0720 SoM)}
+The processing core is a \textbf{Trenz TE0720} SoM carrying a Xilinx
+\textbf{XC7Z020} Zynq-7000 (dual Cortex-A9 PS + Artix-7-class PL), DDR3, and boot
+flash. The PS runs PetaLinux; the PL holds the DSP pipeline. The SoM plugs into
+the custom carrier through the FMC-style connector (see the schematic's
+\textbf{TE0701} and \textbf{VITA} sheets). See the TE0720 TRM in
+\file{Reference/} for module pinout and power sequencing.
+
+\section{Data converters}
+\begin{center}
+\begin{tabular}{@{}l l p{7.4cm}@{}}
+\toprule
+Role & Part & Notes \\
+\midrule
+ADC & AD9467BCPZ-200 & 16-bit, 200 MSPS, LVDS parallel output to the PL. \\
+DAC & AD9122BCPZRL   & Dual 16-bit TxDAC (1230 MSPS class), byte-mode LVDS input, SPI-configured. \\
+\bottomrule
+\end{tabular}
+\end{center}
+Both converters are configured over PS-SPI via EMIO (Chapter~\ref{ch:registers}):
+the DAC on \code{/dev/spidev1.0} (4-wire), the ADC on \code{/dev/spidev0.0}
+(3-wire). Datasheets: \cite{ad9122}, \cite{ad9467}.
+
+\section{Signal chains}
+The schematic is organized into sheets, each a signal chain. The parts below are
+from the BOM.
+
+\subsection{Excitation (DAC sheet)}
+The PL synthesizes a composite multi-tone waveform (Chapter~\ref{ch:signal}) and
+drives the \textbf{AD9122} DAC. The DAC's differential output is reconstructed
+and buffered by a wideband amplifier (\textbf{ADA4857-1YRZ}, 850\,MHz) and
+brought out on an SMA edge connector to the sensor electrodes.
+
+\subsection{Acquisition (ADC sheet)}
+The returning sensor current enters on an SMA connector and is converted to a
+voltage and conditioned by a low-noise front end:
+\begin{itemize}[nosep]
+  \item \textbf{ADA4817-1ACPZ} ($\times$2) --- 1.05\,GHz, low-noise FET-input
+        amplifier(s): the transimpedance / front-end stage.
+  \item \textbf{LMH6881SQ} --- 2.4\,GHz \emph{programmable-gain} differential
+        amplifier. This is the \textbf{PGA} whose gain is set by
+        \reg{ANALOG1[3:0]} (gain $= 26 - 2\cdot\text{code}$\,dB).
+  \item \textbf{ADA4938-1ACPZ} --- differential ADC driver into the AD9467.
+\end{itemize}
+The AD9467's 16-bit LVDS output is captured in the PL
+(\code{adc\_lvds\_capture}) with delay-matched traces.
+
+\subsection{Clocking (Clocking sheet)}
+A \textbf{200\,MHz LVDS oscillator} (\textbf{AK2ADDF1-200.0000T}) is the master
+timebase. A \textbf{LMK00301SQE} 3-GHz differential fan-out buffer / level
+translator distributes it to the ADC, DAC, and PL. The single shared clock is
+why the PS, PL, and the record timestamps all share one time base with no clock
+synchronization (Chapter~\ref{ch:arch}).
+
+\subsection{Power (Power sheet)}
+A low-noise rail tree suited to the data converters: \textbf{LTM8074IY} ($\times$2)
+$\mu$Module buck regulators for the bulk rails, followed by ultra-low-noise LDOs
+--- \textbf{LT3045IDD} ($\times$3, positive), \textbf{TPS7A9401DSCR} ($\times$2),
+and \textbf{LT3094HMSE} (negative) --- for the sensitive analog supplies. Input
+protection uses an \textbf{STPS2L30A} Schottky, an \textbf{SMBJ14A} TVS, and
+\textbf{ESD8011}/\textbf{ESD9B} ESD diodes.
+
+\subsection{Interconnect}
+\textbf{ASP-134604-01} --- male FMC connector (1.27\,mm, 4$\times$40) to the SoM/
+carrier (VITA/TE0701 sheets). Three \textbf{0732511150} SMA edge connectors carry
+the analog excitation output and sensor input.
+
+\section{Trigger outputs}
+Two actuation outputs drive the sorting mechanism, fired deterministically by the
+PL trigger engine (Chapter~\ref{ch:signal}):
+\begin{center}
+\begin{tabular}{@{}l l l l@{}}
+\toprule
+Output & FPGA pin & Standard & Role \\
+\midrule
+\code{trigger\_out\_0[0]} & AA7 & LVCMOS2.5 & main actuator \\
+\code{trigger\_out\_0[1]} & AA6 & LVCMOS2.5 & secondary actuator \\
+\bottomrule
+\end{tabular}
+\end{center}
+Constraints are in \file{constrs\_1/new/dac\_test\_constraints.xdc}.
+
+\section{Component summary}
+From \file{PCB/PCB\_BoM.csv} (235 line items): 1 ADC, 1 DAC, 4 front-end/driver
+amplifiers, 1 programmable-gain amplifier, 1 clock oscillator, 1 clock fan-out
+buffer, 8 power regulators, plus protection diodes, connectors, and $\sim$147
+capacitors / 52 resistors / 4 inductors / 5 ferrite beads.
+
+\figureneeded{Crop the analog front-end / TIA stage and the trigger-output wiring
+from \file{PCB/PCB Schematic.pdf}, and add a board photo if available. Place the
+exports in \file{reference-manual/figures/} and \code{\textbackslash includegraphics}
+them here.}

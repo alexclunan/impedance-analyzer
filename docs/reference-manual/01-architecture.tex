@@ -1,0 +1,79 @@
+\chapter{System Architecture}
+\label{ch:arch}
+
+\section{What the instrument does}
+The instrument is a \textbf{digital lock-in amplifier (DLIA)} with an integrated
+low-latency trigger, built for impedance cytometry. It synthesizes a
+multi-frequency excitation ($<\SI{10}{\mega\hertz}$), drives sensor electrodes in
+a microfluidic channel, and demodulates the returning current in the digital
+domain to recover per-frequency magnitude and phase. When a target event (a cell
+or bead transiting the sensor) is detected, it fires a physical actuation pin to
+sort it. It is a Zynq-based re-implementation of the lab's HF2IS cell-sorter
+reference \cite{hf2is}, collapsing that design's Raspberry-Pi-plus-instrument
+architecture onto a single SoC.
+
+\section{Three layers}
+The system divides cleanly into three layers, each doing what it is best at.
+
+\begin{description}[style=nextline]
+  \item[PL --- Programmable Logic (FPGA fabric).] All real-time signal
+    processing: direct digital synthesis of the excitation, ADC capture,
+    quadrature demodulation to magnitude/phase, packetization into the DMA
+    stream, and the deterministic ``fire-at-timestamp'' trigger output.
+    Chapter~\ref{ch:signal}.
+  \item[PS --- Processing System (dual Cortex-A9, PetaLinux).] The
+    \code{iza\_replay} userspace application streams demod records from the DMA
+    to the PC over UDP, serves the control channel (register/SPI writes), and
+    runs the trigger \emph{detection} intelligence (rolling-baseline peak detect,
+    phase classification, delay math) ported from the reference. Firmware is
+    tuned by re-\code{scp}-ing an ELF --- no bitstream rebuild.
+  \item[PC --- Host application.] The PySide6 \code{iza\_gui} (and the equivalent
+    CLIs) configure the instrument, plot and record the stream, and set up and
+    monitor triggering.
+\end{description}
+
+\figureneeded{Refresh the top-level architecture block diagram (the
+\file{Block Diagrams/} v0 is stale) showing PL/PS/PC, the analog chain, and the
+UDP flows. Export to \file{reference-manual/figures/} and include it here.}
+
+\section{One clock, one timebase}
+Every clocked element on the board derives from a single \SI{200}{\mega\hertz}
+oscillator (Chapter~\ref{ch:hardware}). The PL contains a free-running 64-bit
+\code{timestamp\_counter} (running at \SI{100}{\mega\hertz} but incrementing by 2,
+i.e.\ \SI{5}{\nano\second} per count) that stamps every demod record. Because the
+detection logic (PS) reads those timestamps and the fire engine (PL) counts in
+the \emph{same} domain, the PS can command ``assert the pin at absolute timestamp
+$T$'' and the PL fires exactly at $T$ regardless of when the command arrived.
+
+This shared timebase is the key architectural simplification over the reference,
+which needed an elaborate RPi$\leftrightarrow$instrument clock-sync
+(\code{calibrate\_time\_sync}). Here there is \textbf{no clock synchronization at
+all}: software and fabric already agree on time to \SI{5}{\nano\second}.
+
+\section{Data and control flow}
+\begin{description}[style=nextline]
+  \item[Measurement (PL$\to$PS$\to$PC).] The v2 packetizer frames demod records
+    into an AXI-Stream; AXI DMA (S2MM, via the \code{dma-proxy} kernel module
+    with coherent buffers) delivers them to \code{iza\_replay}, which forwards
+    them as self-describing UDP datagrams on port 7100 at ${\sim}200$\,kSa/s.
+    Chapter~\ref{ch:protocol}.
+  \item[Control (PC$\to$PS$\to$PL).] The PC sends register/SPI requests on UDP
+    7202; \code{iza\_replay} applies them to the AXI register file
+    (\code{0x43C00000}) or the spidev converters. Register writes never touch the
+    DMA-fragile framing registers mid-stream.
+  \item[Replay (PC$\to$PS$\to$PL).] For bench testing, the PC can push recorded
+    waveforms (UDP 7200) that the board replays through the analog pipeline, rate-
+    servoed by board telemetry (UDP 7201).
+  \item[Triggering (PS detect $\to$ PL fire; events PS$\to$PC).] The PS detects
+    events in the demod stream and writes a fire command to the PL engine; each
+    event is also streamed to the PC (UDP 7203) for logging.
+\end{description}
+
+\section{Latency budget}
+The detection/decision budget is soft \SI{1}{\milli\second}, hard
+\SI{5}{\milli\second}. PS detection latency is approximately one S2MM buffer
+(\code{records\_per\_packet}$/$\SI{200}{\kilo\hertz}) plus RX-loop overhead;
+reducing \code{records\_per\_packet} to $\sim$64--128 in trigger mode puts a
+completed peak well inside \SI{1}{\milli\second}. The intentional actuation delay
+(fixed or velocity-derived, up to hundreds of ms) is separate and is realized
+jitter-free by the PL fire engine.

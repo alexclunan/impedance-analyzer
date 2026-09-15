@@ -1,0 +1,14 @@
+# PC-side dependencies for the impedance-analyzer tools.
+#
+#   pip install -r requirements.txt
+#
+# The GUI (iza_gui) needs PySide6 + pyqtgraph + numpy.  scipy is optional
+# (used by iza_sender resampling / iza_view); matplotlib is optional (used by
+# the offline validators iza_validate / iza_view only).
+
+numpy>=1.23
+pyqtgraph>=0.13
+PySide6>=6.5
+
+# optional
+scipy>=1.9
