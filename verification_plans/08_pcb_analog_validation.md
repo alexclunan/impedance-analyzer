@@ -20,7 +20,7 @@
 
 4. **MFIA cross-check (secondary).** Same load on the MFIA; compare to bound systematic/fixture error.
 
-5. **Real sample data (primary).** Introduce actual lab samples. Confirm the system produces repeatable, physically-sensible impedance magnitude/phase, and sanity-check against expected sample behavior.
+5. **Real sample data (primary).** Introduce actual lab samples. Confirm the system produces repeatable, physically-sensible differential admittance magnitude/phase, and sanity-check against expected sample behavior.
 
 6. **Optional calibration.** If accuracy needs it, run an open/short/load sequence to de-embed fixture parasitics.
 

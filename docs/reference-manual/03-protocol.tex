@@ -192,6 +192,12 @@ datagrams carry its configuration and its per-event results. Enumerations:
 \{\code{AND}=0, \code{OR}=1\}. Magnitudes are \code{fix32\_30}, phases
 \code{fix32\_29} radians, all \code{*\_ticks}/\code{*\_ts} in \SI{5}{\nano\second}
 counts.
+All amplitude and phase fields (\code{amp\_threshold}, \code{min\_peak\_diff},
+\code{polarity}, \code{peak\_mag}/\code{trough\_mag}, \code{phase\_mean/lo/hi})
+are expressed on the relative differential admittance (Chapter~\ref{ch:signal}),
+not on impedance. Which lobe of the bipolar event is the peak depends on electrode
+order and residual imbalance, so set \code{polarity} and the phase windows
+empirically from observed events.
 
 \subsection{Config (\code{iza\_trig\_cfg\_msg\_t})}
 An 8-byte prefix (\code{magic} GZA1, \code{seq}) followed by the
@@ -265,9 +271,13 @@ channel: \file{<base>/iza\_<stamp>/D1/Freq<N>.ziBin} ($N$ = channel$+1$),
 \]
 $t$ is board seconds (PL ticks $/$ \code{PL\_CLK\_HZ}); $x=\text{mag}\cos\phi$,
 $y=\text{mag}\sin\phi$ (Section~\ref{sec:scaling}); \code{freq} is the channel's
-excitation in Hz; \code{dio/auxin0/auxin1} are written as 0. A \file{meta.json}
+excitation in Hz; \code{dio/auxin0/auxin1} are written as 0. A per-channel
+\file{Freq<N>.validity.bin} holds one \code{uint8} per record: 0 = valid,
+bit~1 = nonfinite input or negative magnitude, bit~2 = ADC over-range (flags
+combine; flagged records are still written unchanged). A \file{meta.json}
 sidecar records \code{estimated\_sample\_rate\_hz}, the \code{decimation} factor,
-per-channel record counts, and the scaling. Raw ADC (if streamed) lands in
+per-channel record counts, the scaling, the validity flag definitions and
+counts, and the recording state. Raw ADC (if streamed) lands in
 \file{adc\_int16.bin} (int16 LE). Note: recorder decimation is plain subsampling
 (no anti-alias filter) --- fine for the narrowband demod $x/y$, but the wideband
 raw-ADC stream will alias if decimated.

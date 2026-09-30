@@ -56,6 +56,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.client = ControlClient(self)
         self.data = DataStream(self)
         self.recorder = ZiBinRecorder()
+        self._record_pending = False
+        self._record_error_reported = None
+        self._close_pending = False
         self._status_misses = 0     # consecutive failed status polls
         self._link_up = False       # for down->up recovery resync
         self.settings = QtCore.QSettings("iza", "iza_gui")
@@ -68,6 +71,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self._redraw = QtCore.QTimer(self)
         self._redraw.timeout.connect(self.scope.redraw)
         self._redraw.start(33)
+        self._record_poll = QtCore.QTimer(self)
+        self._record_poll.timeout.connect(self._poll_recording)
+        self._record_poll.start(100)
 
     # ------------------------------------------------------------------ UI
     def _build_ui(self):
@@ -201,10 +207,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btn_rec = QtWidgets.QPushButton("● Record")
         self.btn_rec.setCheckable(True)
         self.btn_rec.setToolTip(
-            "Record incoming measurements to disk in Zurich Instruments format "
-            "(Freq<N>.ziBin per channel + meta.json + raw ADC) at the selected "
-            "Rec rate. You pick the destination folder on start; a timestamped "
-            "session folder is created inside it.")
+            "Record relative differential admittance (x + jy) in Zurich "
+            "Instruments format (Freq<N>.ziBin per channel + a validity sidecar "
+            "flagging ADC over-range + meta.json + raw ADC) at the selected Rec "
+            "rate. You pick the destination folder on start; a unique session "
+            "folder is created inside it.")
         self.btn_rec.toggled.connect(self._on_record)
         lay.addWidget(self.btn_rec)
         self.rec_lbl = QtWidgets.QLabel("")
@@ -340,7 +347,6 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.rate_lbl.setStyleSheet("")
         self.rate_lbl.setText(txt)
-        self.rec_lbl.setText(self.recorder.status_text())
 
     # ------------------------------------------------------------ recording
     _RECRATE_FACTORS = (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000)
@@ -395,7 +401,20 @@ class MainWindow(QtWidgets.QMainWindow):
                 return
             self.settings.setValue("record_dir", base)
             decim, actual, capped = self._recrate_decim()
-            d = self.recorder.start(base, self.control.current_freqs(), decim)
+            try:
+                d = self.recorder.start(base, self.control.current_freqs(), decim)
+            except Exception as exc:
+                self.btn_rec.blockSignals(True)
+                self.btn_rec.setChecked(False)
+                self.btn_rec.blockSignals(False)
+                self.statusBar().showMessage(f"Recording could not start: {exc}")
+                self.client.log.emit("err", f"Recording could not start: {exc}")
+                return
+            self._record_pending = True
+            self._record_error_reported = None
+            self.client.log.emit(
+                "ok", f"Recording relative differential admittance to {d}")
+            self.cmb_recrate.setEnabled(False)
             self.btn_rec.setText("■ Stop rec")
             rate = ("full rate" if decim == 1
                     else f"~{actual:,.0f} Hz (1/{decim})")
@@ -405,11 +424,43 @@ class MainWindow(QtWidgets.QMainWindow):
                             f"(~{actual:,.0f} Hz) — it can't exceed 200 MHz / R.")
             self.statusBar().showMessage(f"Recording ({rate}) to {d}", 5000)
         else:
-            d = self.recorder.stop()
-            self.btn_rec.setText("● Record")
+            if self._record_pending:
+                self.recorder.stop(wait=False)
+                self.btn_rec.setEnabled(False)
+                self.btn_rec.setText("Saving…")
+
+    def _poll_recording(self):
+        if not self._record_pending:
+            return
+        self.rec_lbl.setText(self.recorder.status_text())
+        if self.recorder.error:
+            self.rec_lbl.setText("REC ERROR — see console")
+            if self.recorder.error != self._record_error_reported:
+                self._record_error_reported = self.recorder.error
+                message = f"Recording incomplete: {self.recorder.error} ({self.recorder.session_dir})"
+                self.client.log.emit("err", message)
+                self.statusBar().showMessage(message)
+        if not self.recorder.active:
+            self.btn_rec.blockSignals(True)
+            self.btn_rec.setChecked(False)
+            self.btn_rec.blockSignals(False)
+            self.btn_rec.setEnabled(False)
+            self.btn_rec.setText("Saving…")
+        if self.recorder.busy:
+            return
+        self._record_pending = False
+        self.btn_rec.setText("● Record")
+        self.btn_rec.setEnabled(True)
+        self.cmb_recrate.setEnabled(True)
+        if self.recorder.error:
+            message = f"Recording incomplete: {self.recorder.error} ({self.recorder.session_dir})"
+            self.rec_lbl.setText("REC ERROR — see console")
+            self.statusBar().showMessage(message)
+        else:
             self.rec_lbl.setText("")
-            if d:
-                self.statusBar().showMessage(f"Recording saved: {d}", 8000)
+            self.statusBar().showMessage(f"Recording saved: {self.recorder.session_dir}", 8000)
+        if self._close_pending:
+            self.close()
 
     # ------------------------------------------------------------- settings
     def _restore_settings(self):
@@ -452,7 +503,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusBar().showMessage(f"{label}: {msg}", 5000)
 
     def closeEvent(self, e):
-        self.recorder.stop()        # flush + write meta.json if recording
+        self.recorder.stop(wait=False)  # flush without blocking control heartbeats
         self._save_settings()
         # never leave the board armed when the GUI exits
         if self.client.is_connected():
@@ -462,6 +513,11 @@ class MainWindow(QtWidgets.QMainWindow):
                 pass
         self.data.stop()
         self.client.disconnect_board()
+        if self.recorder.busy:
+            self._close_pending = True
+            self.statusBar().showMessage("Finishing recording before closing…")
+            e.ignore()
+            return
         super().closeEvent(e)
 
 

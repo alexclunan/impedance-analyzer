@@ -77,6 +77,16 @@ The CORDIC polar output arrives on \code{r\_phase\_out\_tdata[63:0]} as
 \]
 The demod output rate is $\sim$\SI{200}{\kilo\hertz} per channel.
 
+\paragraph{Physical quantity.} The two sense electrodes feed parallel
+transimpedance amplifiers whose outputs are subtracted by the fully-differential
+driver, so $X + jY \propto I_1 - I_2 = V_\text{exc}(\mathcal{Y}_1 - \mathcal{Y}_2)$:
+the demod output is a \emph{relative differential admittance}, not an impedance.
+\code{mag} rises when the path admittances rise (e.g.\ with frequency); a cell
+that raises one path's impedance lowers that path's admittance. $\varphi$ is the
+phase of the differential admittance, not an impedance phase. No inversion to
+impedance is applied: $1/(X+jY)$ is not the impedance of any element, because the
+common-mode admittance is rejected by the differential front end.
+
 \section{Framing and packetization}
 \code{demod\_frame\_combiner} takes the four chains' polar buses directly and
 packs them, the raw-ADC monitor, and the per-channel over-range (OR) flags into

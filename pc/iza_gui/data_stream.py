@@ -25,21 +25,11 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
 
 import iza_packet as izp
+from .recording_values import MAG_SCALE, PHASE_SCALE, scale_mag, scale_phase_rad
 
 QUEUE_MAX = 2048     # raw-payload tuples are cheap; more headroom vs GUI stalls
 
-MAG_SCALE = float(1 << 30)      # fix32_30
-PHASE_SCALE = float(1 << 29)    # fix32_29
 PHASE_TO_DEG = 180.0 / np.pi
-
-
-def scale_mag(sig):
-    """int32 magnitude -> float in DAC-normalised units."""
-    return np.asarray(sig, dtype=np.float64) / MAG_SCALE
-
-
-def scale_phase_rad(phase):
-    return np.asarray(phase, dtype=np.float64) / PHASE_SCALE
 
 
 _HDR = struct.Struct(izp.HDR_FMT)   # (magic,seq,first_ts,mask,stride,flags,plen,..)

@@ -41,6 +41,13 @@ Every event — pass or candidate — is streamed to the PC (port 7203) with ful
 timing (peak ts, transit Δt, computed delay, commanded and actual fire ts, and
 detection latency) for the GUI log.
 
+> **Quantity note.** Amplitude and phase here are the *relative differential
+> admittance* (`x + jy ∝ I₁ − I₂`), not impedance. A cell that raises one
+> electrode path's impedance lowers that path's admittance, so `polarity`,
+> `amp_threshold`/`min_peak_diff` and the `phase_mean`/`phase_lo`/`phase_hi` windows
+> are all in admittance space. Set them empirically from observed events rather
+> than from impedance-domain expectations.
+
 ## Modes
 
 | Mode | Meaning |
