@@ -13,9 +13,13 @@ ssh -o StrictHostKeyChecking=no root@192.168.0.80 'uptime'
 
 `iza_replay` normally starts at boot; if not, start it on the board.
 
-## 2. Initialize (required every startup)
-The DAC and ADC output garbage until initialized after each power cycle. In the
-GUI **Control** tab, click **① Initialize DAC + ADC**. Equivalent CLI:
+## 2. Initialize (every startup, and after every Stop / Reset)
+The DAC and ADC output garbage until initialized after each power cycle. A
+**Stop / Reset** (or `iza_ctrl.py reset`) also wipes the DAC's setup, because
+holding the DAC in reset puts its registers back to power-on defaults. **Start**
+alone does not redo it. In the GUI, press **▶ Start**, then
+**① Initialize DAC + ADC**. The indicator under the button and the status bar
+warn whenever the DAC needs it. Equivalent CLI:
 
 ```bash
 cd petalinux_overlay/pc
@@ -25,9 +29,12 @@ python iza_ctrl.py --board 192.168.0.80 adc-init   # AD9467
 ```
 
 ## 3. Set up the excitation and channels
-Pick carrier(s) above 400 kHz on the 12.5 kHz grid, and enable channels. The
-GUI's **Quick setup** / **Apply balanced setup** do this and keep the DAC from
-clipping. CLI equivalent (single tone, 4 demod channels):
+Pick carrier(s) above 400 kHz on the 12.5 kHz grid by typing them into the tone
+**Frequency** boxes, which take Hz, kHz or MHz (`500k`, `1.5 MHz`, `2e6`). Then
+enable channels. The GUI's **Quick setup** / **Apply balanced setup** enables
+the first N channels and sets even amplitudes that keep the DAC from clipping.
+It does not change the frequencies. CLI equivalent (single tone, 4 demod
+channels):
 
 ```bash
 python iza_ctrl.py --board 192.168.0.80 carrier 1e6     # ch0 = 1 MHz
@@ -69,9 +76,17 @@ Disarm triggering (`trig-off`), stop recording, then `reset` for a clean stop
 python iza_ctrl.py --board 192.168.0.80 reset
 ```
 
+This leaves the DAC held in reset, so the next session needs `run` (**Start**)
+and then `dac-init` (**Initialize**) again.
+
 ## Troubleshooting
-- **Garbage / no signal:** re-run `dac-init`/`adc-init` (needed every power cycle;
-  `dac-init` needs `run` first).
+- **Garbage / no signal:** re-run `dac-init`/`adc-init`. They are needed after
+  every power cycle, and `dac-init` after every `reset` / Stop / Reset as well.
+  `dac-init` needs `run` first.
+- **TX stuck at a DC level** (seen on the bench as about +3.35 V on SMA1 with
+  the tones off, near-continuous ADC over-range and random demod phase): the DAC
+  is running with its power-on defaults after a reset. Press **Initialize**
+  (press **Start** first if the instrument is stopped).
 - **Dropped samples warning:** lower the Rec rate or reduce plotted channels; the
   GUI drops UDP under heavy draw load on slow PCs.
 - **No response from board:** confirm `iza_replay` is running and the IP is right.

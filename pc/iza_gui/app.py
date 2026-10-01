@@ -6,7 +6,6 @@ DataStream (UDP 7100) and ControlClient (UDP 7202) and wires their signals to
 the panels.
 """
 
-import re
 import sys
 
 from pyqtgraph.Qt import QtCore, QtWidgets
@@ -22,6 +21,7 @@ from .recorder import ZiBinRecorder
 from .register_panel import RegisterPanel
 from .scope_panel import ScopePanel
 from .trigger_panel import TriggerPanel
+from .units import search_hz
 from .widgets import Led
 
 import iza_ctrl
@@ -137,6 +137,11 @@ class MainWindow(QtWidgets.QMainWindow):
         vsplit.setSizes([620, 160])
 
         self.statusBar().showMessage("Not connected")
+        # permanent, so the transient "<cmd>: ok" messages can't hide it
+        self.dac_warn = QtWidgets.QLabel()
+        self.dac_warn.setStyleSheet(f"color: {theme.WARN};")
+        self.dac_warn.setVisible(False)
+        self.statusBar().addPermanentWidget(self.dac_warn)
 
     def _build_conn_bar(self):
         bar = QtWidgets.QWidget()
@@ -232,6 +237,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.client.status.connect(self._on_status)
         self.client.result.connect(self._on_result)
         self.client.error.connect(self._on_error)
+        self.control.dac_state_changed.connect(self._on_dac_state)
 
         self.data.batch.connect(self.scope.on_batch)
         self.data.batch.connect(self.numeric.on_batch)
@@ -321,6 +327,11 @@ class MainWindow(QtWidgets.QMainWindow):
         for ch in range(4):
             self.scope.set_show(ch, bool(r2 & (1 << (ch + 4))))
 
+    def _on_dac_state(self, attention, short, reason):
+        self.dac_warn.setText(short)
+        self.dac_warn.setToolTip(reason)
+        self.dac_warn.setVisible(attention)
+
     def _on_trigger_evt(self, evt):
         passed = bool(evt.get("flags", 0) & iza_ctrl.EVF_PASS)
         t = evt["peak_ts"] / iza_ctrl.PL_TICK_HZ
@@ -380,15 +391,13 @@ class MainWindow(QtWidgets.QMainWindow):
         txt = self.cmb_recrate.currentText().strip().lower()
         if not txt or txt.startswith("full"):
             return 1, native, False
-        m = re.search(r"([0-9]*\.?[0-9]+)\s*([kmg])?", txt)
-        if not m:
-            return 1, native, False
-        target = float(m.group(1)) * {"k": 1e3, "m": 1e6, "g": 1e9}.get(m.group(2), 1.0)
-        if target <= 0:
+        target = search_hz(txt)         # same syntax as the tone boxes
+        if target is None or target <= 0:
             return 1, native, False
         if target > native:                         # cannot exceed the CIC output
             return 1, native, True
-        decim = int(max(1, min(1_000_000, round(native / target))))
+        # clamp before round(): a tiny target ('1e-310') makes native/target inf
+        decim = int(max(1, round(min(native / target, 1_000_000))))
         return decim, native / decim, False
 
     def _on_record(self, on):

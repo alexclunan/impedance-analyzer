@@ -741,7 +741,7 @@ def main():
         elif args.cmd == "regread":  print(f"reg{args.reg} =", hex(c.reg_read(args.reg)))
         elif args.cmd == "dac-init":
             r = c.dac_init(args.interp)
-            print(f"dac-init: interp={r['interp']}x  word mode (16-bit), 2s comp\n"
+            print(f"dac-init: interp={r['interp']}x  byte mode (8-bit), 2s comp\n"
                   f"  FIFO 0x18(after req)={r['fifo_0x18_after_req']:#04x} "
                   f"(expect 0x07, align_ack={r['align_ack']})\n"
                   f"  0x19 level={r['fifo_0x19_level']:#04x} "

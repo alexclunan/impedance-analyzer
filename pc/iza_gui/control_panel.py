@@ -10,19 +10,29 @@ never fight the user's typing.
 from pyqtgraph.Qt import QtCore, QtWidgets
 
 import iza_ctrl
-from . import theme
-from .widgets import CollapsibleSection, Led, labeled_row
+from . import dac_state, theme
+from .widgets import CollapsibleSection, FreqSpinBox, Led, labeled_row
 
 UNITY = iza_ctrl.AMP_DEFAULT        # 0x8000
 RASTER = iza_ctrl.RASTER_HZ         # 12500.0
 FCW_MAX = iza_ctrl.FCW_MAX          # 16000
 
 
+def _fmt_actual(hz):
+    """The snapped-frequency readout beside a tone's Frequency box."""
+    return f"→ {hz / 1e6:.4f} MHz" if hz >= 1e6 else f"→ {hz / 1e3:.1f} kHz"
+
+
 class ControlPanel(QtWidgets.QWidget):
+    # (needs attention, short status-bar text, full reason) on every change
+    dac_state_changed = QtCore.Signal(bool, str, str)
+
     def __init__(self, client, parent=None):
         super().__init__(parent)
         self.client = client
         self._synced = False        # have we pushed board regs into widgets yet?
+        self._dac = dac_state.DacInitTracker()
+        self._dac_attention_shown = False   # last state shown needed attention
 
         root = QtWidgets.QVBoxLayout(self)
         root.setContentsMargins(6, 6, 6, 6)
@@ -38,6 +48,11 @@ class ControlPanel(QtWidgets.QWidget):
 
         client.result.connect(self._on_result)
         client.error.connect(self._on_error)
+        client.dac_format.connect(
+            lambda fmt: self._show_dac_state(self._dac.on_format(fmt)))
+        # each connection starts from scratch: the first poll decides
+        client.connected.connect(
+            lambda _ok: self._show_dac_state(self._dac.reset()))
 
     # =====================================================================
     # helpers
@@ -72,8 +87,9 @@ class ControlPanel(QtWidgets.QWidget):
             "generating/measuring (SYS_CTRL0 = run)")
         self.btn_reset = QtWidgets.QPushButton("⏹ Stop / Reset")
         self.btn_reset.setToolTip(
-            "Stop the instrument and hold all internal processing in reset. "
-            "Press Start to resume.")
+            "Stop the instrument and hold all internal processing, and the DAC "
+            "chip, in reset. The DAC loses its setup: to resume, press ▶ Start, "
+            "then ① Initialize DAC + ADC.")
         self.btn_run.clicked.connect(lambda: self._submit("run", lambda c: c.run()))
         self.btn_reset.clicked.connect(
             lambda: self._submit("reset", lambda c: c.reset_all()))
@@ -92,16 +108,34 @@ class ControlPanel(QtWidgets.QWidget):
         self.btn_init.setProperty("accent", True)
         self.btn_init.setToolTip(
             "Run the AD9122 DAC (2× interpolation) and AD9467 ADC power-up "
-            "sequences. REQUIRED after every board power-up — without it the "
-            "analog output and input are garbage. Press Start first if the "
-            "instrument is stopped.")
+            "sequences. REQUIRED after every board power-up and after every "
+            "Stop / Reset — without it the analog output and input are "
+            "garbage. Press Start first if the instrument is stopped.")
         self.btn_init.clicked.connect(self._init_converters)
         warn = QtWidgets.QLabel(
-            "⚠ Run once after every board power-up, or the output/input is garbage.")
+            "⚠ Run after every board power-up, and after ▶ Start following a "
+            "Stop / Reset, or the output/input is garbage.")
         warn.setWordWrap(True)
         warn.setStyleSheet(f"color: {theme.WARN};")
         sec.add(self.btn_init)
         sec.add(warn)
+
+        # Live check that the DAC still holds its init: the status poll reads
+        # SYS_CTRL0 bit 4 and the DAC's Data-format register (see dac_state).
+        self.dac_led = Led()
+        self.dac_lbl = QtWidgets.QLabel()
+        self.dac_lbl.setWordWrap(True)
+        self.dac_lbl.setToolTip(
+            "Whether the output converter (AD9122) still has the setup from "
+            "Initialize. Any reset puts it back to its power-up defaults, and "
+            "Start does not redo the setup.")
+        dac_row = QtWidgets.QHBoxLayout()
+        dac_row.addWidget(self.dac_led)
+        dac_row.addWidget(self.dac_lbl, 1)
+        dw = QtWidgets.QWidget()
+        dw.setLayout(dac_row)
+        sec.add(dw)
+        self._show_dac_state(True)
 
         # SYS_CTRL0 bit 6 (mux_0.sel): what the DEMODULATOR listens to.
         self.cmb_demin = QtWidgets.QComboBox()
@@ -152,11 +186,12 @@ class ControlPanel(QtWidgets.QWidget):
             self.tx_chk.append(chk)
             v.addWidget(chk)
 
-            fspin = self._dspin(0, 8_000_000, RASTER, ch * 0 + 500000, " Hz")
+            fspin = FreqSpinBox(0, 8_000_000, RASTER, 500000)
             fspin.setToolTip(
-                "Tone frequency. Snaps to the 12.5 kHz grid; keep it above "
-                "400 kHz (the analog high-pass filter blocks lower "
-                "frequencies).")
+                "Tone frequency. Type it in Hz, kHz or MHz — e.g. 750000, "
+                "500k, 500 kHz, 1.5M, 1.5 MHz or 2e6 (a bare number is Hz). "
+                "Snaps to the 12.5 kHz grid; keep it above 400 kHz (the "
+                "analog high-pass filter blocks lower frequencies).")
             actual = QtWidgets.QLabel("")
             actual.setProperty("dim", True)
             actual.setToolTip("The actual frequency after snapping to the "
@@ -223,7 +258,7 @@ class ControlPanel(QtWidgets.QWidget):
     def _set_freq(self, ch):
         hz = self.freq_spin[ch].value()
         fcw, actual = self._snap(hz)
-        self.freq_actual[ch].setText(f"→ {actual/1e3:.1f} kHz")
+        self.freq_actual[ch].setText(_fmt_actual(actual))
         self._submit(f"freq{ch}", lambda c: c.set_freq(ch, hz))
 
     def _set_amp(self, ch):
@@ -566,6 +601,10 @@ class ControlPanel(QtWidgets.QWidget):
             self.raw_status.setText(f"reg{label[7:]} = {hex(value)}")
         elif label in ("dac-init", "adc-init"):
             self.chip_status.setText(str(value))
+            if label == "dac-init":
+                self._show_dac_state(self._dac.on_init_result(value))
+        elif label == "reset":
+            self._show_dac_state(self._dac.on_reset_command())
         elif label in ("spi-dac", "spi-adc"):
             self.raw_status.setText("SPI rx: "
                                     + " ".join(f"0x{b:02x}" for b in bytes(value)))
@@ -578,6 +617,35 @@ class ControlPanel(QtWidgets.QWidget):
             self.raw_status.setText(f"{label} error: {msg}")
         elif label in ("dac-init", "adc-init"):
             self.chip_status.setText(f"{label} error: {msg}")
+            # only a failure on the board link says anything about the DAC
+            # (not e.g. 'not connected' from clicking before Connect)
+            if label == "dac-init" and self.client.is_connected():
+                self._show_dac_state(self._dac.on_init_error(msg))
+
+    def _show_dac_state(self, changed):
+        """Reflect the DAC-init tracker in the indicator, the command log and
+        (via dac_state_changed) the main window's status bar."""
+        if not changed:
+            return
+        st, why = self._dac.state, self._dac.reason
+        if st == dac_state.OK:
+            color, text, style = theme.GOOD, "DAC initialized", theme.TEXT_DIM
+        elif st == dac_state.UNKNOWN:
+            text = f"DAC setup: unknown ({why})" if why else "DAC setup: not checked yet"
+            color, style = theme.TEXT_DIM, theme.TEXT_DIM
+        else:
+            color, text, style = theme.WARN, f"⚠ {why}", theme.WARN
+        self.dac_led.set_color(color)
+        self.dac_lbl.setText(text)
+        self.dac_lbl.setStyleSheet(f"color: {style};")
+
+        attention = self._dac.needs_attention
+        if attention:
+            self.client.log.emit("warn", why)
+        elif self._dac_attention_shown and st == dac_state.OK:
+            self.client.log.emit("ok", "DAC initialized — warning cleared")
+        self._dac_attention_shown = attention
+        self.dac_state_changed.emit(attention, self._dac.short_text, why)
 
     # =====================================================================
     # status sync (from ControlClient poll)
@@ -588,10 +656,12 @@ class ControlPanel(QtWidgets.QWidget):
         if not regs:
             self.run_led.set_color(theme.TEXT_DIM)
             self.run_state.setText("no link")
+            self._show_dac_state(self._dac.on_link_lost())
             return
         run = bool(regs.get(0, 0) & (1 << iza_ctrl.B_RUN))
         self.run_led.set_color(theme.GOOD if run else theme.WARN)
         self.run_state.setText("RUNNING" if run else "held")
+        self._show_dac_state(self._dac.on_sys_ctrl(regs.get(0, 0)))
         if not self._synced:
             self._sync_widgets(regs)
             self._synced = True
@@ -624,7 +694,7 @@ class ControlPanel(QtWidgets.QWidget):
                 fcw = fa & 0x3FFF
                 amp = (fa >> 16) & 0xFFFF
                 self.freq_spin[ch].setValue(fcw * RASTER)
-                self.freq_actual[ch].setText(f"→ {fcw*RASTER/1e3:.1f} kHz")
+                self.freq_actual[ch].setText(_fmt_actual(fcw * RASTER))
                 self.amp_spin[ch].setValue(amp / UNITY * 100.0)
         finally:
             for w in blk:

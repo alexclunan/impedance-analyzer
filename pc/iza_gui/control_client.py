@@ -15,6 +15,7 @@ from contextlib import contextmanager
 from pyqtgraph.Qt import QtCore
 
 import iza_ctrl
+from .dac_state import FORMAT_REG as DAC_FORMAT_REG
 
 # Registers whose write-verification mismatch is expected because the chip
 # clears the bit itself (handshake/commit registers): warn softly, not loudly.
@@ -139,15 +140,45 @@ class VerifyingCtrl(iza_ctrl.IzaCtrl):
         return v
 
 
+def read_status(ctrl, log_poll=False):
+    """One status poll (runs on the worker): all 16 AXI registers, plus the
+    DAC's Data-format register when the chip is out of reset.  Returns
+    (regs, dac_fmt); dac_fmt is None when it wasn't read or the read failed."""
+    # suppress console logging for the periodic poll unless enabled
+    ctrl.quiet = not log_poll
+    regs = {}
+    dac_fmt = None
+    try:
+        for i in range(16):     # 0..10 core + 11..15 trigger/spare regs
+            try:
+                regs[i] = ctrl.reg_read(i)
+            except Exception:
+                # UDP has no retransmit: one lost/late datagram must
+                # not declare the link dead — retry once, and only a
+                # back-to-back failure aborts the poll
+                regs[i] = ctrl.reg_read(i)
+        # Has the DAC kept its dac_init setup? A reset returns 0x03 to
+        # word mode. Its SPI is dead while held in reset, so skip then.
+        if regs[0] & (1 << iza_ctrl.B_DAC_CHIP_NRST):
+            try:
+                dac_fmt = ctrl.dac_read(DAC_FORMAT_REG)
+            except Exception:
+                dac_fmt = None  # a lost probe must not fail the poll
+    finally:
+        ctrl.quiet = False
+    return regs, dac_fmt
+
+
 class _WorkerSignals(QtCore.QObject):
-    done = QtCore.Signal(str, object)     # (label, return value)
-    failed = QtCore.Signal(str, str)      # (label, message)
+    done = QtCore.Signal(str, int, object)  # (label, connection gen, return value)
+    failed = QtCore.Signal(str, int, str)   # (label, connection gen, message)
 
 
 class _Task(QtCore.QRunnable):
-    def __init__(self, label, fn, signals):
+    def __init__(self, label, gen, fn, signals):
         super().__init__()
         self.label = label
+        self.gen = gen
         self.fn = fn
         self.signals = signals
 
@@ -155,9 +186,9 @@ class _Task(QtCore.QRunnable):
         try:
             result = self.fn()
         except Exception as e:                      # incl. iza_ctrl.CtrlError
-            self.signals.failed.emit(self.label, str(e))
+            self.signals.failed.emit(self.label, self.gen, str(e))
         else:
-            self.signals.done.emit(self.label, result)
+            self.signals.done.emit(self.label, self.gen, result)
 
 
 class ControlClient(QtCore.QObject):
@@ -169,6 +200,9 @@ class ControlClient(QtCore.QObject):
     # NOTE: object, not dict — PySide6 converts Signal(dict) to QVariantMap,
     # which silently rejects int-keyed dicts like our register maps.
     status = QtCore.Signal(object)          # polled register readback
+    # DAC Data-format reg (0x03) read by the same poll, emitted right after
+    # `status`; None when the chip is held in reset or the probe was lost
+    dac_format = QtCore.Signal(object)
     log = QtCore.Signal(str, str)           # (kind: cmd/ok/warn/err, text)
     trigger_event = QtCore.Signal(object)   # decoded trigger-event dict (async)
 
@@ -177,6 +211,9 @@ class ControlClient(QtCore.QObject):
         self.ctrl = None
         self.log_polling = False            # console checkbox: log 1 Hz polls?
         self._pending = 0                   # tasks queued/running on the worker
+        # bumped on every connect/disconnect; a task that finishes under an
+        # older generation belongs to a closed connection and is dropped
+        self._gen = 0
         self._pool = QtCore.QThreadPool(self)
         self._pool.setMaxThreadCount(1)     # serialise: single shared socket
         self._sig = _WorkerSignals()
@@ -196,6 +233,7 @@ class ControlClient(QtCore.QObject):
     def connect_board(self, ip, port=iza_ctrl.CTRL_PORT):
         # emitting a signal from the worker thread is thread-safe (queued)
         self.ctrl = VerifyingCtrl(ip, port, timeout=1.0, log_cb=self.log.emit)
+        self._gen += 1
         self.log.emit("cmd", f"connect {ip}:{port}")
         self.connected.emit(True)
         self._start_events()
@@ -208,6 +246,7 @@ class ControlClient(QtCore.QObject):
         if self.ctrl is not None:
             self.log.emit("cmd", "disconnect")
         self.ctrl = None
+        self._gen += 1
         self.connected.emit(False)
 
     def is_connected(self):
@@ -279,7 +318,7 @@ class ControlClient(QtCore.QObject):
         if not label.startswith("__"):
             self.log.emit("cmd", label)
         self._pending += 1
-        self._pool.start(_Task(label, lambda: fn(ctrl), self._sig))
+        self._pool.start(_Task(label, self._gen, lambda: fn(ctrl), self._sig))
 
     # ---- status poll ----
     def _poll_status(self):
@@ -293,37 +332,26 @@ class ControlClient(QtCore.QObject):
             return
         ctrl = self.ctrl
         log_poll = self.log_polling
-
-        def read():
-            # suppress console logging for the periodic poll unless enabled
-            ctrl.quiet = not log_poll
-            regs = {}
-            try:
-                for i in range(16):     # 0..10 core + 11..15 trigger/spare regs
-                    try:
-                        regs[i] = ctrl.reg_read(i)
-                    except Exception:
-                        # UDP has no retransmit: one lost/late datagram must
-                        # not declare the link dead — retry once, and only a
-                        # back-to-back failure aborts the poll
-                        regs[i] = ctrl.reg_read(i)
-            finally:
-                ctrl.quiet = False
-            return regs
-
         self._pending += 1
-        self._pool.start(_Task("__status__", read, self._sig))
+        self._pool.start(_Task("__status__", self._gen,
+                               lambda: read_status(ctrl, log_poll), self._sig))
 
     # ---- worker callbacks (GUI thread) ----
-    def _on_done(self, label, value):
+    def _on_done(self, label, gen, value):
         self._pending = max(0, self._pending - 1)
+        if gen != self._gen:
+            return      # finished after a disconnect/reconnect: stale, drop it
         if label == "__status__":
-            self.status.emit(value)
+            regs, dac_fmt = value
+            self.status.emit(regs)
+            self.dac_format.emit(dac_fmt)
         else:
             self.result.emit(label, value)
 
-    def _on_failed(self, label, msg):
+    def _on_failed(self, label, gen, msg):
         self._pending = max(0, self._pending - 1)
+        if gen != self._gen:
+            return
         if label == "__status__":
             # a failed poll means the link is down; report as a status with no regs
             self.status.emit({})

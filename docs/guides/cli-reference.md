@@ -23,7 +23,7 @@ python iza_ctrl.py --board 192.168.0.80 <command> [args]
 | Command | Args | Purpose |
 |---|---|---|
 | `run` | — | release all resets + enable run (`SYS_CTRL0 = 0x3F`) |
-| `reset` | — | graceful stop then hold all resets (preserves routing bits) |
+| `reset` | — | graceful stop then hold all resets (preserves routing bits). Wipes the DAC's setup: run `run` + `dac-init` afterwards |
 | `pga` | `gain_db` | set input PGA gain, even dB in 6..26 (higher = more gain + noise) |
 | `pga-code` | `code` | raw 4-bit PGA code (0 = 26 dB … 10 = 6 dB) |
 | `demod-input` | `sel` | demod input mux: 0 = analog ADC, 1 = internal loopback |
@@ -44,7 +44,7 @@ python iza_ctrl.py --board 192.168.0.80 <command> [args]
 | `trig-off` | — | disarm triggering |
 | `trig-soft` | `[--ampch --thr --mindiff --shift --holdoff --event --fixed-delay --pulse --polarity]` | arm soft (no-pin) triggering; events stream to UDP 7203 |
 
-**Startup ordering (required every boot):**
+**Startup ordering (required every boot; `run` + `dac-init` again after any `reset`):**
 
 ```bash
 python iza_ctrl.py --board 192.168.0.80 run          # release resets, enable run
@@ -54,6 +54,14 @@ python iza_ctrl.py --board 192.168.0.80 channels 0xF  # enable 4 demod channels
 ```
 
 Without `dac-init`/`adc-init` after a power cycle the converters emit garbage.
+`reset` (and the GUI's Stop / Reset) holds the DAC in reset (`SYS_CTRL0`
+bit 4 = 0), which puts its registers back to power-on defaults. So after the next
+`run`, repeat `dac-init`. The ADC has no reset bit in `SYS_CTRL0` and keeps its
+setup. After `run`, `dac-read 0x03` shows which state the DAC is in: it prints
+`0x1` when initialized (byte mode), `0x0` at power-on defaults, and `0xff` if
+the DAC isn't answering on SPI. Don't use it while the DAC is still held in
+reset after `reset`: its SPI path is dead then, and `dac-read` doesn't check
+`SYS_CTRL0` bit 4 the way `dac-init` does.
 
 ---
 

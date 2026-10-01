@@ -1,8 +1,9 @@
-"""Small shared widgets: collapsible section and status LED."""
+"""Small shared widgets: collapsible section, status LED, frequency spin box."""
 
 from pyqtgraph.Qt import QtCore, QtGui, QtWidgets
 
 from . import theme
+from .units import format_hz, is_partial_hz, parse_hz
 
 
 class Led(QtWidgets.QLabel):
@@ -24,6 +25,108 @@ class Led(QtWidgets.QLabel):
         p.setPen(QtCore.Qt.NoPen)
         p.setBrush(self._color)
         p.drawEllipse(0, 0, self._d, self._d)
+
+
+class FreqSpinBox(QtWidgets.QDoubleSpinBox):
+    """A frequency spin box that holds Hz but accepts and shows SI units.
+
+    Type '750000', '500k', '500 kHz', '1.5M', '1.5 MHz' or '2e6'; the value is
+    shown back as '500 kHz' / '1.0125 MHz'.  A typed value outside the range is
+    clamped to it; text that isn't a frequency reverts to the value from before
+    the edit.  In a comma-decimal locale ',' is the decimal mark, as in the
+    other spin boxes."""
+
+    _WIDEST = "888.8875 kHz"      # sizes the box for the longest typical text
+
+    def __init__(self, lo, hi, step, val, decimals=0, parent=None):
+        super().__init__(parent)
+        self.setDecimals(decimals)          # Hz resolution of the stored value
+        self.setRange(lo, hi)
+        self.setSingleStep(step)
+        # Commit only the finished text: with tracking on, every parsable
+        # prefix ('2' of '2e6') would become the value along the way.
+        self.setKeyboardTracking(False)
+        self.lineEdit().setMaxLength(32)    # no frequency needs more
+        # stepEnabled() follows the typed text: repaint the arrows as it changes
+        self.lineEdit().textChanged.connect(self.update)
+        self.setValue(val)
+
+    def _comma(self):
+        return self.locale().decimalPoint() == ","
+
+    def _norm(self, text):
+        """Typed text in the parser's syntax ('.' decimal, no grouping)."""
+        if self._comma():
+            # with a ',' present, or several '.', a '.' can only be grouping
+            if "," in text or text.count(".") > 1:
+                text = text.replace(".", "")
+            text = text.replace(",", ".")
+        return text
+
+    def _parse(self, text):
+        return parse_hz(self._norm(text))
+
+    def textFromValue(self, value):
+        text = format_hz(value, self.decimals())
+        return text.replace(".", ",") if self._comma() else text
+
+    def valueFromText(self, text):
+        hz = self._parse(text)
+        # round like setValue() does, so value() always matches the text
+        return self.value() if hz is None else round(hz, self.decimals())
+
+    def validate(self, text, pos):
+        hz = self._parse(text)
+        if hz is not None:
+            ok = self.minimum() <= hz <= self.maximum()
+            state = QtGui.QValidator.Acceptable if ok else QtGui.QValidator.Intermediate
+        elif is_partial_hz(self._norm(text)):
+            state = QtGui.QValidator.Intermediate
+        else:
+            state = QtGui.QValidator.Invalid
+        return state, text, pos
+
+    def stepEnabled(self):
+        # Judge the arrows by the typed text when it parses: with keyboard
+        # tracking off the committed value lags it, and Qt checks this before
+        # stepBy() reads the text (so '1 MHz' typed over '0 Hz' couldn't step
+        # down).
+        hz = self._parse(self.lineEdit().text())
+        if hz is None or self.isReadOnly() or self.wrapping():
+            return super().stepEnabled()
+        A = QtWidgets.QAbstractSpinBox
+        flags = A.StepEnabledFlag.StepNone if hasattr(A, "StepEnabledFlag") else A.StepNone
+        if hz < self.maximum():
+            flags |= A.StepUpEnabled
+        if hz > self.minimum():
+            flags |= A.StepDownEnabled
+        return flags
+
+    def fixup(self, text):
+        # Qt calls this for text that isn't Acceptable. Clamp an out-of-range
+        # entry here (CorrectToNearestValue would bound a zero placeholder, not
+        # the typed value) and finish a half-typed unit ('500 kH'). Anything
+        # else is returned as-is, so the box reverts to its previous value.
+        hz = self._parse(text)
+        if hz is None and text.rstrip()[-1:] in ("h", "H"):
+            hz = self._parse(text.rstrip() + "z")
+        if hz is None:
+            return text
+        return self.textFromValue(min(max(hz, self.minimum()), self.maximum()))
+
+    def sizeHint(self):
+        # the base hint only measures the min/max texts ('0 Hz', '8 MHz')
+        hint = super().sizeHint()
+        fm = self.fontMetrics()
+        base = max(fm.horizontalAdvance(self.textFromValue(self.minimum())),
+                   fm.horizontalAdvance(self.textFromValue(self.maximum())))
+        extra = fm.horizontalAdvance(self._WIDEST) - base
+        if extra > 0:
+            hint.setWidth(hint.width() + extra)
+        return hint
+
+    def minimumSizeHint(self):
+        return self.sizeHint()
 
 
 class CollapsibleSection(QtWidgets.QWidget):

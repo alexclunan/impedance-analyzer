@@ -68,7 +68,12 @@ The converters are on PS-SPI via EMIO through Linux spidev: AD9122 DAC on
 `/dev/spidev1.0` (4-wire), AD9467 ADC on `/dev/spidev0.0` (3-wire). Actual init
 sequences run from the PC via `iza_ctrl.py dac-init` / `adc-init` (TRM ch. 4).
 **The DAC chip must be released (`run` first) before its SPI path is alive**, and
-both converters need init after every power cycle or they emit garbage.
+both converters need init after every power cycle or they emit garbage. The DAC
+also needs `dac-init` again after anything that holds it in reset (`SYS_CTRL0`
+bit 4 = 0, e.g. `reset_all()` / the GUI's Stop / Reset): its registers return to
+power-on defaults (reg `0x03` = `0x00`, word mode, instead of the `0x01` byte
+mode that `dac-init` writes). The GUI's 1 s status poll reads `0x03` and warns
+when this has happened.
 
 ## Register-write safety
 

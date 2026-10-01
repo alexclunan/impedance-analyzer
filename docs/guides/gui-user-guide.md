@@ -33,17 +33,54 @@ link doesn't drop packets under drawing load.
 
 Top of the window: board IP/connect, live stats (records/s, Mbit/s, link alive),
 an instrument-wide over-range LED, a dropped-samples warning (turns red with a
-count), the **Record** button, and the **Rec rate** decimation selector.
+count), the **Record** button, and the **Rec rate** decimation selector. Rec
+rate takes a preset or a typed rate with the same units as the tone frequencies
+(`5 kHz`, `7500`, `5e3`). Always use `.` as the decimal mark here, even in a
+comma-decimal locale: `2,5 kHz` is read as 2 Hz. Text with no number in it
+records at full rate. The status bar shows the rate actually used when
+recording starts.
 
 ## Tabs
 
 ### Control
 Drives the instrument through `iza_ctrl`:
-- **System:** the **① Initialize DAC + ADC** button (must be run every startup or
-  the converters output garbage) with a warning banner; `run`/`reset`.
+- **System:** **▶ Start** / **⏹ Stop / Reset** (`run`/`reset`) and the
+  **① Initialize DAC + ADC** button, with a warning banner. Initialize is needed
+  after every power-up **and after every Stop / Reset**: holding the DAC in reset
+  (`SYS_CTRL0` bit 4 = 0) puts its registers back to power-on defaults, and
+  **Start** does not redo the setup. After a Stop / Reset, press **Start**, then
+  **Initialize**. `SYS_CTRL0` has no ADC reset bit, so it is the DAC that needs
+  it, but re-running both is harmless.
+- **DAC setup indicator** (under Initialize): the status poll reads `SYS_CTRL0`
+  about once a second and, while the DAC is out of reset (`SYS_CTRL0` bit 4 = 1),
+  also its Data-format register (`0x03`). It shows a green **DAC initialized**,
+  or a warning naming the next step:
+  - **held in reset**: press **Start**, then **Initialize**;
+  - **lost its setup**: press **Initialize**;
+  - **not answering**: SPI reads `0xFF`; check the DAC board;
+  - **FIFO alignment check failed**: the last Initialize ran, but its
+    FIFO-alignment checks didn't pass; re-run **Initialize**;
+  - **initialize failed**: the Initialize command itself failed (no reply, or an
+    error status from the board; the error is shown in brackets). Re-run
+    **Initialize**.
+
+  A short form of the warning ("⚠ DAC in reset: ▶ Start, then ① Initialize",
+  "⚠ DAC needs ① Initialize" or "⚠ DAC not answering") stays in the status bar
+  (bottom right); hover over it for the full text. The full warning is written
+  once to the command log, and an **ok** line is logged when it clears. If the
+  control link drops while the indicator shows **DAC initialized** (for example
+  during a board reboot), it greys to "DAC setup: unknown (no control link)". A
+  warning that is already showing stays up until the link comes back and the
+  next poll re-checks the DAC.
 - **Signal output:** per-tone frequency and amplitude; **Quick setup** (up to 3
   tones); **Apply balanced setup** (enables channels and applies even, non-clipping
   amplitudes, reflected in the amplitude fields); the DAC output-level bar.
+  Frequencies can be typed in Hz, kHz or MHz: `750000`, `500k`, `500 kHz`,
+  `1.5M`, `1.5 MHz` or `2e6` (a bare number is Hz, `m` means mega). They snap to
+  the 12.5 kHz grid, and the readout beside each box shows the snapped value
+  (in MHz from 1 MHz up). Values above 8 MHz clamp to 8 MHz. Text that isn't a
+  frequency reverts to the previous value. In a comma-decimal locale, type
+  `1,5 MHz`.
 - **Muxes:** demod input (ADC vs loopback, `SYS_CTRL0[6]`) and DAC output (tones
   vs test/replay, `SYS_CTRL0[8]`); PGA gain; DAC interpolation (default 2×).
 - **FIR filter:** set a low-pass **Cutoff** and *Design + load* a 127-tap
