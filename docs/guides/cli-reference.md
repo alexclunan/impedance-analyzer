@@ -107,6 +107,112 @@ python iza_plotter.py --port 7100 --window 3.0 --decimate 10
 
 ---
 
+## `iza_sweep.py` — frequency-response sweep
+
+Steps one tone across log-spaced frequencies (default 500 kHz–40 MHz, 40
+points, channel 0) at a low amplitude (default 5 %). At each point it averages
+the demod output x + jy and divides by the amplitude used, so the result is
+"demod output per unit DAC full-scale amplitude".
+
+**Before you run it.**
+- Close the GUI first, because it holds UDP 7100.
+- The board must be running with both converters initialized (GUI: Start,
+  then Initialize DAC + ADC; CLI: `run`, `dac-init`, `adc-init`). The sweep
+  refuses if the instrument is stopped, the DAC is in reset or uninitialized,
+  the demod input or DAC output mux is not at its normal setting, or the ADC
+  looks uninitialized. For that check the sweep probes the raw ADC with the
+  tones off: an uninitialized ADC's offset-binary output, read as two's
+  complement, sits near ± full scale with no over-range, while an initialized
+  one reads a few LSB.
+- Bad arguments (including `--port` outside 1–65535), a bad `--open`/`--ref`
+  file, or an output that can't be written are reported before the board is
+  touched. That covers a read-only folder, or a CSV held open without write
+  sharing, as Excel does. A missing output folder is created. If a program
+  that does allow writing (a viewer, OneDrive) holds the CSV, it is
+  overwritten in place.
+
+**What it changes on the board.**
+- **Triggering is disarmed** at the start. Frequency and amplitude steps look
+  like events, and the sweep's traffic would keep the trigger watchdog fed.
+  The sweep can't re-arm it afterwards.
+- **The tone, channel-mask and packet registers it touched are restored** when
+  it finishes, including after an error or Ctrl-C. A second Ctrl-C during the
+  restore is ignored, and console errors (e.g. output piped to `head`) can't
+  skip it. The channel mask is restored first, so the swept channel never
+  plays its old amplitude under the sweep's mask. If the mask can't be
+  restored and that tone was off before, its register is left at the sweep's
+  low amplitude instead.
+- **Control datagrams are retried** (UDP can lose one), and a short data stall
+  is retried once. If the sweep still fails part-way, the points measured so
+  far are saved, with a `# aborted = …` line.
+
+**Exit codes.**
+
+| Code | Meaning |
+|---|---|
+| 0 | Success |
+| 1 | The sweep aborted part-way (its points are saved), the board settings were not fully restored, or de-embedding or the plot failed |
+| 2 | The requested CSV could not be written: it was **not** updated, and the rows are in a `sweep_rescued_*.csv` in the temp folder (the path is printed) |
+
+**Clipping guards.**
+- **ADC peak.** The raw-ADC monitor and the over-range flag carry one ADC
+  sample per record. A tone that is a multiple of the record rate (200 kHz at
+  R = 1000, e.g. 15 or 25 MHz) would be sampled at the same point of its cycle
+  in every record, which can hide its peaks. So each point uses the nearest
+  grid frequency, inside `--start`/`--stop`, whose snapshot walks through 16
+  points of the cycle. (If a narrow range has no such grid point, the nearest
+  one outside is used and a note is printed.) The raw ADC is streamed, and a
+  point's peak must stay below `--max-peak` (default 0.5 of full scale,
+  −6 dBFS) with no over-range flags. Otherwise the amplitude is lowered (down
+  to `--min-amp`, default 0.25 %) and the point is measured again. Above
+  40 MHz the DAC's interpolation image alternates sign between ADC samples,
+  so the peak limit applies to every other sample. The rest are guarded only
+  by the over-range flag, at full scale.
+- **Linearity.** On by default; `--no-linearity` skips it and is twice as
+  fast. Each point is measured again at half amplitude, and the two normalized
+  results must agree within `--lin-tol` (default 1 %) or within noise. If the
+  half-amplitude window did not settle, the point is flagged `unsettled` and
+  gets no linearity verdict.
+- **Settling.** If the first and second halves of a point's window disagree
+  beyond noise, it is measured again with a 4× longer settle. The noise
+  estimate is built so that neither a transient nor a drift can inflate it.
+
+**Flags (CSV `flags` column, red × on the plot).**
+
+| Flag | Meaning |
+|---|---|
+| `headroom` | still above the peak limit at the minimum amplitude |
+| `nonlinear` | failed the linearity check |
+| `unsettled` | did not settle |
+| `low-snr` | the signal (or the de-embedded result) is under 3× its standard error |
+| `below-hpf` | the point is below 400 kHz |
+| `dac-filter` | the point is above 40 MHz, past the DAC's 2× interpolation filter (see the peak-check note above) |
+| `interp` | de-embedding had to interpolate the open/reference sweep |
+| `open:…` / `ref:…` | the open / reference sweep's point used here was `headroom`, `nonlinear` or `unsettled` (its noise is in `d_se` instead) |
+
+**De-embedding.** First sweep the fixture with the load removed (`--out
+open.csv`). Then sweep with the load and `--open open.csv`, which subtracts the
+fixture coupling point by point. `--ref ref.csv` also divides by a sweep of a
+known reference load: the result is (H − H_open) / (H_ref − H_open). Its
+first-order standard error is in the `d_se` column (it includes the open and
+reference sweeps' noise). Measurement problems on the open or reference point
+carry over as `open:…`/`ref:…` flags. Use the same
+`--start/--stop/--points` for every sweep so the frequencies match.
+`--analyze` redoes the de-embedding offline from saved CSVs. It needs `--open`
+and/or `--ref`, and discards any earlier de-embedding stored in the file.
+
+Each run writes a CSV (with `#` metadata lines) and a magnitude/phase PNG.
+The plot title shows the fitted delay, and `--remove-delay` plots the phase
+with that delay removed.
+
+```bash
+python iza_sweep.py --board 192.168.0.80 --amp 5 --out open.csv     # fixture, load removed
+python iza_sweep.py --board 192.168.0.80 --amp 5 --open open.csv --out load.csv
+python iza_sweep.py --analyze load.csv --open open.csv --ref ref.csv  # offline
+```
+
+---
+
 ## Offline analysis tools
 
 | Tool | Purpose | Example |

@@ -250,6 +250,11 @@ class IzaCtrl:
         while True:
             try:
                 buf, _ = self.sock.recvfrom(256)
+            except ConnectionResetError:
+                # Windows reports an ICMP 'port unreachable' (board up, but
+                # iza_replay not running) as a reset here. Keep waiting, so it
+                # ends in the timeout below and its message.
+                continue
             except socket.timeout:
                 raise CtrlError("no response from board (is iza_replay running?)")
             if len(buf) < RSP.size:
@@ -525,6 +530,8 @@ class IzaCtrl:
         while True:
             try:
                 buf, _ = self.sock.recvfrom(256)
+            except ConnectionResetError:
+                continue                # Windows ICMP reset: see _xact
             except socket.timeout:
                 raise CtrlError("no trigger-config ack (is iza_replay running?)")
             if len(buf) < RSP.size:
