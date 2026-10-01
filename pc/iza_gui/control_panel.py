@@ -16,6 +16,10 @@ from .widgets import CollapsibleSection, FreqSpinBox, Led, labeled_row
 UNITY = iza_ctrl.AMP_DEFAULT        # 0x8000
 RASTER = iza_ctrl.RASTER_HZ         # 12500.0
 FCW_MAX = iza_ctrl.FCW_MAX          # 16000
+# Tone frequency limit in the GUI. The analog chain is designed and flat to
+# 20 MHz; the DAC is fed at 100 MS/s (200 MS/s with 2x interpolation), and its
+# HB1 filter passes cleanly only to 0.4 x 100 MS/s = 40 MHz, about -6 dB at 50.
+TONE_MAX_HZ = 50_000_000
 
 
 def _fmt_actual(hz):
@@ -186,12 +190,15 @@ class ControlPanel(QtWidgets.QWidget):
             self.tx_chk.append(chk)
             v.addWidget(chk)
 
-            fspin = FreqSpinBox(0, 8_000_000, RASTER, 500000)
+            fspin = FreqSpinBox(0, TONE_MAX_HZ, RASTER, 500000)
             fspin.setToolTip(
-                "Tone frequency. Type it in Hz, kHz or MHz — e.g. 750000, "
-                "500k, 500 kHz, 1.5M, 1.5 MHz or 2e6 (a bare number is Hz). "
-                "Snaps to the 12.5 kHz grid; keep it above 400 kHz (the "
-                "analog high-pass filter blocks lower frequencies).")
+                "Tone frequency, 0–50 MHz. Type it in Hz, kHz or MHz — e.g. "
+                "750000, 500k, 500 kHz, 1.5M, 1.5 MHz or 2e6 (a bare number is "
+                "Hz). Snaps to the 12.5 kHz grid; keep it above 400 kHz (the "
+                "analog high-pass filter blocks lower frequencies). The analog "
+                "chain is designed and flat to 20 MHz. Above about 40 MHz the "
+                "DAC's 2× interpolation filter attenuates the tone (about −6 dB "
+                "at 50 MHz).")
             actual = QtWidgets.QLabel("")
             actual.setProperty("dim", True)
             actual.setToolTip("The actual frequency after snapping to the "

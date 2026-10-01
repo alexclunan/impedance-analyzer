@@ -49,7 +49,7 @@ class FormatTests(unittest.TestCase):
     def test_units_and_trailing_zeros(self):
         cases = {
             0: "0 Hz", 750: "750 Hz", 12500: "12.5 kHz", 500000: "500 kHz",
-            1e6: "1 MHz", 1012500: "1.0125 MHz", 8e6: "8 MHz",
+            1e6: "1 MHz", 1012500: "1.0125 MHz", 8e6: "8 MHz", 50e6: "50 MHz",
             999999.6: "1 MHz",           # rounds to whole Hz before picking a unit
         }
         for hz, text in cases.items():
@@ -57,7 +57,7 @@ class FormatTests(unittest.TestCase):
                 self.assertEqual(format_hz(hz), text)
 
     def test_round_trips_every_tone_grid_point(self):
-        for fcw in range(0, 641):           # 0 .. 8 MHz on the 12.5 kHz grid
+        for fcw in range(0, 4001):          # 0 .. 50 MHz on the 12.5 kHz grid
             hz = fcw * 12500.0
             self.assertEqual(parse_hz(format_hz(hz)), hz)
 
@@ -96,6 +96,7 @@ class ExtremeInputTests(unittest.TestCase):
 try:
     os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     from pyqtgraph.Qt import QtCore, QtGui, QtTest, QtWidgets
+    from iza_gui.control_panel import TONE_MAX_HZ
     from iza_gui.widgets import FreqSpinBox
     _APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication([])
 except Exception as e:                       # no Qt binding: skip widget tests
@@ -114,7 +115,7 @@ class FreqSpinBoxTests(unittest.TestCase):
 
     @staticmethod
     def make_box(locale):
-        box = FreqSpinBox(0, 8_000_000, 12500, 500000)
+        box = FreqSpinBox(0, TONE_MAX_HZ, 12500, 500000)     # as in the panel
         box.setLocale(locale)
         box.setValue(250000)
         box.setValue(500000)                 # re-render in this locale
@@ -147,11 +148,11 @@ class FreqSpinBoxTests(unittest.TestCase):
         self.assertEqual(changes, [1.5e6])     # only the finished entry
 
     def test_out_of_range_clamps(self):
-        self.type_text("9 MHz")
-        self.assertEqual(self.box.value(), 8e6)
-        self.assertEqual(self.box.text(), "8 MHz")
+        self.type_text("60 MHz")
+        self.assertEqual(self.box.value(), 50e6)
+        self.assertEqual(self.box.text(), "50 MHz")
         self.type_text("1e9999999")             # absurd exponent: clamped, no error
-        self.assertEqual(self.box.value(), 8e6)
+        self.assertEqual(self.box.value(), 50e6)
 
     def test_unfinished_or_bad_text_reverts_to_previous_value(self):
         for text in ("2e", "2e-", "abc", ""):
@@ -180,7 +181,7 @@ class FreqSpinBoxTests(unittest.TestCase):
         self.assertEqual(self.box.validate("1.", 0)[0], V.Acceptable)     # 1 Hz
         self.assertEqual(self.box.validate("2e", 0)[0], V.Intermediate)
         self.assertEqual(self.box.validate("500 kH", 0)[0], V.Intermediate)
-        self.assertEqual(self.box.validate("9 MHz", 0)[0], V.Intermediate)
+        self.assertEqual(self.box.validate("60 MHz", 0)[0], V.Intermediate)
         self.assertEqual(self.box.validate("1e9999999", 0)[0], V.Intermediate)
         self.assertEqual(self.box.validate("abc", 0)[0], V.Invalid)
         self.assertEqual(self.box.validate("1,5", 0)[0], V.Invalid)      # not here
@@ -192,7 +193,7 @@ class FreqSpinBoxTests(unittest.TestCase):
 
     def test_typed_value_can_step_away_from_a_range_edge(self):
         for start, key, want in ((0, QtCore.Qt.Key_Down, 987500),
-                                 (8e6, QtCore.Qt.Key_Up, 1012500)):
+                                 (50e6, QtCore.Qt.Key_Up, 1012500)):
             with self.subTest(start=start):
                 self.box.setValue(start)
                 self.box.lineEdit().selectAll()

@@ -78,7 +78,12 @@ Drives the instrument through `iza_ctrl`:
   Frequencies can be typed in Hz, kHz or MHz: `750000`, `500k`, `500 kHz`,
   `1.5M`, `1.5 MHz` or `2e6` (a bare number is Hz, `m` means mega). They snap to
   the 12.5 kHz grid, and the readout beside each box shows the snapped value
-  (in MHz from 1 MHz up). Values above 8 MHz clamp to 8 MHz. Text that isn't a
+  (in MHz from 1 MHz up). The range is 0–50 MHz, and higher values clamp to
+  50 MHz. The analog chain is designed and flat to 20 MHz. The DAC is fed at
+  100 MS/s (200 MS/s with 2× interpolation), and its interpolation filter passes
+  cleanly only up to 40 MHz, so between 40 and 50 MHz the tone is attenuated
+  (about −6 dB at 50 MHz). Gain and phase also change steeply near the receive
+  anti-alias filter's peak around 52 MHz. Text that isn't a
   frequency reverts to the previous value. In a comma-decimal locale, type
   `1,5 MHz`.
 - **Muxes:** demod input (ADC vs loopback, `SYS_CTRL0[6]`) and DAC output (tones

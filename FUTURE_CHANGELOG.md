@@ -114,8 +114,13 @@ readout beside each box also stayed in kHz above 1 MHz (`→ 1000.0 kHz`).
   and `m` means mega.
 - It shows the value in the most readable unit (`500 kHz`, `1.0125 MHz`), exact
   on the 12.5 kHz grid.
-- Unchanged: the 0–8 MHz range, one 12.5 kHz step per arrow click or scroll,
-  snapping on `editingFinished`, and the values loaded back from the board.
+- Unchanged: one 12.5 kHz step per arrow click or scroll, snapping on
+  `editingFinished`, and the values loaded back from the board.
+- The range was raised from the v1.0 limit of 0–8 MHz, which had no documented
+  reason, to 0–50 MHz (`control_panel.TONE_MAX_HZ`). The analog chain is
+  designed and flat to 20 MHz. With 2× interpolation the DAC is fed at 100 MS/s
+  and its HB1 filter passes cleanly only to 40 MHz (about −6 dB at 50 MHz). The
+  tooltip and the GUI guide say so.
 - Out-of-range entries clamp to the range. Text that isn't a frequency (`2e`,
   `abc`, empty) reverts to the value from before the edit. A half-typed unit
   (`500 kH`) is completed.
@@ -125,7 +130,7 @@ readout beside each box also stayed in kHz above 1 MHz (`→ 1000.0 kHz`).
   other spin boxes. `.` grouping is understood there too (`1.000,5 kHz`,
   `1.000.000`). A lone `.` still reads as a decimal point.
 - The arrows step from the typed text even before it is committed, including
-  away from the 0 Hz and 8 MHz ends of the range.
+  away from the 0 Hz and 50 MHz ends of the range.
 - The snapped readout switches to MHz from 1 MHz up (`→ 1.0000 MHz`).
 - One shared parser, `units.py`, serves both these boxes and the **Rec rate**
   box (`search_hz`, which reads the presets such as `100 kHz  (÷2)` as

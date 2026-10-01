@@ -115,7 +115,7 @@ class FreqSpinBox(QtWidgets.QDoubleSpinBox):
         return self.textFromValue(min(max(hz, self.minimum()), self.maximum()))
 
     def sizeHint(self):
-        # the base hint only measures the min/max texts ('0 Hz', '8 MHz')
+        # the base hint only measures the min/max texts (e.g. '0 Hz', '50 MHz')
         hint = super().sizeHint()
         fm = self.fontMetrics()
         base = max(fm.horizontalAdvance(self.textFromValue(self.minimum())),

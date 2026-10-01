@@ -180,6 +180,14 @@ class WarningWiringTests(unittest.TestCase):
         self.cl.disconnect_board()
         self.assertEqual(self.shown(), ("DAC setup: not checked yet", False, ""))
 
+    def test_tone_boxes_span_0_to_50_mhz(self):
+        for box in self.cp.freq_spin:
+            self.assertEqual((box.minimum(), box.maximum(), box.singleStep()),
+                             (0, 50e6, 12500))
+        box = self.cp.freq_spin[0]
+        box.setValue(50e6)
+        self.assertEqual(box.text(), "50 MHz")
+
     def test_snapped_readout_switches_to_mhz(self):
         self.assertEqual(_fmt_actual(987500), "→ 987.5 kHz")
         self.assertEqual(_fmt_actual(1e6), "→ 1.0000 MHz")
